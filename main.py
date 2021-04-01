@@ -3,7 +3,6 @@ import time
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
 from PyQt5.QtCore import QPoint
 from PyQt5.QtWidgets import QMainWindow
-import Styles
 import Dialog
 import MainWindow
 import uiFunctions
@@ -60,19 +59,6 @@ class ChixclubImpactor(QMainWindow):
         self.move(self.x() + newPos.x(), self.y() + newPos.y())
         self.oldPos = event.globalPos()
 
-    def addButton(self):
-
-        self.buttonGroup = QtWidgets.QButtonGroup()
-        #self.window.MainWindow.B1.setStyleSheet(Styles.styles['style1'])
-        id = 1
-        for x in self.MainWindow.groupBox.findChildren(QtWidgets.QAbstractButton):
-            self.buttonGroup.addButton(x,id)
-            self.buttonGroup.button(id).setStyleSheet(Styles.styles['style1'])
-            id += 1
-            #self.window.MainWindow.B1.setStyleSheet(Styles.styles['style1'])
-            #self.buttonGroup.button(1).setIcon(QtGui.QIcon('resources/PowerSupply.png'))
-        #self.buttonGroup.setExclusive(True)
-
 
     def buttonClicked(self):
 
@@ -128,13 +114,6 @@ class ChixclubImpactor(QMainWindow):
         self.setCentralWidget(textEditor)
 
 
-
-    def setButtonStyle(self, label, style, dimensions, position, IconPath):
-
-        self.buttons[label].setGeometry(dimensions[0], dimensions[1], position[0], position[1])
-        self.buttons[label].setStyleSheet(Styles.styles[style])
-        if IconPath != 'NULL':
-            self.buttons[label].setIcon(QtGui.QIcon(IconPath))
 
     def addToolbar(self):
 

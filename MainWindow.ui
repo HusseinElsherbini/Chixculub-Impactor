@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
-    <height>550</height>
+    <width>1062</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>810</width>
-    <height>550</height>
+    <width>1000</width>
+    <height>720</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,9 +27,6 @@
     <string notr="true">background:rgb(91,90,90);</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
-    <property name="spacing">
-     <number>0</number>
-    </property>
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -604,7 +601,7 @@ QPushButton:pressed {
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Plain</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
@@ -832,13 +829,13 @@ QPushButton:pressed {
                   <property name="minimumSize">
                    <size>
                     <width>80</width>
-                    <height>55</height>
+                    <height>85</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>80</width>
-                    <height>55</height>
+                    <height>85</height>
                    </size>
                   </property>
                   <property name="frameShape">
@@ -849,42 +846,50 @@ QPushButton:pressed {
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_5">
                    <property name="spacing">
-                    <number>9</number>
+                    <number>10</number>
                    </property>
                    <property name="leftMargin">
-                    <number>9</number>
+                    <number>14</number>
                    </property>
                    <property name="topMargin">
-                    <number>9</number>
+                    <number>0</number>
                    </property>
                    <property name="rightMargin">
-                    <number>9</number>
+                    <number>0</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>6</number>
+                    <number>25</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="pushButton_3">
+                    <widget class="QLabel" name="label_4">
+                     <property name="minimumSize">
+                      <size>
+                       <width>55</width>
+                       <height>55</height>
+                      </size>
+                     </property>
                      <property name="maximumSize">
                       <size>
                        <width>55</width>
                        <height>55</height>
                       </size>
                      </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel {
+	border-radius: 30px;
+	background-color: rgb(51,51,51);
+	border: 5px solid rgb(51,51,51);
+	background-position: center;
+	background-repeat: no-repeat;
+}</string>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
-                     <property name="icon">
-                      <iconset>
-                       <normaloff>resources/asteroid.png</normaloff>resources/asteroid.png</iconset>
+                     <property name="pixmap">
+                      <pixmap>resources/asteroid.png</pixmap>
                      </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>40</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="flat">
+                     <property name="scaledContents">
                       <bool>true</bool>
                      </property>
                     </widget>
@@ -901,10 +906,10 @@ QPushButton:pressed {
           <item>
            <widget class="QFrame" name="eastFrame">
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Plain</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <property name="spacing">
@@ -930,6 +935,149 @@ QPushButton:pressed {
                <property name="frameShadow">
                 <enum>QFrame::Plain</enum>
                </property>
+               <layout class="QVBoxLayout" name="verticalLayout_7">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QStackedWidget" name="stackedWidget">
+                  <property name="currentIndex">
+                   <number>0</number>
+                  </property>
+                  <widget class="QWidget" name="devicesPage">
+                   <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QFrame" name="frame_12">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_9">
+                       <item>
+                        <widget class="QFrame" name="frame_13">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>100</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>100</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QFrame:hover{
+	background-color:rgb(51,51,51);;
+}</string>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout">
+                          <item row="0" column="0">
+                           <widget class="QPushButton" name="pushButton_3">
+                            <property name="minimumSize">
+                             <size>
+                              <width>80</width>
+                              <height>80</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>80</width>
+                              <height>80</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                            <property name="icon">
+                             <iconset>
+                              <normaloff>resources/031-power supply.png</normaloff>resources/031-power supply.png</iconset>
+                            </property>
+                            <property name="iconSize">
+                             <size>
+                              <width>80</width>
+                              <height>80</height>
+                             </size>
+                            </property>
+                            <property name="flat">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <spacer name="horizontalSpacer">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>40</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="scriptPage"/>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item>
@@ -977,7 +1125,7 @@ QPushButton:pressed {
                    <enum>QFrame::NoFrame</enum>
                   </property>
                   <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <enum>QFrame::Raised</enum>
                   </property>
                  </widget>
                 </item>
@@ -1034,6 +1182,11 @@ QPushButton:pressed {
                      <property name="styleSheet">
                       <string notr="true">QLabel:hover {
 	background:rgb(61, 61, 61)
+}
+QSizeGrip {
+	background-image: url(:/resources/cil-size-grip.png);
+	background-position: center;
+	background-repeat: no-reperat;
 }</string>
                      </property>
                      <property name="text">
