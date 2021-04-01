@@ -364,22 +364,36 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setSpacing(0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.frame_12 = QtWidgets.QFrame(self.devicesPage)
-        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_12.setStyleSheet("QFrame{\n"
+"\n"
+"    border-radius:20px;\n"
+"}")
+        self.frame_12.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_12.setObjectName("frame_12")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.frame_12)
+        self.verticalLayout_9.setContentsMargins(9, 9, 9, 0)
+        self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.frame_13 = QtWidgets.QFrame(self.frame_12)
         self.frame_13.setMinimumSize(QtCore.QSize(0, 100))
         self.frame_13.setMaximumSize(QtCore.QSize(16777215, 100))
         self.frame_13.setStyleSheet("QFrame:hover{\n"
+"    background-color:rgb(61, 61, 61);\n"
+"}\n"
+"\n"
+"QFrame{\n"
 "    background-color:rgb(51,51,51);;\n"
-"}")
+"}\n"
+"\n"
+"")
         self.frame_13.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_13.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_13.setObjectName("frame_13")
         self.gridLayout = QtWidgets.QGridLayout(self.frame_13)
         self.gridLayout.setObjectName("gridLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.pushButton_3 = QtWidgets.QPushButton(self.frame_13)
         self.pushButton_3.setMinimumSize(QtCore.QSize(80, 80))
         self.pushButton_3.setMaximumSize(QtCore.QSize(80, 80))
@@ -391,8 +405,33 @@ class Ui_MainWindow(object):
         self.pushButton_3.setFlat(True)
         self.pushButton_3.setObjectName("pushButton_3")
         self.gridLayout.addWidget(self.pushButton_3, 0, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
+        self.label_5 = QtWidgets.QLabel(self.frame_13)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("QLabel{\n"
+"\n"
+"    color:white;\n"
+"}\n"
+"\n"
+"QLabel:hover{\n"
+"\n"
+"    background-color:rgb(61, 61, 61);\n"
+"}\n"
+"\n"
+"QLabel{\n"
+"    background-color: rgba(0,0,0,0%)\n"
+"}")
+        self.label_5.setObjectName("label_5")
+        self.gridLayout.addWidget(self.label_5, 0, 1, 1, 1)
+        self.radioButton = QtWidgets.QRadioButton(self.frame_13)
+        self.radioButton.setText("")
+        self.radioButton.setObjectName("radioButton")
+        self.gridLayout.addWidget(self.radioButton, 0, 4, 1, 1)
+        self.pushButton_4 = QtWidgets.QPushButton(self.frame_13)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout.addWidget(self.pushButton_4, 0, 3, 1, 1)
         self.verticalLayout_9.addWidget(self.frame_13)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_9.addItem(spacerItem1)
@@ -462,3 +501,5 @@ class Ui_MainWindow(object):
         self.minBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Minimize</p></body></html>"))
         self.maxBtn.setToolTip(_translate("MainWindow", "Maximize"))
         self.closeBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Close</p></body></html>"))
+        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">Power Supply</span></p></body></html>"))
+        self.pushButton_4.setText(_translate("MainWindow", "Connect"))
