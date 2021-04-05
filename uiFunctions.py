@@ -1,17 +1,19 @@
-from main import ChixclubImpactor
-from PyQt5.QtWidgets import QFrame
-from PyQt5 import QtGui
+from main import ChixculubImpactor, addDeviceDialog
+from PyQt5.QtWidgets import QFrame, QGraphicsDropShadowEffect
+from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QPoint
+from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QPoint, QEvent
 
 WINDOW_STATE = 0
-class UIFunctions(ChixclubImpactor):
+
+
+class UIFunctions(ChixculubImpactor):
 
     def activateTitleBarButtons(self):
         self.ui.closeBtn.clicked.connect(lambda: self.close())
         self.ui.minBtn.clicked.connect(lambda: self.showMinimized())
         self.ui.maxBtn.clicked.connect(lambda: UIFunctions.maximizeRestore(self))
-        self.ui.Toodle.clicked.connect(lambda: UIFunctions.toodle(self,160, True))
+        self.ui.Toodle.clicked.connect(lambda: UIFunctions.toodle(self, 160, True))
 
     def maximizeRestore(self):
         global WINDOW_STATE
@@ -25,12 +27,10 @@ class UIFunctions(ChixclubImpactor):
         else:
             WINDOW_STATE = 0
             self.showNormal()
-            self.resize(self.width()+1, self.height()+1)
+            self.resize(self.width() + 1, self.height() + 1)
             self.ui.maxBtn.setToolTip("Maximize")
             self.ui.maxBtn.setIcon(QIcon("resources/expand.png"))
             self.ui.drag.show()
-
-
 
     def toodle(self, maxWidth, clicked):
 
@@ -56,3 +56,19 @@ class UIFunctions(ChixclubImpactor):
         self.animation.start()
 
 
+class dialogUIFunctions(addDeviceDialog):
+
+    def dialogTitleBar(self):
+        self.uiDialog.closeBtn.clicked.connect(lambda: self.close())
+        self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(15)
+        self.uiDialog.frame_7.setGraphicsEffect(shadow)
+        shadow1 = QGraphicsDropShadowEffect()
+        shadow1.setBlurRadius(15)
+        self.uiDialog.pushButton.setGraphicsEffect(shadow1)
+        shadow2 = QGraphicsDropShadowEffect()
+        shadow2.setBlurRadius(15)
+        self.uiDialog.ConTypeFrame.setGraphicsEffect(shadow2)

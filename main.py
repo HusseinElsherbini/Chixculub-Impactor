@@ -1,14 +1,15 @@
 import sys
 import time
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
-from PyQt5.QtCore import QPoint
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import QPoint, QEvent
+from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect
 import Dialog
 import MainWindow
 import uiFunctions
+import subclasses
 
 
-class ChixclubImpactor(QMainWindow):
+class ChixculubImpactor(QMainWindow):
 
     def __init__(self):
 
@@ -17,6 +18,9 @@ class ChixclubImpactor(QMainWindow):
         self.dialogs = {}
         super().__init__()
         self.initUI()
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(15)
+        self.ui.frame_14.setGraphicsEffect(shadow)
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -24,82 +28,54 @@ class ChixclubImpactor(QMainWindow):
         # create main window dimensions and center it
 
         self.createWindow()
-        self.oldPos = self.pos()
         uiFunctions.UIFunctions.activateTitleBarButtons(self)
-        # create a menubar
-        #self.addMenu()
+        self.installEventFilters()
 
-        # create buttons and activate button press
-        #self.addButton()
-        #self.setButtonStyle('ADD DEVICE','style1',[20,50],[150,50],'resources/PowerSupply.png')
-
-        #self.buttons['Button'].clicked.connect(self.buttonClicked)
-       # self.activateButtonPress()
-
-        # add toolbar
-        #self.addToolbar()
-        #self.statusBar()
-
-        # modify style
-        #self.set_Style()
-
-        # add text editor
-        #self.addTextEditor()
+        self.addDeviceFrame(["Power Supply", "power-supply.png", "HET-2", "RS232"])
+        self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "LAN"])
+        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN"])
+        self.activateButtons()
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(15)
+        self.ui.pushButton_4.setGraphicsEffect(shadow)
         self.center()
-        # keeps record of old position of
-        self.oldPosition = self.pos()
+        # keeps record of old position of window
+        self.oldPos = self.pos()
         # activates the app
         self.show()
-
-    def mousePressEvent(self, event):
-        self.oldPos = event.globalPos()
-
-    def mouseMoveEvent(self, event):
-        newPos = QPoint(event.globalPos() - self.oldPos)
-        self.move(self.x() + newPos.x(), self.y() + newPos.y())
-        self.oldPos = event.globalPos()
-
-
-    def buttonClicked(self):
-
-        sender = self.sender()
-
-        if self.buttonGroup.checkedButton().objectName() == 'B1':
-            self.statusBar().showMessage('B1')
-            self.dialogs['addDeviceDialog'] = addDeviceDialog()
-            #dialog.setStyleSheet(open("resources/frameless.qss",'r').read())
-            #dialog.setAutoFillBackground(True)
-            self.dialogs['addDeviceDialog'].adjustSize()
-            self.dialogs['addDeviceDialog'].exec_()
 
     def createWindow(self):
 
         self.ui = MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)   # make window frameless
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
 
+    def installEventFilters(self):
 
-    def set_Style(self):
+        self.ui.appName.installEventFilter(self)
 
-        palette = QtGui.QPalette()
-        palette.setColor(palette.Window,QtGui.QColor(255,255,255))
-        self.ModernWindow.setPalette(palette)
+    def eventFilter(self, obj, event):
 
+        if obj == self.ui.appName and event.type() == QEvent.MouseButtonPress:
+            if event.button() == QtCore.Qt.LeftButton:
+                self.oldPos = event.globalPos()
+        if obj == self.ui.appName and event.type() == QEvent.MouseMove:
+            newPos = QPoint(event.globalPos() - self.oldPos)
+            self.move(self.x() + newPos.x(), self.y() + newPos.y())
+            self.oldPos = event.globalPos()
+        return False
 
-    def addMenu(self):
+    def activateButtons(self):
 
-        menuBar = QtWidgets.QMenuBar(self)
-        fileMenu = menuBar.addMenu('File')
+        self.ui.pushButton_4.clicked.connect(self.addDeviceDialog)
 
-        subMenu = fileMenu.addMenu('Port')
-        subAct = QtWidgets.QAction('COM3', self)
-        subMenu.addAction(subAct)
+    def addDeviceFrame(self, args):
 
-        newAct = QtWidgets.QAction('New', self)
-
-        fileMenu.addAction(newAct)
-        fileMenu.addMenu(subMenu)
+        arguments = [args[0], args[1], args[2], args[3]]
+        newDevice = subclasses.deviceFrame(*arguments)
+        self.ui.verticalLayout_9.addWidget(newDevice)
+        return newDevice
 
     def center(self):
 
@@ -108,52 +84,43 @@ class ChixclubImpactor(QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def addTextEditor(self):
+    def addDeviceDialog(self):
 
-        textEditor = self.QTextEdit()
-        self.setCentralWidget(textEditor)
-
-
-
-    def addToolbar(self):
-
-        addEquipment = QtWidgets.QAction(QtGui.QIcon.fromTheme('list-add'), 'Add Equipment', self)
-
-        self.addToolBar('Add Equipment').addAction(addEquipment)
+        addDevice = addDeviceDialog()
+        addDevice.exec_()
+        # addDevice.show()
 
 
-
-    def showObjects(self):
-
-        text = self.dialogs['addDeviceDialog'].TypeOfConnection.currentText()
-
-        if text == 'RS232':
-            self.dialogs['addDeviceDialog'].BaudRate.show()
-
-    def hideObjects(self):
-
-        self.dialogs['addDeviceDialog'].BaudRate.hide()
 
 class addDeviceDialog(QtWidgets.QDialog):
-    #creates an instance of a dialog when the ADD device button is pressed
+    # creates an instance of a dialog when the ADD device button is pressed
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.addDevice = Dialog.Ui_DeviceInformation()
-        self.addDevice.setupUi(self)
+        self.uiDialog = Dialog.Ui_Dialog()  # create an instance of the dialog UI class
+        self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
+        self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
+        self.uiDialog.TopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
+        uiFunctions.dialogUIFunctions.dialogTitleBar(self)  # make window frameless
 
-class Mainwin(QtWidgets.QMainWindow):
+    def eventFilter(self, obj, event):
 
-    def __init__(self, parent = None):
+        if obj == self.uiDialog.TopFrame and event.type() == QEvent.MouseButtonPress:
+            if event.button() == QtCore.Qt.LeftButton:
+                self.oldPos = event.globalPos()
+        if obj == self.uiDialog.TopFrame and event.type() == QEvent.MouseMove:
+            newPos = QPoint(event.globalPos() - self.oldPos)
+            self.move(self.x() + newPos.x(), self.y() + newPos.y())
+            self.oldPos = event.globalPos()
+        return False
 
-        super().__init__(parent)
-        self.MainWindow = MainWindow.Ui_MainWindow()
-        self.MainWindow.setupUi(self)
+
+
+
 
 def main():
+    Terminal = ChixculubImpactor()
 
-    Terminal = ChixclubImpactor()
 
 if __name__ == '__main__':
-
     main()
