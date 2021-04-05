@@ -366,8 +366,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setSpacing(0)
         self.horizontalLayout_15.setObjectName("horizontalLayout_15")
         self.frame_16 = QtWidgets.QFrame(self.frame_15)
-        self.frame_16.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_16.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_16.setStyleSheet("background:transparent;")
+        self.frame_16.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_16.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_16.setObjectName("frame_16")
         self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.frame_16)
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
@@ -376,7 +377,8 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_16.addItem(spacerItem)
         self.frame_17 = QtWidgets.QFrame(self.frame_16)
-        self.frame_17.setStyleSheet("border-color:black;")
+        self.frame_17.setStyleSheet("border-color:black;\n"
+"background:transparent;")
         self.frame_17.setFrameShape(QtWidgets.QFrame.Panel)
         self.frame_17.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_17.setLineWidth(5)
@@ -402,10 +404,7 @@ class Ui_MainWindow(object):
 "        \n"
 "    }\n"
 "\n"
-"QPushButton:pressed {\n"
-"    background-color: rgb(244, 244, 244);\n"
-"        \n"
-"    }")
+"")
         self.pushButton_4.setText("")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)

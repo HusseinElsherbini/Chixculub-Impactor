@@ -581,7 +581,10 @@ QComboBox QAbstractItemView {
                 </spacer>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox">
+                <widget class="QComboBox" name="ConType">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>300</width>
@@ -746,7 +749,10 @@ background:transparent;
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton">
+                <widget class="QPushButton" name="ConfirmBtn">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -761,7 +767,7 @@ background:transparent;
                  </property>
                  <property name="styleSheet">
                   <string notr="true">
-QPushButton {
+QPushButton:enabled {
   font: 75 10pt &quot;Microsoft YaHei UI&quot;;
  color:black;
  background:transparent;
@@ -774,6 +780,18 @@ QPushButton {
 
 QPushButton:hover {
  border-color:rgb(0, 255, 128);
+}
+
+
+QPushButton:!enabled {
+  font: 75 10pt &quot;Microsoft YaHei UI&quot;;
+ color:black;
+ background:transparent;
+ border-radius:15px;
+ border: 3px solid transparent;
+ 
+	border-color:lightgrey;
+ padding:18px;
 }</string>
                  </property>
                  <property name="text">

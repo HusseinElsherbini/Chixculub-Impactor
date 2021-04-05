@@ -1,4 +1,4 @@
-from main import ChixculubImpactor, addDeviceDialog
+from main import ChixculubImpactor
 from PyQt5.QtWidgets import QFrame, QGraphicsDropShadowEffect
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
@@ -56,19 +56,3 @@ class UIFunctions(ChixculubImpactor):
         self.animation.start()
 
 
-class dialogUIFunctions(addDeviceDialog):
-
-    def dialogTitleBar(self):
-        self.uiDialog.closeBtn.clicked.connect(lambda: self.close())
-        self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(15)
-        self.uiDialog.frame_7.setGraphicsEffect(shadow)
-        shadow1 = QGraphicsDropShadowEffect()
-        shadow1.setBlurRadius(15)
-        self.uiDialog.pushButton.setGraphicsEffect(shadow1)
-        shadow2 = QGraphicsDropShadowEffect()
-        shadow2.setBlurRadius(15)
-        self.uiDialog.ConTypeFrame.setGraphicsEffect(shadow2)

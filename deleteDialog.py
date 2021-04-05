@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(408, 413)
+        Dialog.resize(438, 349)
         self.MainFrame = QtWidgets.QFrame(Dialog)
         self.MainFrame.setGeometry(QtCore.QRect(15, 14, 370, 300))
         self.MainFrame.setMinimumSize(QtCore.QSize(370, 300))
@@ -221,4 +221,4 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "        Are you sure you want to delete this device?"))
         self.CancelBtn.setText(_translate("Dialog", "Cancel"))
         self.DeleteBtn.setText(_translate("Dialog", "Delete"))
-        self.checkBox.setText(_translate("Dialog", "Donot show this again"))
+        self.checkBox.setText(_translate("Dialog", "Don\'t show this again"))

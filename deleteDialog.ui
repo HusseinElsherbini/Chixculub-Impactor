@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>413</height>
+    <width>438</width>
+    <height>349</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -483,7 +483,7 @@ QPushButton {
  border-radius:15px;
  border: 3px solid transparent;
  
-	border-color:rgb(255, 35, 15);
+	border-color:rgb(255, 83, 83);
  padding:18px;
 }
 
@@ -512,7 +512,7 @@ background-color: rgb(240, 240, 240);
           <item>
            <widget class="QCheckBox" name="checkBox">
             <property name="text">
-             <string>Donot show this again</string>
+             <string>Don't show this again</string>
             </property>
            </widget>
           </item>

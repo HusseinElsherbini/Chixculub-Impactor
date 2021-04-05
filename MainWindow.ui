@@ -983,11 +983,14 @@ QPushButton:pressed {
                           </property>
                           <item>
                            <widget class="QFrame" name="frame_16">
+                            <property name="styleSheet">
+                             <string notr="true">background:transparent;</string>
+                            </property>
                             <property name="frameShape">
-                             <enum>QFrame::StyledPanel</enum>
+                             <enum>QFrame::NoFrame</enum>
                             </property>
                             <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
+                             <enum>QFrame::Plain</enum>
                             </property>
                             <layout class="QHBoxLayout" name="horizontalLayout_16">
                              <property name="spacing">
@@ -1021,7 +1024,8 @@ QPushButton:pressed {
                              <item>
                               <widget class="QFrame" name="frame_17">
                                <property name="styleSheet">
-                                <string notr="true">border-color:black;</string>
+                                <string notr="true">border-color:black;
+background:transparent;</string>
                                </property>
                                <property name="frameShape">
                                 <enum>QFrame::Panel</enum>
@@ -1069,10 +1073,7 @@ QPushButton:hover {
         
     }
 
-QPushButton:pressed {
-    background-color: rgb(244, 244, 244);
-        
-    }</string>
+</string>
                                   </property>
                                   <property name="text">
                                    <string/>

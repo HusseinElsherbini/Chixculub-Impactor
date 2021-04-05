@@ -5,6 +5,7 @@ from deleteDialog import Ui_Dialog
 import uiFunctions
 import main
 import deleteDialog
+import Dialog
 
 class removeDialog(QtWidgets.QDialog):
 
@@ -33,13 +34,13 @@ class removeDialog(QtWidgets.QDialog):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(15)
+        shadow.setBlurRadius(25)
         self.uiDialog.frame_2.setGraphicsEffect(shadow)
         shadow1 = QGraphicsDropShadowEffect()
-        shadow1.setBlurRadius(15)
+        shadow1.setBlurRadius(25)
         self.uiDialog.DeleteBtn.setGraphicsEffect(shadow1)
         shadow2 = QGraphicsDropShadowEffect()
-        shadow2.setBlurRadius(15)
+        shadow2.setBlurRadius(25)
         self.uiDialog.CancelBtn.setGraphicsEffect(shadow2)
 
 class deviceFrame(QtWidgets.QFrame):
@@ -109,7 +110,7 @@ QPushButton:hover {
         self.connectBtn.setFlat(False)
         self.connectBtn.setObjectName("connectBtn")
         shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(15)
+        shadow.setBlurRadius(20)
         self.setGraphicsEffect(shadow)
         self.gridLayout.addWidget(self.connectBtn, 0, 5, 1, 1)
         self.deviceName = QtWidgets.QLabel(self)
@@ -164,14 +165,14 @@ background-color: rgba(0,0,0,0%);
                                              "<html><head/><body><p align=\"center\"><span style=\" font-size:8pt;\">Delete</span></p></body></html>"))
         self.connectBtn.setToolTip(_translate("MainWindow",
                                               "<html><head/><body><p align=\"center\"><span style=\" font-size:8pt;\">Connect</span></p></body></html>"))
-        print("here")
+
         self.deleteBtn.clicked.connect(self.deleteFrame)
 
     def deleteFrame(self):
-        print("hre")
+
         self.delDialog = removeDialog()
         self.delDialog.uiDialog.DeleteBtn.clicked.connect(self.removeFrame)
-        #self.delDialog.uiDialog.CancelBtn.clicked.connect(self.remo)
+        self.delDialog.uiDialog.CancelBtn.clicked.connect(self.delDialog.close)
         self.delDialog.exec_()
 
 
@@ -179,3 +180,78 @@ background-color: rgba(0,0,0,0%);
 
         self.deleteLater()
         self.delDialog.close()
+
+    def closeDialog(self):
+
+        self.delDialog.close()
+
+class addDeviceDialog(QtWidgets.QDialog):
+    # creates an instance of a dialog when the ADD device button is pressed
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+        self.uiDialog = Dialog.Ui_Dialog()  # create an instance of the dialog UI class
+        self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
+        self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
+        self.uiDialog.TopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
+        self.dialogTitleBar()  # make window frameless
+        self.setShadow(self.uiDialog.frame_7)
+        self.setShadow(self.uiDialog.ConfirmBtn)
+        self.setShadow(self.uiDialog.ConType)
+        self.ConnectBtns()
+        self.devices = {}
+        self.device = {}
+
+    def dialogTitleBar(self):
+        self.uiDialog.closeBtn.clicked.connect(lambda: self.close())
+        self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+
+    def setShadow(self, obj):
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        obj.setGraphicsEffect(shadow)
+
+    def eventFilter(self, obj, event):
+
+        if obj == self.uiDialog.TopFrame and event.type() == QEvent.MouseButtonPress:
+            if event.button() == QtCore.Qt.LeftButton:
+                self.oldPos = event.globalPos()
+        if obj == self.uiDialog.TopFrame and event.type() == QEvent.MouseMove:
+            newPos = QPoint(event.globalPos() - self.oldPos)
+            self.move(self.x() + newPos.x(), self.y() + newPos.y())
+            self.oldPos = event.globalPos()
+        return False
+
+    def ConnectBtns(self):
+
+        self.uiDialog.ConfirmBtn.clicked.connect(self.activateConType)
+        self.uiDialog.DeviceType.currentIndexChanged.connect(self.activateConType)
+        self.uiDialog.ConType.currentIndexChanged.connect(self.activateConType)
+
+    def activateConType(self):
+        if self.sender() == self.uiDialog.DeviceType:
+            if self.uiDialog.DeviceType.currentText() != "Select Device":
+                if self.uiDialog.ConType.isEnabled() == False:
+                    self.uiDialog.ConType.setEnabled(True)
+                else:
+                    print(self.uiDialog.ConType.currentText())
+                    if self.uiDialog.ConType.currentText() != "Connection Type":
+                        self.uiDialog.ConfirmBtn.setEnabled(True)
+
+        elif self.sender() == self.uiDialog.ConType:
+            if self.uiDialog.ConType.currentText() != "Connection Type":
+                if self.uiDialog.ConfirmBtn.isEnabled() == False:
+                    self.uiDialog.ConfirmBtn.setEnabled(True)
+
+        elif self.sender() == self.uiDialog.ConfirmBtn:
+            if self.uiDialog.DeviceType.currentText() != "Select Device" and self.uiDialog.ConType.currentText() != "Connection Type":
+                self.close()
+
+        else:
+            self.uiDialog.ConType.setEnabled(False)
+            self.uiDialog.ConfirmBtn.setEnabled(False)
