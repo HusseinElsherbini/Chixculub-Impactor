@@ -7,6 +7,82 @@ import main
 import deleteDialog
 import Dialog
 
+class dialogQFrame(QtWidgets.QFrame):
+    def __init__(self, parent=None,*args):
+        super().__init__(parent)
+        self.Frame = QtWidgets.QFrame()
+        self.Frame.setMinimumSize(QtCore.QSize(0, 30))
+        self.Frame.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.Frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.Frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.Frame.setObjectName(args[0])
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.DeviceTypeFrame)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.frame_7 = QtWidgets.QFrame(self.DeviceTypeFrame)
+        self.frame_7.setStyleSheet("QFrame{\n"
+                                   "\n"
+                                   "    background:transparent;\n"
+                                   "}")
+        self.frame_7.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_7.setObjectName("frame_7")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_7)
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem1)
+        self.Frame = QtWidgets.QComboBox(self.frame_7)
+        self.Frame.setMinimumSize(QtCore.QSize(300, 30))
+        self.Frame.setAutoFillBackground(True)
+        self.Frame.setStyleSheet("QComboBox{\n"
+                                      "    border:transparent;\n"
+                                      "    border-bottom: 1px solid black;\n"
+                                      "    font: 14px;\n"
+                                      "    background:transparent;\n"
+                                      "}\n"
+                                      "\n"
+                                      "\n"
+                                      "QComboBox:down-arrow {\n"
+                                      "    image: url(resources/arrow.png);\n"
+                                      "    width: 14px;\n"
+                                      "    height: 14px;\n"
+                                      "}\n"
+                                      "\n"
+                                      "QComboBox QAbstractItemView {\n"
+                                      "\n"
+                                      "    border: 2px solid darkgray;\n"
+                                      "    selection-background-color: rgb(174, 255, 193);\n"
+                                      "    selection-color: black;\n"
+                                      "    background-color: white;\n"
+                                      "\n"
+                                      "}\n"
+                                      "\n"
+                                      "")
+        self.Frame.setEditable(True)
+        self.Frame.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.Frame.setIconSize(QtCore.QSize(24, 24))
+        self.Frame.setFrame(False)
+        self.Frame.setObjectName("Frame")
+        self.Frame.addItem("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Frame.addItem(icon2, "")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Frame.addItem(icon3, "")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.DeviceType.addItem(icon4, "")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("resources/oscilloscope (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.DeviceType.addItem(icon5, "")
+        self.horizontalLayout_3.addWidget(self.DeviceType)
+
+        #def rs232
+
 class removeDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
@@ -42,6 +118,7 @@ class removeDialog(QtWidgets.QDialog):
         shadow2 = QGraphicsDropShadowEffect()
         shadow2.setBlurRadius(25)
         self.uiDialog.CancelBtn.setGraphicsEffect(shadow2)
+
 
 class deviceFrame(QtWidgets.QFrame):
 
@@ -169,21 +246,18 @@ background-color: rgba(0,0,0,0%);
         self.deleteBtn.clicked.connect(self.deleteFrame)
 
     def deleteFrame(self):
-
         self.delDialog = removeDialog()
         self.delDialog.uiDialog.DeleteBtn.clicked.connect(self.removeFrame)
         self.delDialog.uiDialog.CancelBtn.clicked.connect(self.delDialog.close)
         self.delDialog.exec_()
 
-
     def removeFrame(self):
-
         self.deleteLater()
         self.delDialog.close()
 
     def closeDialog(self):
-
         self.delDialog.close()
+
 
 class addDeviceDialog(QtWidgets.QDialog):
     # creates an instance of a dialog when the ADD device button is pressed
@@ -198,17 +272,21 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.dialogTitleBar()  # make window frameless
         self.setShadow(self.uiDialog.frame_7)
         self.setShadow(self.uiDialog.ConfirmBtn)
-        self.setShadow(self.uiDialog.ConType)
+        self.setShadow(self.uiDialog.ComboBox2)
+        self.setShadow(self.uiDialog.PreviousBtn)
         self.ConnectBtns()
         self.devices = {}
         self.device = {}
 
     def dialogTitleBar(self):
-        self.uiDialog.closeBtn.clicked.connect(lambda: self.close())
+        self.uiDialog.closeBtn.clicked.connect(self.close_Event)
         self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
+    def close_Event(self):
+        self.step = 1
+        self.close()
 
     def setShadow(self, obj):
 
@@ -227,31 +305,67 @@ class addDeviceDialog(QtWidgets.QDialog):
             self.oldPos = event.globalPos()
         return False
 
+    def changeCBcontent(self, QComboBox, newList):
+
+        QComboBox.clear()
+        QComboBox.addItems(newList)
+
     def ConnectBtns(self):
+        self.step = 1
+        self.uiDialog.ConfirmBtn.clicked.connect(self.addDeviceSteps)
+        self.uiDialog.ComboBox1.currentIndexChanged.connect(self.addDeviceSteps)
+        self.uiDialog.ComboBox2.currentIndexChanged.connect(self.addDeviceSteps)
 
-        self.uiDialog.ConfirmBtn.clicked.connect(self.activateConType)
-        self.uiDialog.DeviceType.currentIndexChanged.connect(self.activateConType)
-        self.uiDialog.ConType.currentIndexChanged.connect(self.activateConType)
+    def addDeviceSteps(self):
 
-    def activateConType(self):
-        if self.sender() == self.uiDialog.DeviceType:
-            if self.uiDialog.DeviceType.currentText() != "Select Device":
-                if self.uiDialog.ConType.isEnabled() == False:
-                    self.uiDialog.ConType.setEnabled(True)
+        if self.step == 1:
+            self.step1()
+        elif self.step == 2:
+            pass
+
+    def step1(self):
+
+        if self.sender() == self.uiDialog.ComboBox1:
+            if self.uiDialog.ComboBox1.currentText() != "Select Device":
+                if not self.uiDialog.ComboBox2.isEnabled():
+                    self.uiDialog.ComboBox2.setEnabled(True)
                 else:
-                    print(self.uiDialog.ConType.currentText())
-                    if self.uiDialog.ConType.currentText() != "Connection Type":
+                    if self.uiDialog.ComboBox2.currentText() != "Connection Type":
                         self.uiDialog.ConfirmBtn.setEnabled(True)
+            else:
+                self.uiDialog.ConfirmBtn.setEnabled(False)
 
-        elif self.sender() == self.uiDialog.ConType:
-            if self.uiDialog.ConType.currentText() != "Connection Type":
-                if self.uiDialog.ConfirmBtn.isEnabled() == False:
+        elif self.sender() == self.uiDialog.ComboBox2:
+            if self.uiDialog.ComboBox2.currentText() != "Connection Type":
+                if not self.uiDialog.ConfirmBtn.isEnabled() and self.uiDialog.ComboBox1.currentText() != "Select Device":
+
                     self.uiDialog.ConfirmBtn.setEnabled(True)
 
-        elif self.sender() == self.uiDialog.ConfirmBtn:
-            if self.uiDialog.DeviceType.currentText() != "Select Device" and self.uiDialog.ConType.currentText() != "Connection Type":
-                self.close()
+            else:
+                self.uiDialog.ConfirmBtn.setEnabled(False)
 
-        else:
-            self.uiDialog.ConType.setEnabled(False)
+        elif self.sender() == self.uiDialog.ConfirmBtn:
+            self.step = 2
+            self.device = {
+                "Device Type": self.uiDialog.ComboBox1.currentText(),
+                "Connection Type": self.uiDialog.ComboBox2.currentText(),
+            }
+            self.changeCBcontent(self.uiDialog.ComboBox1, ["Enter Device Name (optional)"])
+            self.changeCBcontent(self.uiDialog.ComboBox2, ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000"])
+            self.uiDialog.PreviousBtn.setEnabled(True)
             self.uiDialog.ConfirmBtn.setEnabled(False)
+            self.uiDialog.ComboBox2.setEnabled(True)
+            self.addDeviceSteps()
+
+    def step2(self):
+
+        if self.sender == self.uiDialog.ComboBox2:
+            self.uiDialog.ConfirmBtn.setEnabled(True)
+
+        elif self.sender == self.uiDialog.ConfirmBtn:
+            self.close()
+
+        elif self.sender == self.uiDialog.PreviousBtn:
+
+
+

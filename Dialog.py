@@ -14,7 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(409, 382)
+        Dialog.resize(408, 350)
+        Dialog.setMaximumSize(QtCore.QSize(408, 350))
         Dialog.setWindowOpacity(1.0)
         Dialog.setStyleSheet("\n"
 "background-color:#ffecd9;")
@@ -23,7 +24,8 @@ class Ui_Dialog(object):
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.MainFrame = QtWidgets.QFrame(Dialog)
-        self.MainFrame.setMinimumSize(QtCore.QSize(408, 290))
+        self.MainFrame.setMinimumSize(QtCore.QSize(408, 350))
+        self.MainFrame.setMaximumSize(QtCore.QSize(408, 350))
         self.MainFrame.setStyleSheet("")
         self.MainFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.MainFrame.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -136,10 +138,10 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
-        self.DeviceType = QtWidgets.QComboBox(self.frame_7)
-        self.DeviceType.setMinimumSize(QtCore.QSize(300, 30))
-        self.DeviceType.setAutoFillBackground(True)
-        self.DeviceType.setStyleSheet("QComboBox{\n"
+        self.ComboBox1 = QtWidgets.QComboBox(self.frame_7)
+        self.ComboBox1.setMinimumSize(QtCore.QSize(300, 30))
+        self.ComboBox1.setAutoFillBackground(True)
+        self.ComboBox1.setStyleSheet("QComboBox{\n"
 "    border:transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
@@ -163,25 +165,25 @@ class Ui_Dialog(object):
 "}\n"
 "\n"
 "")
-        self.DeviceType.setEditable(True)
-        self.DeviceType.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.DeviceType.setIconSize(QtCore.QSize(24, 24))
-        self.DeviceType.setFrame(False)
-        self.DeviceType.setObjectName("DeviceType")
-        self.DeviceType.addItem("")
+        self.ComboBox1.setEditable(True)
+        self.ComboBox1.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.ComboBox1.setIconSize(QtCore.QSize(24, 24))
+        self.ComboBox1.setFrame(False)
+        self.ComboBox1.setObjectName("ComboBox1")
+        self.ComboBox1.addItem("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon2, "")
+        self.ComboBox1.addItem(icon2, "")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon3, "")
+        self.ComboBox1.addItem(icon3, "")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon4, "")
+        self.ComboBox1.addItem(icon4, "")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("resources/oscilloscope (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon5, "")
-        self.horizontalLayout_3.addWidget(self.DeviceType)
+        self.ComboBox1.addItem(icon5, "")
+        self.horizontalLayout_3.addWidget(self.ComboBox1)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout_4.addWidget(self.frame_7)
@@ -210,10 +212,10 @@ class Ui_Dialog(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem3)
-        self.ConType = QtWidgets.QComboBox(self.ConTypeFrame)
-        self.ConType.setEnabled(False)
-        self.ConType.setMinimumSize(QtCore.QSize(300, 30))
-        self.ConType.setStyleSheet("QComboBox{\n"
+        self.ComboBox2 = QtWidgets.QComboBox(self.ConTypeFrame)
+        self.ComboBox2.setEnabled(False)
+        self.ComboBox2.setMinimumSize(QtCore.QSize(300, 30))
+        self.ComboBox2.setStyleSheet("QComboBox{\n"
 "    border:transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
@@ -236,15 +238,15 @@ class Ui_Dialog(object):
 "\n"
 "}\n"
 "")
-        self.ConType.setObjectName("ConType")
-        self.ConType.addItem("")
+        self.ComboBox2.setObjectName("ComboBox2")
+        self.ComboBox2.addItem("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("resources/binary-code.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ConType.addItem(icon6, "")
+        self.ComboBox2.addItem(icon6, "")
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap("resources/lan.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ConType.addItem(icon7, "")
-        self.horizontalLayout_5.addWidget(self.ConType)
+        self.ComboBox2.addItem(icon7, "")
+        self.horizontalLayout_5.addWidget(self.ComboBox2)
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem4)
         self.verticalLayout_5.addWidget(self.ConTypeFrame)
@@ -257,11 +259,10 @@ class Ui_Dialog(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_2.setObjectName("frame_2")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.frame_2)
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_6.setSpacing(0)
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.frame_3 = QtWidgets.QFrame(self.frame_2)
+        self.frame_3.setEnabled(True)
         self.frame_3.setStyleSheet("QFrame{\n"
 "background:transparent;\n"
 "}")
@@ -269,15 +270,48 @@ class Ui_Dialog(object):
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_3.setObjectName("frame_3")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_3)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 15)
-        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setContentsMargins(15, 0, 35, 15)
+        self.horizontalLayout_7.setSpacing(15)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_7.addItem(spacerItem6)
+        self.PreviousBtn = QtWidgets.QPushButton(self.frame_3)
+        self.PreviousBtn.setEnabled(False)
+        self.PreviousBtn.setMinimumSize(QtCore.QSize(120, 30))
+        self.PreviousBtn.setMaximumSize(QtCore.QSize(120, 30))
+        self.PreviousBtn.setStyleSheet("\n"
+"QPushButton:enabled {\n"
+"  font: 75 10pt \"Microsoft YaHei UI\";\n"
+" color:black;\n"
+" background:transparent;\n"
+" border-radius:15px;\n"
+" border: 3px solid transparent;\n"
+" \n"
+"    border-color:#78e4ff;\n"
+" padding:18px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+" border-color:rgb(0, 255, 128);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:!enabled {\n"
+"  font: 75 10pt \"Microsoft YaHei UI\";\n"
+" color:black;\n"
+" background:transparent;\n"
+" border-radius:15px;\n"
+" border: 3px solid transparent;\n"
+" \n"
+"    border-color:lightgrey;\n"
+" padding:18px;\n"
+"}")
+        self.PreviousBtn.setAutoDefault(False)
+        self.PreviousBtn.setFlat(True)
+        self.PreviousBtn.setObjectName("PreviousBtn")
+        self.horizontalLayout_7.addWidget(self.PreviousBtn)
         self.ConfirmBtn = QtWidgets.QPushButton(self.frame_3)
         self.ConfirmBtn.setEnabled(False)
         self.ConfirmBtn.setMinimumSize(QtCore.QSize(120, 30))
-        self.ConfirmBtn.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.ConfirmBtn.setMaximumSize(QtCore.QSize(120, 30))
         self.ConfirmBtn.setStyleSheet("\n"
 "QPushButton:enabled {\n"
 "  font: 75 10pt \"Microsoft YaHei UI\";\n"
@@ -309,9 +343,7 @@ class Ui_Dialog(object):
         self.ConfirmBtn.setFlat(True)
         self.ConfirmBtn.setObjectName("ConfirmBtn")
         self.horizontalLayout_7.addWidget(self.ConfirmBtn)
-        spacerItem7 = QtWidgets.QSpacerItem(150, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_7.addItem(spacerItem7)
-        self.horizontalLayout_6.addWidget(self.frame_3)
+        self.horizontalLayout_8.addWidget(self.frame_3)
         self.verticalLayout_3.addWidget(self.frame_2)
         self.verticalLayout.addWidget(self.centerFrame)
         self.verticalLayout_2.addWidget(self.MainFrame)
@@ -322,12 +354,13 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.DeviceType.setItemText(0, _translate("Dialog", "Select Device"))
-        self.DeviceType.setItemText(1, _translate("Dialog", "Power Supply"))
-        self.DeviceType.setItemText(2, _translate("Dialog", "Digital Multimeter"))
-        self.DeviceType.setItemText(3, _translate("Dialog", "Electronic Load"))
-        self.DeviceType.setItemText(4, _translate("Dialog", "Oscilloscope"))
-        self.ConType.setItemText(0, _translate("Dialog", "Connection Type"))
-        self.ConType.setItemText(1, _translate("Dialog", "RS232"))
-        self.ConType.setItemText(2, _translate("Dialog", "LAN"))
+        self.ComboBox1.setItemText(0, _translate("Dialog", "Select Device"))
+        self.ComboBox1.setItemText(1, _translate("Dialog", "Power Supply"))
+        self.ComboBox1.setItemText(2, _translate("Dialog", "Digital Multimeter"))
+        self.ComboBox1.setItemText(3, _translate("Dialog", "Electronic Load"))
+        self.ComboBox1.setItemText(4, _translate("Dialog", "Oscilloscope"))
+        self.ComboBox2.setItemText(0, _translate("Dialog", "Connection Type"))
+        self.ComboBox2.setItemText(1, _translate("Dialog", "RS232"))
+        self.ComboBox2.setItemText(2, _translate("Dialog", "LAN"))
+        self.PreviousBtn.setText(_translate("Dialog", "Previous"))
         self.ConfirmBtn.setText(_translate("Dialog", "Confirm"))

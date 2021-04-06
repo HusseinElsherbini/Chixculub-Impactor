@@ -1,5 +1,6 @@
-# equipment module
-
+import serial
+import time
+import socket
 
 
 class EquipmentRS232(serial):

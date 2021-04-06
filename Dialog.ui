@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
-    <height>382</height>
+    <width>408</width>
+    <height>350</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>408</width>
+    <height>350</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -41,7 +47,13 @@ background-color:#ffecd9;</string>
      <property name="minimumSize">
       <size>
        <width>408</width>
-       <height>290</height>
+       <height>350</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>408</width>
+       <height>350</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -391,7 +403,7 @@ QPushButton:pressed {
                 </spacer>
                </item>
                <item>
-                <widget class="QComboBox" name="DeviceType">
+                <widget class="QComboBox" name="ComboBox1">
                  <property name="minimumSize">
                   <size>
                    <width>300</width>
@@ -581,7 +593,7 @@ QComboBox QAbstractItemView {
                 </spacer>
                </item>
                <item>
-                <widget class="QComboBox" name="ConType">
+                <widget class="QComboBox" name="ComboBox2">
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
@@ -690,24 +702,12 @@ QComboBox QAbstractItemView {
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="QFrame" name="frame_3">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="styleSheet">
                <string notr="true">QFrame{
 background:transparent;
@@ -721,32 +721,76 @@ background:transparent;
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <property name="spacing">
-                <number>0</number>
+                <number>15</number>
                </property>
                <property name="leftMargin">
-                <number>0</number>
+                <number>15</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>35</number>
                </property>
                <property name="bottomMargin">
                 <number>15</number>
                </property>
                <item>
-                <spacer name="horizontalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                <widget class="QPushButton" name="PreviousBtn">
+                 <property name="enabled">
+                  <bool>false</bool>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="minimumSize">
                   <size>
-                   <width>40</width>
-                   <height>20</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">
+QPushButton:enabled {
+  font: 75 10pt &quot;Microsoft YaHei UI&quot;;
+ color:black;
+ background:transparent;
+ border-radius:15px;
+ border: 3px solid transparent;
+ 
+	border-color:#78e4ff;
+ padding:18px;
+}
+
+QPushButton:hover {
+ border-color:rgb(0, 255, 128);
+}
+
+
+QPushButton:!enabled {
+  font: 75 10pt &quot;Microsoft YaHei UI&quot;;
+ color:black;
+ background:transparent;
+ border-radius:15px;
+ border: 3px solid transparent;
+ 
+	border-color:lightgrey;
+ padding:18px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Previous</string>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="ConfirmBtn">
@@ -761,7 +805,7 @@ background:transparent;
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>120</width>
                    <height>30</height>
                   </size>
                  </property>
@@ -804,22 +848,6 @@ QPushButton:!enabled {
                   <bool>true</bool>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>150</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
              </widget>
