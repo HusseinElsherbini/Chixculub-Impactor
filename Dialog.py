@@ -21,7 +21,6 @@ class Ui_Dialog(object):
 "background-color:#ffecd9;")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.MainFrame = QtWidgets.QFrame(Dialog)
         self.MainFrame.setMinimumSize(QtCore.QSize(408, 350))
@@ -105,16 +104,18 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.closeBtn)
         self.horizontalLayout_2.addWidget(self.closeBtnFrame)
         self.verticalLayout.addWidget(self.TopFrame)
-        self.centerFrame = QtWidgets.QFrame(self.MainFrame)
-        self.centerFrame.setStyleSheet("")
-        self.centerFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.centerFrame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.centerFrame.setObjectName("centerFrame")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centerFrame)
+        self.centerStackedWidget = QtWidgets.QStackedWidget(self.MainFrame)
+        self.centerStackedWidget.setStyleSheet("")
+        self.centerStackedWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.centerStackedWidget.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.centerStackedWidget.setObjectName("centerStackedWidget")
+        self.DeviceAndConTypePage = QtWidgets.QWidget()
+        self.DeviceAndConTypePage.setObjectName("DeviceAndConTypePage")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.DeviceAndConTypePage)
         self.verticalLayout_3.setContentsMargins(0, 25, 0, 0)
         self.verticalLayout_3.setSpacing(15)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.DeviceTypeFrame = QtWidgets.QFrame(self.centerFrame)
+        self.DeviceTypeFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.DeviceTypeFrame.setMinimumSize(QtCore.QSize(0, 30))
         self.DeviceTypeFrame.setMaximumSize(QtCore.QSize(16777215, 30))
         self.DeviceTypeFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -188,7 +189,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout_4.addWidget(self.frame_7)
         self.verticalLayout_3.addWidget(self.DeviceTypeFrame)
-        self.ConnectionTypeFrame = QtWidgets.QFrame(self.centerFrame)
+        self.ConnectionTypeFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.ConnectionTypeFrame.setMinimumSize(QtCore.QSize(0, 30))
         self.ConnectionTypeFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.ConnectionTypeFrame.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -253,7 +254,7 @@ class Ui_Dialog(object):
         self.verticalLayout_3.addWidget(self.ConnectionTypeFrame)
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem5)
-        self.frame_2 = QtWidgets.QFrame(self.centerFrame)
+        self.frame_2 = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.frame_2.setMinimumSize(QtCore.QSize(0, 50))
         self.frame_2.setStyleSheet("")
         self.frame_2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -273,41 +274,6 @@ class Ui_Dialog(object):
         self.horizontalLayout_7.setContentsMargins(15, 0, 35, 15)
         self.horizontalLayout_7.setSpacing(15)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.PreviousBtn = QtWidgets.QPushButton(self.frame_3)
-        self.PreviousBtn.setEnabled(False)
-        self.PreviousBtn.setMinimumSize(QtCore.QSize(120, 30))
-        self.PreviousBtn.setMaximumSize(QtCore.QSize(120, 30))
-        self.PreviousBtn.setStyleSheet("\n"
-"QPushButton:enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:#78e4ff;\n"
-" padding:18px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-" border-color:rgb(0, 255, 128);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton:!enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:lightgrey;\n"
-" padding:18px;\n"
-"}")
-        self.PreviousBtn.setAutoDefault(False)
-        self.PreviousBtn.setFlat(True)
-        self.PreviousBtn.setObjectName("PreviousBtn")
-        self.horizontalLayout_7.addWidget(self.PreviousBtn)
         self.ConfirmBtn = QtWidgets.QPushButton(self.frame_3)
         self.ConfirmBtn.setEnabled(False)
         self.ConfirmBtn.setMinimumSize(QtCore.QSize(120, 30))
@@ -345,10 +311,12 @@ class Ui_Dialog(object):
         self.horizontalLayout_7.addWidget(self.ConfirmBtn)
         self.horizontalLayout_8.addWidget(self.frame_3)
         self.verticalLayout_3.addWidget(self.frame_2)
-        self.verticalLayout.addWidget(self.centerFrame)
+        self.centerStackedWidget.addWidget(self.DeviceAndConTypePage)
+        self.verticalLayout.addWidget(self.centerStackedWidget)
         self.verticalLayout_2.addWidget(self.MainFrame)
 
         self.retranslateUi(Dialog)
+        self.centerStackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -362,5 +330,4 @@ class Ui_Dialog(object):
         self.ComboBox2.setItemText(0, _translate("Dialog", "Connection Type"))
         self.ComboBox2.setItemText(1, _translate("Dialog", "RS232"))
         self.ComboBox2.setItemText(2, _translate("Dialog", "LAN"))
-        self.PreviousBtn.setText(_translate("Dialog", "Previous"))
         self.ConfirmBtn.setText(_translate("Dialog", "Confirm"))

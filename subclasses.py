@@ -1,87 +1,10 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from PyQt5.QtCore import QEvent, QPoint
-from deleteDialog import Ui_Dialog
-import uiFunctions
-import main
 import deleteDialog
+import uiFunctions
 import Dialog
-
-class dialogQFrame(QtWidgets.QFrame):
-    def __init__(self, parent=None,*args):
-        super().__init__(parent)
-        self.Frame = QtWidgets.QFrame()
-        self.Frame.setMinimumSize(QtCore.QSize(0, 30))
-        self.Frame.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.Frame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.Frame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.Frame.setObjectName(args[0])
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.DeviceTypeFrame)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.frame_7 = QtWidgets.QFrame(self.DeviceTypeFrame)
-        self.frame_7.setStyleSheet("QFrame{\n"
-                                   "\n"
-                                   "    background:transparent;\n"
-                                   "}")
-        self.frame_7.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_7.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_7.setObjectName("frame_7")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_7)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_3.setSpacing(0)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem1)
-        self.Frame = QtWidgets.QComboBox(self.frame_7)
-        self.Frame.setMinimumSize(QtCore.QSize(300, 30))
-        self.Frame.setAutoFillBackground(True)
-        self.Frame.setStyleSheet("QComboBox{\n"
-                                      "    border:transparent;\n"
-                                      "    border-bottom: 1px solid black;\n"
-                                      "    font: 14px;\n"
-                                      "    background:transparent;\n"
-                                      "}\n"
-                                      "\n"
-                                      "\n"
-                                      "QComboBox:down-arrow {\n"
-                                      "    image: url(resources/arrow.png);\n"
-                                      "    width: 14px;\n"
-                                      "    height: 14px;\n"
-                                      "}\n"
-                                      "\n"
-                                      "QComboBox QAbstractItemView {\n"
-                                      "\n"
-                                      "    border: 2px solid darkgray;\n"
-                                      "    selection-background-color: rgb(174, 255, 193);\n"
-                                      "    selection-color: black;\n"
-                                      "    background-color: white;\n"
-                                      "\n"
-                                      "}\n"
-                                      "\n"
-                                      "")
-        self.Frame.setEditable(True)
-        self.Frame.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.Frame.setIconSize(QtCore.QSize(24, 24))
-        self.Frame.setFrame(False)
-        self.Frame.setObjectName("Frame")
-        self.Frame.addItem("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Frame.addItem(icon2, "")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Frame.addItem(icon3, "")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon4, "")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/oscilloscope (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceType.addItem(icon5, "")
-        self.horizontalLayout_3.addWidget(self.DeviceType)
-
-        #def rs232
+import dialogAB
 
 class removeDialog(QtWidgets.QDialog):
 
@@ -273,7 +196,6 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.setShadow(self.uiDialog.frame_7)
         self.setShadow(self.uiDialog.ConfirmBtn)
         self.setShadow(self.uiDialog.ComboBox2)
-        self.setShadow(self.uiDialog.PreviousBtn)
         self.ConnectBtns()
         self.devices = {}
         self.device = {}
@@ -321,7 +243,7 @@ class addDeviceDialog(QtWidgets.QDialog):
         if self.step == 1:
             self.step1()
         elif self.step == 2:
-            pass
+            self.step2()
 
     def step1(self):
 
@@ -350,22 +272,35 @@ class addDeviceDialog(QtWidgets.QDialog):
                 "Device Type": self.uiDialog.ComboBox1.currentText(),
                 "Connection Type": self.uiDialog.ComboBox2.currentText(),
             }
+            ''' 
             self.changeCBcontent(self.uiDialog.ComboBox1, ["Enter Device Name (optional)"])
             self.changeCBcontent(self.uiDialog.ComboBox2, ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000"])
             self.uiDialog.PreviousBtn.setEnabled(True)
             self.uiDialog.ConfirmBtn.setEnabled(False)
             self.uiDialog.ComboBox2.setEnabled(True)
             self.addDeviceSteps()
+            '''
+            self.page = dialogAB.dialogAbstractPage()
+            self.page.populateComboBox("Frame1",["Enter Device Name (Optional)"])
+            self.page.populateComboBox("Frame2", ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000"])
+            self.page.populateComboBox("Frame3",["Select COMM Port", "COM1"])
+            self.uiDialog.centerStackedWidget.addWidget((self.page))
+            self.page.CB1.currentIndexChanged.connect(self.addDeviceSteps())
+            self.page.CB2.currentIndexChanged.connect(self.addDeviceSteps())
+            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+            self.addDeviceSteps()
+
 
     def step2(self):
 
-        if self.sender == self.uiDialog.ComboBox2:
+        if self.sender == self.page.CB2:
+            print("here")
             self.uiDialog.ConfirmBtn.setEnabled(True)
 
         elif self.sender == self.uiDialog.ConfirmBtn:
             self.close()
 
-        elif self.sender == self.uiDialog.PreviousBtn:
+        #elif self.sender == self.uiDialog.PreviousBtn:
 
 
 
