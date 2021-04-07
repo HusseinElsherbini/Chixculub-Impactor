@@ -189,7 +189,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.conPrevFrame = QtWidgets.QFrame(self)
         self.conPrevFrame.setEnabled(True)
         self.statusLabel = QtWidgets.QLabel(self)
-        self.statusLabel.setStyleSheet("color:red; background:transparent; font-size:16px;")
+        self.statusLabel.setStyleSheet("color:red; background:transparent; font-size:12px;")
         self.statusLabel.setText("")
         self.statusLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.statusLabel.setIndent(0)
@@ -289,6 +289,13 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.horizontalLayout_11.addWidget(self.CB)
         self.horizontalLayout_10.addWidget(self.CPFrame)
         self.verticalLayout_8.addWidget(self.conPrevFrame)
+        self.setShadow(self.CB)
+        self.setShadow(self.PB)
+        self.setShadow(self.CB1)
+        self.setShadow(self.CB2)
+        self.setShadow(self.CB3)
+        self.setShadow(self.statusLabel)
+
 
     def populateComboBox(self, obj, List):
         if obj == "Frame1":

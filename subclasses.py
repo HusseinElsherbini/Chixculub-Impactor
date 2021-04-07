@@ -192,13 +192,14 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.uiDialog = Dialog.Ui_Dialog()  # create an instance of the dialog UI class
         self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
         self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
-        self.uiDialog.westTopFrame.installEventFilter(
-            self)  # install an event filter to know when an event occurs on title bar
+        self.uiDialog.westTopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
+        self.uiDialog.DeviceNameLE.installEventFilter(self)
         self.dialogTitleBar()  # make window frameless
-        self.setShadow(self.uiDialog.frame_7)
+        self.setShadow(self.uiDialog.DeviceTypeCB)
         self.setShadow(self.uiDialog.ConfirmBtn)
-        self.setShadow(self.uiDialog.ComboBox2)
+        self.setShadow(self.uiDialog.ConTypeCB)
         self.setShadow(self.uiDialog.statusLabel)
+        self.setShadow(self.uiDialog.DeviceNameLE)
         self.ConnectBtns()
         self.devices = {}
         self.device = {}
@@ -228,6 +229,10 @@ class addDeviceDialog(QtWidgets.QDialog):
             newPos = QPoint(event.globalPos() - self.oldPos)
             self.move(self.x() + newPos.x(), self.y() + newPos.y())
             self.oldPos = event.globalPos()
+        if obj == self.uiDialog.DeviceNameLE and event.type() == QEvent.MouseButtonPress:
+            self.uiDialog.DeviceNameLE.graphicsEffect().setEnabled(False)
+        if obj == self.uiDialog.DeviceNameLE and event.type() == QEvent.FocusOut:
+            self.uiDialog.DeviceNameLE.graphicsEffect().setEnabled(True)
         return False
 
     def changeCBcontent(self, QComboBox, newList):
@@ -238,8 +243,8 @@ class addDeviceDialog(QtWidgets.QDialog):
     def ConnectBtns(self):
         self.step = 1
         self.uiDialog.ConfirmBtn.clicked.connect(self.addDeviceSteps)
-        self.uiDialog.ComboBox1.currentIndexChanged.connect(self.addDeviceSteps)
-        self.uiDialog.ComboBox2.currentIndexChanged.connect(self.addDeviceSteps)
+        self.uiDialog.DeviceTypeCB.currentIndexChanged.connect(self.addDeviceSteps)
+        self.uiDialog.ConTypeCB.currentIndexChanged.connect(self.addDeviceSteps)
 
     def addDeviceSteps(self):
 
@@ -247,49 +252,61 @@ class addDeviceDialog(QtWidgets.QDialog):
             self.step1()
         elif self.step == 2:
             self.step2()
+        elif self.step == 3:
+            self.step3()
+
+    def addPage(self,page, CB1, CB2, CB3):
+
+        page.populateComboBox("Frame1", CB1)
+        page.populateComboBox("Frame2",CB2)
+        page.populateComboBox("Frame3", CB3)
+        self.uiDialog.centerStackedWidget.addWidget(page)
+        page.CB1.currentIndexChanged.connect(self.addDeviceSteps)
+        page.CB2.currentIndexChanged.connect(self.addDeviceSteps)
+        page.CB3.currentIndexChanged.connect(self.addDeviceSteps)
+        page.CB.clicked.connect(self.addDeviceSteps)
+        page.PB.clicked.connect(self.addDeviceSteps)
+
 
     def step1(self):
-        if self.sender() == self.uiDialog.ComboBox1:
-            if self.uiDialog.ComboBox1.currentText() != "Select Device":
+        if self.sender() == self.uiDialog.DeviceTypeCB:
+            if self.uiDialog.DeviceTypeCB.currentText() != "Select Device":
                 self.uiDialog.statusLabel.clear()
 
-        elif self.sender() == self.uiDialog.ComboBox2:
-            if self.uiDialog.ComboBox2.currentText() != "Connection Type":
+        elif self.sender() == self.uiDialog.ConTypeCB:
+            if self.uiDialog.ConTypeCB.currentText() != "Connection Type":
                 self.uiDialog.statusLabel.clear()
 
         elif self.sender() == self.uiDialog.ConfirmBtn:
-            if self.uiDialog.ComboBox1.currentText() != "Select Device" and self.uiDialog.ComboBox2.currentText() != "Connection Type":
+            if self.uiDialog.DeviceTypeCB.currentIndex() != 0 and self.uiDialog.ConTypeCB.currentIndex() != 0:
 
                 if self.uiDialog.centerStackedWidget.count() == 1:
+                    if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+
+                        self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+
+                    else:
+                        self.device["DEVICE NAME"] = ""
+
+                    self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                    self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                     self.step = 2
-                    self.device = {
-                        "Device Type": self.uiDialog.ComboBox1.currentText(),
-                        "Connection Type": self.uiDialog.ComboBox2.currentText(),
-                    }
                     self.page = dialogAB.dialogAbstractPage()
-                    self.page.populateComboBox("Frame1", ["Enter Device Name (Optional)"])
-                    self.page.populateComboBox("Frame2",
-                                               ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600",
-                                                "115200", "128000", "256000"])
-                    self.page.populateComboBox("Frame3", ["Select COM Port", "COM1"])
-                    self.uiDialog.centerStackedWidget.addWidget(self.page)
-                    self.page.CB2.currentIndexChanged.connect(self.addDeviceSteps)
-                    self.page.CB3.currentIndexChanged.connect(self.addDeviceSteps)
-                    self.page.CB.clicked.connect(self.addDeviceSteps)
-                    self.page.PB.clicked.connect(self.addDeviceSteps)
+                    self.addPage(self.page,["Select Baud Rate", "9600", "14400", "19200", "38400", "57600","115200", "128000", "256000"], ["Select COM Port", "COM1"],["Select Data Size (bits)","8","7","6","5"])
                     self.uiDialog.centerStackedWidget.setCurrentIndex(1)
                     self.addDeviceSteps()
+
                 else:
                     self.step = 2
                     self.device = {
-                        "Device Type": self.uiDialog.ComboBox1.currentText(),
-                        "Connection Type": self.uiDialog.ComboBox2.currentText(),
+                        "Device Type": self.uiDialog.DeviceTypeCB.currentText(),
+                        "Connection Type": self.uiDialog.ConTypeCB.currentText(),
                     }
 
                     self.uiDialog.centerStackedWidget.setCurrentIndex(1)
                     self.addDeviceSteps()
             else:
-                if self.uiDialog.ComboBox1.currentText() == "Select Device":
+                if self.uiDialog.DeviceTypeCB.currentText() == "Select Device (optional)":
                     self.uiDialog.statusLabel.setText("Please select a Device")
 
                 else:
@@ -297,39 +314,71 @@ class addDeviceDialog(QtWidgets.QDialog):
 
     def step2(self):
 
-        if self.sender() == self.page.CB2:
-            if self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
+        if self.sender() == self.page.CB1:
+            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
+                self.page.statusLabel.clear()
+
+        elif self.sender() == self.page.CB2:
+
+            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
                 self.page.statusLabel.clear()
 
         elif self.sender() == self.page.CB3:
 
-            if self.page.CB3.currentText() != 0 and self.page.CB2.currentIndex() != 0:
+            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
                 self.page.statusLabel.clear()
 
         elif self.sender() == self.page.CB:
 
-            if self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
-
-                if self.page.CB1.currentText() != "Enter Device Name (Optional)":
-
-                    self.device["DEVICE NAME"] = self.page.CB1.currentText()
-
+            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
+                if self.uiDialog.centerStackedWidget.count() == 2:
+                    self.device["Baud Rate"] = self.page.CB1.currentText()
+                    self.device["COM PORT"] = self.page.CB2.currentText()
+                    self.device["Data size"] = self.page.CB3.currentText()
+                    print(self.device.keys())
+                    self.step = 3
+                    self.page2 = dialogAB.dialogAbstractPage()
+                    self.addPage(self.page2,["Enter Timeout (optional, Default:None)"],["Parity (Optional, Default:None)", "ODD", "EVEN","MARK", "SPACE"], ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
+                    self.uiDialog.centerStackedWidget.setCurrentIndex(2)
+                    self.addDeviceSteps()
                 else:
-                    self.device["DEVICE NAME"] = ""
-                self.device["Baud Rate"] = self.page.CB2.currentText()
-                self.device["COM PORT"] = self.page.CB3.currentText()
-
-                print(self.device["DEVICE NAME"])
-                print(self.device.keys())
-                self.close()
+                    self.step = 3
+                    self.device["Baud Rate"] = self.page.CB1.currentText()
+                    self.device["COM PORT"] = self.page.CB2.currentText()
+                    self.device["Data size"] = self.page.CB3.currentText()
+                    self.uiDialog.centerStackedWidget.setCurrentIndex(2)
+                    self.addDeviceSteps()
             else:
-                if self.page.CB2.currentText() == "Select Baud Rate":
-                    self.page.statusLabel.clear()
-                    self.page.statusLabel.setText("Please Select a Baud Rate")
-                else:
-                    self.page.statusLabel.clear()
-                    self.page.statusLabel.setText("Please Select a COM PORT")
+                self.page.statusLabel.setText("Please fill out all mandatory fields")
 
         elif self.sender() == self.page.PB:
             self.step = 1
             self.uiDialog.centerStackedWidget.setCurrentIndex(0)
+
+    def step3(self):
+
+        if self.sender() == self.page2.CB:
+            if self.page2.CB1.currentText() != "Enter Timeout (optional, Default:None)":
+                self.device["Timeout"] = self.page2.CB1.currentText()
+            else:
+                self.device["Timeout"] = ""
+
+            if self.page2.CB2.currentIndex() != 0:
+                self.device["Parity"] = self.page2.CB2.currentText()
+            else:
+                self.device["Parity"] = ""
+
+            if self.page2.CB3.currentIndex() != 0:
+                self.device["Stop Bits"] = self.page2.CB3.currentText()
+            else:
+                self.device["Stop Bits"] = ""
+
+            for x in self.device.keys():
+                print("%s : %s "% (x,self.device[x]))
+            self.close()
+
+        elif self.sender() == self.page2.PB:
+            self.step = 2
+            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+
+
