@@ -7,7 +7,6 @@ class dialogAbstractPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setObjectName("AbstractPage")
-        #self.setStyleSheet("background:transparent;")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self)
         self.verticalLayout_8.setContentsMargins(0, 25, 0, 0)
         self.verticalLayout_8.setSpacing(15)

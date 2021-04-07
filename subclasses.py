@@ -298,10 +298,13 @@ class addDeviceDialog(QtWidgets.QDialog):
 
                 else:
                     self.step = 2
-                    self.device = {
-                        "Device Type": self.uiDialog.DeviceTypeCB.currentText(),
-                        "Connection Type": self.uiDialog.ConTypeCB.currentText(),
-                    }
+                    if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+
+                        self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+
+                    self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                    self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
+
 
                     self.uiDialog.centerStackedWidget.setCurrentIndex(1)
                     self.addDeviceSteps()
