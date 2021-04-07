@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
-    <height>349</height>
+    <width>378</width>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -118,17 +118,14 @@
            <number>0</number>
           </property>
           <item>
-           <spacer name="horizontalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           <widget class="QFrame" name="westTopFrame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
             </property>
-           </spacer>
+           </widget>
           </item>
           <item>
            <widget class="QFrame" name="minBtnFrame_3">

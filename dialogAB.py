@@ -2,10 +2,12 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from PyQt5.QtCore import QEvent, QPoint
 
+
 class dialogAbstractPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setObjectName("AbstractPage")
+        #self.setStyleSheet("background:transparent;")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self)
         self.verticalLayout_8.setContentsMargins(0, 25, 0, 0)
         self.verticalLayout_8.setSpacing(15)
@@ -22,9 +24,9 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.AF1 = QtWidgets.QFrame(self.AbstractFrame1)
         self.AF1.setStyleSheet("QFrame{\n"
-"\n"
-"    background:transparent;\n"
-"}")
+                               "\n"
+                               "    background:transparent;\n"
+                               "}")
         self.AF1.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.AF1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.AF1.setObjectName("AF1")
@@ -38,29 +40,29 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.CB1.setMinimumSize(QtCore.QSize(300, 30))
         self.CB1.setAutoFillBackground(True)
         self.CB1.setStyleSheet("QComboBox{\n"
-"    border:transparent;\n"
-"    border-bottom: 1px solid black;\n"
-"    font: 14px;\n"
-"    background:transparent;\n"
-"}\n"
-"\n"
-"\n"
-"QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
-"    width: 14px;\n"
-"    height: 14px;\n"
-"}\n"
-"\n"
-"QComboBox QAbstractItemView {\n"
-"\n"
-"    border: 2px solid darkgray;\n"
-"    selection-background-color: rgb(174, 255, 193);\n"
-"    selection-color: black;\n"
-"    background-color: white;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                               "    border:transparent;\n"
+                               "    border-bottom: 1px solid black;\n"
+                               "    font: 14px;\n"
+                               "    background:transparent;\n"
+                               "}\n"
+                               "\n"
+                               "\n"
+                               "QComboBox:down-arrow {\n"
+                               "    image: url(resources/arrow.png);\n"
+                               "    width: 14px;\n"
+                               "    height: 14px;\n"
+                               "}\n"
+                               "\n"
+                               "QComboBox QAbstractItemView {\n"
+                               "\n"
+                               "    border: 2px solid darkgray;\n"
+                               "    selection-background-color: rgb(174, 255, 193);\n"
+                               "    selection-color: black;\n"
+                               "    background-color: white;\n"
+                               "\n"
+                               "}\n"
+                               "\n"
+                               "")
         self.CB1.setEditable(True)
         self.CB1.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.CB1.setIconSize(QtCore.QSize(24, 24))
@@ -83,9 +85,9 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.AF2 = QtWidgets.QFrame(self.AbstractFrame2)
         self.AF2.setAutoFillBackground(False)
         self.AF2.setStyleSheet("QFrame{\n"
-"\n"
-"    background:transparent;\n"
-"}")
+                               "\n"
+                               "    background:transparent;\n"
+                               "}")
         self.AF2.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.AF2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.AF2.setObjectName("AF2")
@@ -99,28 +101,28 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.CB2.setEnabled(True)
         self.CB2.setMinimumSize(QtCore.QSize(300, 30))
         self.CB2.setStyleSheet("QComboBox{\n"
-"    border:transparent;\n"
-"    border-bottom: 1px solid black;\n"
-"    font: 14px;\n"
-"    background:transparent;\n"
-"}\n"
-"\n"
-"\n"
-"QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
-"    width: 14px;\n"
-"    height: 14px;\n"
-"}\n"
-"\n"
-"QComboBox QAbstractItemView {\n"
-"\n"
-"    border: 2px solid darkgray;\n"
-"    selection-background-color: rgb(174, 255, 193);\n"
-"    selection-color: black;\n"
-"    background-color: white;\n"
-"\n"
-"}\n"
-"")
+                               "    border:transparent;\n"
+                               "    border-bottom: 1px solid black;\n"
+                               "    font: 14px;\n"
+                               "    background:transparent;\n"
+                               "}\n"
+                               "\n"
+                               "\n"
+                               "QComboBox:down-arrow {\n"
+                               "    image: url(resources/arrow.png);\n"
+                               "    width: 14px;\n"
+                               "    height: 14px;\n"
+                               "}\n"
+                               "\n"
+                               "QComboBox QAbstractItemView {\n"
+                               "\n"
+                               "    border: 2px solid darkgray;\n"
+                               "    selection-background-color: rgb(174, 255, 193);\n"
+                               "    selection-color: black;\n"
+                               "    background-color: white;\n"
+                               "\n"
+                               "}\n"
+                               "")
         self.CB2.setObjectName("CB2")
         self.horizontalLayout_6.addWidget(self.CB2)
         spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -139,9 +141,9 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.AF3 = QtWidgets.QFrame(self.AbstractFrame3)
         self.AF3.setStyleSheet("QFrame{\n"
-"\n"
-"    background:transparent;\n"
-"}")
+                               "\n"
+                               "    background:transparent;\n"
+                               "}")
         self.AF3.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.AF3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.AF3.setObjectName("AF3")
@@ -154,28 +156,28 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.CB3 = QtWidgets.QComboBox(self.AF3)
         self.CB3.setMinimumSize(QtCore.QSize(300, 30))
         self.CB3.setStyleSheet("QComboBox{\n"
-"    border:transparent;\n"
-"    border-bottom: 1px solid black;\n"
-"    font: 14px;\n"
-"    background:transparent;\n"
-"}\n"
-"\n"
-"\n"
-"QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
-"    width: 14px;\n"
-"    height: 14px;\n"
-"}\n"
-"\n"
-"QComboBox QAbstractItemView {\n"
-"\n"
-"    border: 2px solid darkgray;\n"
-"    selection-background-color: rgb(174, 255, 193);\n"
-"    selection-color: black;\n"
-"    background-color: white;\n"
-"\n"
-"}\n"
-"")
+                               "    border:transparent;\n"
+                               "    border-bottom: 1px solid black;\n"
+                               "    font: 14px;\n"
+                               "    background:transparent;\n"
+                               "}\n"
+                               "\n"
+                               "\n"
+                               "QComboBox:down-arrow {\n"
+                               "    image: url(resources/arrow.png);\n"
+                               "    width: 14px;\n"
+                               "    height: 14px;\n"
+                               "}\n"
+                               "\n"
+                               "QComboBox QAbstractItemView {\n"
+                               "\n"
+                               "    border: 2px solid darkgray;\n"
+                               "    selection-background-color: rgb(174, 255, 193);\n"
+                               "    selection-color: black;\n"
+                               "    background-color: white;\n"
+                               "\n"
+                               "}\n"
+                               "")
         self.CB3.setObjectName("CB3")
         self.horizontalLayout_12.addWidget(self.CB3)
         spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -185,6 +187,15 @@ class dialogAbstractPage(QtWidgets.QWidget):
         spacerItem12 = QtWidgets.QSpacerItem(20, 54, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_8.addItem(spacerItem12)
         self.conPrevFrame = QtWidgets.QFrame(self)
+        self.conPrevFrame.setEnabled(True)
+        self.statusLabel = QtWidgets.QLabel(self)
+        self.statusLabel.setStyleSheet("color:red; background:transparent; font-size:16px;")
+        self.statusLabel.setText("")
+        self.statusLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.statusLabel.setIndent(0)
+        self.statusLabel.setObjectName("statusLabel")
+        self.setShadow(self.statusLabel)
+        self.verticalLayout_8.insertWidget(0, self.statusLabel)
         self.conPrevFrame.setMinimumSize(QtCore.QSize(0, 50))
         self.conPrevFrame.setStyleSheet("")
         self.conPrevFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -195,8 +206,8 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.CPFrame = QtWidgets.QFrame(self.conPrevFrame)
         self.CPFrame.setEnabled(True)
         self.CPFrame.setStyleSheet("QFrame{\n"
-"background:transparent;\n"
-"}")
+                                   "background:transparent;\n"
+                                   "}")
         self.CPFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.CPFrame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.CPFrame.setObjectName("CPFrame")
@@ -205,80 +216,79 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.horizontalLayout_11.setSpacing(15)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.PB = QtWidgets.QPushButton(self.CPFrame)
-        self.PB.setEnabled(False)
+        self.PB.setEnabled(True)
         self.PB.setMinimumSize(QtCore.QSize(120, 30))
         self.PB.setMaximumSize(QtCore.QSize(120, 30))
         self.PB.setText("Previous")
         self.PB.setStyleSheet("\n"
-"QPushButton:enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:#78e4ff;\n"
-" padding:18px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-" border-color:rgb(0, 255, 128);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton:!enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:lightgrey;\n"
-" padding:18px;\n"
-"}")
+                              "QPushButton:enabled {\n"
+                              "  font: 75 10pt \"Microsoft YaHei UI\";\n"
+                              " color:black;\n"
+                              " background:transparent;\n"
+                              " border-radius:15px;\n"
+                              " border: 3px solid transparent;\n"
+                              " \n"
+                              "    border-color:#78e4ff;\n"
+                              " padding:18px;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:hover {\n"
+                              " border-color:rgb(0, 255, 128);\n"
+                              "}\n"
+                              "\n"
+                              "\n"
+                              "QPushButton:!enabled {\n"
+                              "  font: 75 10pt \"Microsoft YaHei UI\";\n"
+                              " color:black;\n"
+                              " background:transparent;\n"
+                              " border-radius:15px;\n"
+                              " border: 3px solid transparent;\n"
+                              " \n"
+                              "    border-color:lightgrey;\n"
+                              " padding:18px;\n"
+                              "}")
         self.PB.setAutoDefault(False)
         self.PB.setFlat(True)
         self.PB.setObjectName("PB")
         self.horizontalLayout_11.addWidget(self.PB)
         self.CB = QtWidgets.QPushButton(self.CPFrame)
-        self.CB.setEnabled(False)
+        self.CB.setEnabled(True)
         self.CB.setMinimumSize(QtCore.QSize(120, 30))
         self.CB.setMaximumSize(QtCore.QSize(120, 30))
         self.CB.setText("Confirm")
         self.CB.setStyleSheet("\n"
-"QPushButton:enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:#78e4ff;\n"
-" padding:18px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-" border-color:rgb(0, 255, 128);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton:!enabled {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:lightgrey;\n"
-" padding:18px;\n"
-"}")
+                              "QPushButton:enabled {\n"
+                              "  font: 75 10pt \"Microsoft YaHei UI\";\n"
+                              " color:black;\n"
+                              " background:transparent;\n"
+                              " border-radius:15px;\n"
+                              " border: 3px solid transparent;\n"
+                              " \n"
+                              "    border-color:#78e4ff;\n"
+                              " padding:18px;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:hover {\n"
+                              " border-color:rgb(0, 255, 128);\n"
+                              "}\n"
+                              "\n"
+                              "\n"
+                              "QPushButton:!enabled {\n"
+                              "  font: 75 10pt \"Microsoft YaHei UI\";\n"
+                              " color:black;\n"
+                              " background:transparent;\n"
+                              " border-radius:15px;\n"
+                              " border: 3px solid transparent;\n"
+                              " \n"
+                              "    border-color:lightgrey;\n"
+                              " padding:18px;\n"
+                              "}")
         self.CB.setAutoDefault(False)
         self.CB.setFlat(True)
         self.CB.setObjectName("CB")
         self.horizontalLayout_11.addWidget(self.CB)
         self.horizontalLayout_10.addWidget(self.CPFrame)
         self.verticalLayout_8.addWidget(self.conPrevFrame)
-
 
     def populateComboBox(self, obj, List):
         if obj == "Frame1":
@@ -292,3 +302,9 @@ class dialogAbstractPage(QtWidgets.QWidget):
         elif obj == "Frame3":
             self.CB3.clear()
             self.CB3.addItems(List)
+
+    def setShadow(self, obj):
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        obj.setGraphicsEffect(shadow)

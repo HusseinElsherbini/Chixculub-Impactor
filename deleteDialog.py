@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(438, 349)
+        Dialog.resize(378, 324)
         self.MainFrame = QtWidgets.QFrame(Dialog)
         self.MainFrame.setGeometry(QtCore.QRect(15, 14, 370, 300))
         self.MainFrame.setMinimumSize(QtCore.QSize(370, 300))
@@ -46,8 +46,11 @@ class Ui_Dialog(object):
         self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_14.setSpacing(0)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem)
+        self.westTopFrame = QtWidgets.QFrame(self.TopFrame_2)
+        self.westTopFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.westTopFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.westTopFrame.setObjectName("westTopFrame")
+        self.horizontalLayout_14.addWidget(self.westTopFrame)
         self.minBtnFrame_3 = QtWidgets.QFrame(self.TopFrame_2)
         self.minBtnFrame_3.setMinimumSize(QtCore.QSize(55, 55))
         self.minBtnFrame_3.setMaximumSize(QtCore.QSize(55, 55))
@@ -119,8 +122,8 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.setContentsMargins(0, 9, 0, 0)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
         self.label = QtWidgets.QLabel(self.frame_2)
         self.label.setMinimumSize(QtCore.QSize(55, 55))
         self.label.setMaximumSize(QtCore.QSize(55, 55))
@@ -129,8 +132,8 @@ class Ui_Dialog(object):
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout.addWidget(self.frame_2)
         self.frame_3 = QtWidgets.QFrame(self.MainFrame)
         self.frame_3.setStyleSheet("QFrame{\n"
@@ -189,7 +192,7 @@ class Ui_Dialog(object):
 " border-radius:15px;\n"
 " border: 3px solid transparent;\n"
 " \n"
-"    border-color:rgb(255, 35, 15);\n"
+"    border-color:rgb(255, 83, 83);\n"
 " padding:18px;\n"
 "}\n"
 "\n"
