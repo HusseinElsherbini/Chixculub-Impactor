@@ -330,7 +330,9 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.addDeviceSteps()
 
                 else:
+                    print(self.uiDialog.ConTypeCB.currentText())
                     if self.uiDialog.ConTypeCB.currentText() == "RS232":
+
                         if self.device["Connection Type"] != "RS232":
                             self.step = 2
                             if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
@@ -445,7 +447,7 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
                     self.addDeviceSteps()
             else:
-                self.page.statusLabel.setText("Please fill out all mandatory fields")
+                self.pageRS232_1.statusLabel.setText("Please fill out all mandatory fields")
 
         elif self.sender() == self.pageRS232_1.PB:
             self.step = 1
