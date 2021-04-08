@@ -255,18 +255,26 @@ class addDeviceDialog(QtWidgets.QDialog):
         elif self.step == 3:
             self.step3()
 
-    def addPage(self,page, CB1, CB2, CB3):
+    def addPage(self, page, CB1, CB2, CB3):
 
-        page.populateComboBox("Frame1", CB1)
-        page.populateComboBox("Frame2",CB2)
-        page.populateComboBox("Frame3", CB3)
+        if CB1:
+
+            page.populateComboBox("Frame1", CB1)
+            page.CB1.currentIndexChanged.connect(self.addDeviceSteps)
+
+        if CB2:
+
+            page.populateComboBox("Frame2", CB2)
+            page.CB2.currentIndexChanged.connect(self.addDeviceSteps)
+
+        if CB3:
+
+            page.populateComboBox("Frame3", CB3)
+            page.CB3.currentIndexChanged.connect(self.addDeviceSteps)
+
         self.uiDialog.centerStackedWidget.addWidget(page)
-        page.CB1.currentIndexChanged.connect(self.addDeviceSteps)
-        page.CB2.currentIndexChanged.connect(self.addDeviceSteps)
-        page.CB3.currentIndexChanged.connect(self.addDeviceSteps)
         page.CB.clicked.connect(self.addDeviceSteps)
         page.PB.clicked.connect(self.addDeviceSteps)
-
 
     def step1(self):
         if self.sender() == self.uiDialog.DeviceTypeCB:
@@ -288,26 +296,37 @@ class addDeviceDialog(QtWidgets.QDialog):
                     else:
                         self.device["DEVICE NAME"] = ""
 
-                    self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
-                    self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-                    self.step = 2
-                    self.page = dialogAB.dialogAbstractPage()
-                    self.addPage(self.page,["Select Baud Rate", "9600", "14400", "19200", "38400", "57600","115200", "128000", "256000"], ["Select COM Port", "COM1"],["Select Data Size (bits)","8","7","6","5"])
-                    self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                    self.addDeviceSteps()
+                    if self.uiDialog.ConTypeCB.currentText() == "RS232":
+                        self.step = 2
+                        self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                        self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
+                        self.page = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
+                        self.addPage(self.page,
+                                 ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000",
+                                  "256000"], ["Select COM Port", "COM1"],
+                                 ["Select Data Size (bits)", "8", "7", "6", "5"])
+                        self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                        self.addDeviceSteps()
+
+                    elif self.uiDialog.ConTypeCB.currentText() == "LAN":
+                        self.step = 2
+                        self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                        self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
+                        self.page = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB", "")
+                        self.addPage(self.page,[],["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"], ["Select Socket Type", "Stream", "Datagram"]
+
 
                 else:
-                    self.step = 2
-                    if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                    if self.uiDialog.ConTypeCB.currentText() == "RS232":
+                        self.step = 2
+                        if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                            self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
 
-                        self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                        self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                        self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
 
-                    self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
-                    self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-
-
-                    self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                    self.addDeviceSteps()
+                        self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                        self.addDeviceSteps()
             else:
                 if self.uiDialog.DeviceTypeCB.currentText() == "Select Device (optional)":
                     self.uiDialog.statusLabel.setText("Please select a Device")
@@ -340,8 +359,11 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.device["Data size"] = self.page.CB3.currentText()
                     print(self.device.keys())
                     self.step = 3
-                    self.page2 = dialogAB.dialogAbstractPage()
-                    self.addPage(self.page2,["Enter Timeout (optional, Default:None)"],["Parity (Optional, Default:None)", "ODD", "EVEN","MARK", "SPACE"], ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
+                    self.page2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB", "","CB", "")
+                    self.addPage(self.page2, [],
+                                 ["Parity (Optional, Default:None)", "ODD", "EVEN", "MARK", "SPACE"],
+                                 ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
+                    self.page2.LE1.installEventFilter(self)
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
                     self.addDeviceSteps()
                 else:
@@ -361,8 +383,8 @@ class addDeviceDialog(QtWidgets.QDialog):
     def step3(self):
 
         if self.sender() == self.page2.CB:
-            if self.page2.CB1.currentText() != "Enter Timeout (optional, Default:None)":
-                self.device["Timeout"] = self.page2.CB1.currentText()
+            if self.page2.LE1.text() != "Enter Timeout (optional, Default:None)":
+                self.device["Timeout"] = self.page2.LE1.text()
             else:
                 self.device["Timeout"] = ""
 
@@ -377,11 +399,9 @@ class addDeviceDialog(QtWidgets.QDialog):
                 self.device["Stop Bits"] = ""
 
             for x in self.device.keys():
-                print("%s : %s "% (x,self.device[x]))
+                print("%s : %s " % (x, self.device[x]))
             self.close()
 
         elif self.sender() == self.page2.PB:
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-
-

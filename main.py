@@ -92,7 +92,6 @@ class ChixculubImpactor(QMainWindow):
 
         addDevice = subclasses.addDeviceDialog()
         addDevice.exec_()
-        # addDevice.show()
 
 def main():
     Terminal = ChixculubImpactor()

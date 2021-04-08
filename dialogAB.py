@@ -4,8 +4,9 @@ from PyQt5.QtCore import QEvent, QPoint
 
 
 class dialogAbstractPage(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, *args):
         super().__init__()
+        _translate = QtCore.QCoreApplication.translate
         self.setObjectName("AbstractPage")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self)
         self.verticalLayout_8.setContentsMargins(0, 25, 0, 0)
@@ -33,43 +34,79 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem6)
-        self.CB1 = QtWidgets.QComboBox(self.AF1)
-        self.CB1.setMinimumSize(QtCore.QSize(300, 30))
-        self.CB1.setAutoFillBackground(True)
-        self.CB1.setStyleSheet("QComboBox{\n"
-                               "    border:transparent;\n"
-                               "    border-bottom: 1px solid black;\n"
-                               "    font: 14px;\n"
-                               "    background:transparent;\n"
-                               "}\n"
-                               "\n"
-                               "\n"
-                               "QComboBox:down-arrow {\n"
-                               "    image: url(resources/arrow.png);\n"
-                               "    width: 14px;\n"
-                               "    height: 14px;\n"
-                               "}\n"
-                               "\n"
-                               "QComboBox QAbstractItemView {\n"
-                               "\n"
-                               "    border: 2px solid darkgray;\n"
-                               "    selection-background-color: rgb(174, 255, 193);\n"
-                               "    selection-color: black;\n"
-                               "    background-color: white;\n"
-                               "\n"
-                               "}\n"
-                               "\n"
-                               "")
-        self.CB1.setEditable(True)
-        self.CB1.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.CB1.setIconSize(QtCore.QSize(24, 24))
-        self.CB1.setFrame(False)
-        self.CB1.setObjectName("CB1")
-        self.horizontalLayout_9.addWidget(self.CB1)
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem7)
+
+        if args[0] == "LE":
+            spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_9.addItem(spacerItem6)
+            self.LE1 = QtWidgets.QLineEdit(self.AF1)
+            self.LE1.setMinimumSize(QtCore.QSize(300, 30))
+            self.LE1.setMaximumSize(QtCore.QSize(300, 30))
+            self.LE1.setStyleSheet("QLineEdit{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    background:transparent;\n"
+                                   "    font: 14px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}")
+            self.LE1.setText("")
+            self.LE1.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+            self.LE1.setObjectName("LE1")
+            self.horizontalLayout_9.addWidget(self.LE1)
+            self.LE1.setPlaceholderText(_translate("Dialog", args[1]))
+            spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_9.addItem(spacerItem7)
+            self.setShadow(self.LE1)
+            self.LE1.installEventFilter(self)
+
+        elif args[0] == "CB":
+
+            spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_9.addItem(spacerItem6)
+            self.CB1 = QtWidgets.QComboBox(self.AF1)
+            self.CB1.setMinimumSize(QtCore.QSize(300, 30))
+            self.CB1.setAutoFillBackground(True)
+            self.CB1.setStyleSheet("QComboBox{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    font: 14px;\n"
+                                   "    background:transparent;\n"
+                                   "}\n"
+                                   "\n"
+                                   "\n"
+                                   "QComboBox:down-arrow {\n"
+                                   "    image: url(resources/arrow.png);\n"
+                                   "    width: 14px;\n"
+                                   "    height: 14px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QComboBox QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
+            self.CB1.setEditable(False)
+            self.CB1.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+            self.CB1.setIconSize(QtCore.QSize(24, 24))
+            self.CB1.setFrame(False)
+            self.CB1.setObjectName("CB1")
+            self.horizontalLayout_9.addWidget(self.CB1)
+            spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_9.addItem(spacerItem7)
+            self.setShadow(self.CB1)
+
         self.verticalLayout_7.addWidget(self.AF1)
         self.verticalLayout_8.addWidget(self.AbstractFrame1)
         self.AbstractFrame2 = QtWidgets.QFrame(self)
@@ -94,38 +131,73 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_6.addItem(spacerItem8)
-        self.CB2 = QtWidgets.QComboBox(self.AF2)
-        self.CB2.setEnabled(True)
-        self.CB2.setMinimumSize(QtCore.QSize(300, 30))
-        self.CB2.setStyleSheet("QComboBox{\n"
-                               "    border:transparent;\n"
-                               "    border-bottom: 1px solid black;\n"
-                               "    font: 14px;\n"
-                               "    background:transparent;\n"
-                               "}\n"
-                               "\n"
-                               "\n"
-                               "QComboBox:down-arrow {\n"
-                               "    image: url(resources/arrow.png);\n"
-                               "    width: 14px;\n"
-                               "    height: 14px;\n"
-                               "}\n"
-                               "\n"
-                               "QComboBox QAbstractItemView {\n"
-                               "\n"
-                               "    border: 2px solid darkgray;\n"
-                               "    selection-background-color: rgb(174, 255, 193);\n"
-                               "    selection-color: black;\n"
-                               "    background-color: white;\n"
-                               "\n"
-                               "}\n"
-                               "")
-        self.CB2.setObjectName("CB2")
-        self.horizontalLayout_6.addWidget(self.CB2)
-        spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_6.addItem(spacerItem9)
+
+        if args[2] == "LE":
+            spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_6.addItem(spacerItem8)
+            self.LE2 = QtWidgets.QLineEdit(self.AF1)
+            self.LE2.setMinimumSize(QtCore.QSize(300, 30))
+            self.LE2.setMaximumSize(QtCore.QSize(300, 30))
+            self.LE2.setStyleSheet("QLineEdit{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    background:transparent;\n"
+                                   "    font: 14px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}")
+            self.LE2.setText("")
+            self.LE2.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+            self.LE2.setObjectName("LE2")
+            self.horizontalLayout_6.addWidget(self.LE2)
+            self.LE2.setPlaceholderText(_translate("Dialog", args[3]))
+            spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_9.addItem(spacerItem9)
+            self.setShadow(self.LE2)
+
+        elif args[2] == "CB":
+
+            spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_6.addItem(spacerItem8)
+            self.CB2 = QtWidgets.QComboBox(self.AF2)
+            self.CB2.setEnabled(True)
+            self.CB2.setMinimumSize(QtCore.QSize(300, 30))
+            self.CB2.setStyleSheet("QComboBox{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    font: 14px;\n"
+                                   "    background:transparent;\n"
+                                   "}\n"
+                                   "\n"
+                                   "\n"
+                                   "QComboBox:down-arrow {\n"
+                                   "    image: url(resources/arrow.png);\n"
+                                   "    width: 14px;\n"
+                                   "    height: 14px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QComboBox QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}\n"
+                                   "")
+            self.CB2.setObjectName("CB2")
+            self.horizontalLayout_6.addWidget(self.CB2)
+            spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_6.addItem(spacerItem9)
+            self.setShadow(self.CB2)
+
         self.verticalLayout_6.addWidget(self.AF2)
         self.verticalLayout_8.addWidget(self.AbstractFrame2)
         self.AbstractFrame3 = QtWidgets.QFrame(self)
@@ -150,37 +222,70 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_12.setSpacing(0)
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_12.addItem(spacerItem10)
-        self.CB3 = QtWidgets.QComboBox(self.AF3)
-        self.CB3.setMinimumSize(QtCore.QSize(300, 30))
-        self.CB3.setStyleSheet("QComboBox{\n"
-                               "    border:transparent;\n"
-                               "    border-bottom: 1px solid black;\n"
-                               "    font: 14px;\n"
-                               "    background:transparent;\n"
-                               "}\n"
-                               "\n"
-                               "\n"
-                               "QComboBox:down-arrow {\n"
-                               "    image: url(resources/arrow.png);\n"
-                               "    width: 14px;\n"
-                               "    height: 14px;\n"
-                               "}\n"
-                               "\n"
-                               "QComboBox QAbstractItemView {\n"
-                               "\n"
-                               "    border: 2px solid darkgray;\n"
-                               "    selection-background-color: rgb(174, 255, 193);\n"
-                               "    selection-color: black;\n"
-                               "    background-color: white;\n"
-                               "\n"
-                               "}\n"
-                               "")
-        self.CB3.setObjectName("CB3")
-        self.horizontalLayout_12.addWidget(self.CB3)
-        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_12.addItem(spacerItem11)
+
+        if args[4] == "LE":
+            spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_12.addItem(spacerItem10)
+            self.LE3 = QtWidgets.QLineEdit(self.AF1)
+            self.LE3.setMinimumSize(QtCore.QSize(300, 30))
+            self.LE3.setMaximumSize(QtCore.QSize(300, 30))
+            self.LE3.setStyleSheet("QLineEdit{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    background:transparent;\n"
+                                   "    font: 14px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}")
+            self.LE3.setText("")
+            self.LE3.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+            self.LE3.setObjectName("LE3")
+            self.horizontalLayout_9.addWidget(self.LE3)
+            self.LE3.setPlaceholderText(_translate("Dialog", args[5]))
+            self.setShadow(self.LE3)
+            spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_12.addItem(spacerItem11)
+        elif args[4] == "CB":
+            spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.horizontalLayout_12.addItem(spacerItem10)
+            self.CB3 = QtWidgets.QComboBox(self.AF3)
+            self.CB3.setMinimumSize(QtCore.QSize(300, 30))
+            self.CB3.setStyleSheet("QComboBox{\n"
+                                   "    border:transparent;\n"
+                                   "    border-bottom: 1px solid black;\n"
+                                   "    font: 14px;\n"
+                                   "    background:transparent;\n"
+                                   "}\n"
+                                   "\n"
+                                   "\n"
+                                   "QComboBox:down-arrow {\n"
+                                   "    image: url(resources/arrow.png);\n"
+                                   "    width: 14px;\n"
+                                   "    height: 14px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QComboBox QAbstractItemView {\n"
+                                   "\n"
+                                   "    border: 2px solid darkgray;\n"
+                                   "    selection-background-color: rgb(174, 255, 193);\n"
+                                   "    selection-color: black;\n"
+                                   "    background-color: white;\n"
+                                   "\n"
+                                   "}\n"
+                                   "")
+            self.CB3.setObjectName("CB3")
+            self.horizontalLayout_12.addWidget(self.CB3)
+            spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            self.setShadow(self.CB3)
+            self.horizontalLayout_12.addItem(spacerItem11)
+
         self.verticalLayout_9.addWidget(self.AF3)
         self.verticalLayout_8.addWidget(self.AbstractFrame3)
         spacerItem12 = QtWidgets.QSpacerItem(20, 54, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -290,11 +395,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
         self.verticalLayout_8.addWidget(self.conPrevFrame)
         self.setShadow(self.CB)
         self.setShadow(self.PB)
-        self.setShadow(self.CB1)
-        self.setShadow(self.CB2)
-        self.setShadow(self.CB3)
         self.setShadow(self.statusLabel)
-
 
     def populateComboBox(self, obj, List):
         if obj == "Frame1":
@@ -314,3 +415,10 @@ class dialogAbstractPage(QtWidgets.QWidget):
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(25)
         obj.setGraphicsEffect(shadow)
+
+    def eventFilter(self, obj, event):
+        if obj == self.LE1 and event.type() == QEvent.MouseButtonPress:
+            self.LE1.graphicsEffect().setEnabled(False)
+        if obj == self.LE1 and event.type() == QEvent.FocusOut:
+            self.LE1.graphicsEffect().setEnabled(True)
+        return False
