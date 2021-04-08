@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-from PyQt5.QtCore import QEvent, QPoint
+from PyQt5.QtCore import QEvent, QPoint, QRegExp
+from PyQt5.QtGui import QRegExpValidator
 import deleteDialog
 import uiFunctions
 import Dialog
@@ -251,9 +252,16 @@ class addDeviceDialog(QtWidgets.QDialog):
         if self.step == 1:
             self.step1()
         elif self.step == 2:
-            self.step2()
+            if self.device["Connection Type"] == "RS232":
+                self.step2RS232()
+            elif self.device["Connection Type"] == "LAN":
+                self.step2LAN()
+
         elif self.step == 3:
-            self.step3()
+            if self.device["Connection Type"] == "RS232":
+                self.step3RS232()
+            elif self.device["Connection Type"] == "LAN":
+                self.step3LAN()
 
     def addPage(self, page, CB1, CB2, CB3):
 
@@ -300,8 +308,8 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.step = 2
                         self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                         self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-                        self.page = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
-                        self.addPage(self.page,
+                        self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
+                        self.addPage(self.pageRS232_1,
                                  ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000",
                                   "256000"], ["Select COM Port", "COM1"],
                                  ["Select Data Size (bits)", "8", "7", "6", "5"])
@@ -312,21 +320,84 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.step = 2
                         self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                         self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-                        self.page = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB", "")
-                        self.addPage(self.page,[],["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"], ["Select Socket Type", "Stream", "Datagram"]
-
+                        self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS (e.g 255.255.255.255)", "CB", "", "CB", "")
+                        self.addPage(self.pageLAN_1,[],["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"], ["Select Socket Type", "Stream", "Datagram"])
+                        self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+                        ipRegex = QRegExp("^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
+                        ipValidCheck = QRegExpValidator(ipRegex, self)
+                        self.pageLAN_1.LE1.setValidator(ipValidCheck)
+                        self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                        self.addDeviceSteps()
 
                 else:
                     if self.uiDialog.ConTypeCB.currentText() == "RS232":
-                        self.step = 2
-                        if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
-                            self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                        if self.device["Connection Type"] != "RS232":
+                            self.step = 2
+                            if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                                self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                            else:
+                                self.device["DEVICE NAME"] = ""
+                            self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                            self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
+                            for x in range(1, self.uiDialog.centerStackedWidget.count()):
+                                self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
+                            if hasattr(self,'pageRS232_1'):
+                                self.uiDialog.centerStackedWidget.addWidget(self.pageRS232_1)
+                            else:
+                                self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
+                                self.addPage(self.pageRS232_1,["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200","128000","256000"], ["Select COM Port", "COM1"],
+                                             ["Select Data Size (bits)", "8", "7", "6", "5"])
+                            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                            self.addDeviceSteps()
+                        else:
+                            self.step = 2
+                            if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                                self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                            else:
+                                self.device["DEVICE NAME"] = ""
+                            self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                            self.addDeviceSteps()
 
-                        self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
-                        self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
 
-                        self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                        self.addDeviceSteps()
+                    elif self.uiDialog.ConTypeCB.currentText() == "LAN":
+                        if self.device["Connection Type"] != "LAN":
+                            self.step = 2
+                            if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                                self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                            else:
+                                self.device["DEVICE NAME"] = ""
+                            self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                            self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
+                            for x in range(1, self.uiDialog.centerStackedWidget.count()):
+                                self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
+                            if hasattr(self, 'pageLAN_1'):
+                                print("exists")
+                                self.uiDialog.centerStackedWidget.addWidget(self.pageLAN_1)
+                            else:
+                                self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+                                ipRegex = QRegExp("^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
+                                ipValidCheck = QRegExpValidator(ipRegex, self)
+                                self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB","")
+                                self.pageLAN_1.LE1.setValidator(ipValidCheck)
+                                self.addPage(self.pageLAN_1, [],
+                                             ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
+                                             ["Select Socket Type", "Stream", "Datagram"])
+
+                            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                            self.addDeviceSteps()
+
+                        else:
+                            self.step = 2
+                            if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
+                                self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
+                            else:
+                                self.device["DEVICE NAME"] = ""
+                            self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                            self.addDeviceSteps()
+
+
             else:
                 if self.uiDialog.DeviceTypeCB.currentText() == "Select Device (optional)":
                     self.uiDialog.statusLabel.setText("Please select a Device")
@@ -334,67 +405,111 @@ class addDeviceDialog(QtWidgets.QDialog):
                 else:
                     self.uiDialog.statusLabel.setText("Please select a Connection Type")
 
-    def step2(self):
+    def step2RS232(self):
 
-        if self.sender() == self.page.CB1:
-            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
-                self.page.statusLabel.clear()
+        if self.sender() == self.pageRS232_1.CB1:
+            if self.pageRS232_1.CB1.currentIndex() != 0 and self.pageRS232_1.CB2.currentIndex() != 0 and self.pageRS232_1.CB3.currentIndex() != 0:
+                self.pageRS232_1.statusLabel.clear()
 
-        elif self.sender() == self.page.CB2:
+        elif self.sender() == self.pageRS232_1.CB2:
 
-            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
-                self.page.statusLabel.clear()
+            if self.pageRS232_1.CB1.currentIndex() != 0 and self.pageRS232_1.CB2.currentIndex() != 0 and self.pageRS232_1.CB3.currentIndex() != 0:
+                self.pageRS232_1.statusLabel.clear()
 
-        elif self.sender() == self.page.CB3:
+        elif self.sender() == self.pageRS232_1.CB3:
 
-            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
-                self.page.statusLabel.clear()
+            if self.pageRS232_1.CB1.currentIndex() != 0 and self.pageRS232_1.CB2.currentIndex() != 0 and self.pageRS232_1.CB3.currentIndex() != 0:
+                self.pageRS232_1.statusLabel.clear()
 
-        elif self.sender() == self.page.CB:
+        elif self.sender() == self.pageRS232_1.CB:
 
-            if self.page.CB1.currentIndex() != 0 and self.page.CB2.currentIndex() != 0 and self.page.CB3.currentIndex() != 0:
+            if self.pageRS232_1.CB1.currentIndex() != 0 and self.pageRS232_1.CB2.currentIndex() != 0 and self.pageRS232_1.CB3.currentIndex() != 0:
                 if self.uiDialog.centerStackedWidget.count() == 2:
-                    self.device["Baud Rate"] = self.page.CB1.currentText()
-                    self.device["COM PORT"] = self.page.CB2.currentText()
-                    self.device["Data size"] = self.page.CB3.currentText()
+                    self.device["Baud Rate"] = self.pageRS232_1.CB1.currentText()
+                    self.device["COM PORT"] = self.pageRS232_1.CB2.currentText()
+                    self.device["Data size"] = self.pageRS232_1.CB3.currentText()
                     print(self.device.keys())
                     self.step = 3
-                    self.page2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB", "","CB", "")
-                    self.addPage(self.page2, [],
+                    self.pageRS232_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB", "","CB", "")
+                    self.addPage(self.pageRS232_2, [],
                                  ["Parity (Optional, Default:None)", "ODD", "EVEN", "MARK", "SPACE"],
                                  ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
-                    self.page2.LE1.installEventFilter(self)
+                    self.pageRS232_2.LE1.installEventFilter(self)
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
                     self.addDeviceSteps()
                 else:
                     self.step = 3
-                    self.device["Baud Rate"] = self.page.CB1.currentText()
-                    self.device["COM PORT"] = self.page.CB2.currentText()
-                    self.device["Data size"] = self.page.CB3.currentText()
+                    self.device["Baud Rate"] = self.pageRS232_1.CB1.currentText()
+                    self.device["COM PORT"] = self.pageRS232_1.CB2.currentText()
+                    self.device["Data size"] = self.pageRS232_1.CB3.currentText()
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
                     self.addDeviceSteps()
             else:
                 self.page.statusLabel.setText("Please fill out all mandatory fields")
 
-        elif self.sender() == self.page.PB:
+        elif self.sender() == self.pageRS232_1.PB:
             self.step = 1
             self.uiDialog.centerStackedWidget.setCurrentIndex(0)
 
-    def step3(self):
+    def step2LAN(self):
 
-        if self.sender() == self.page2.CB:
-            if self.page2.LE1.text() != "Enter Timeout (optional, Default:None)":
-                self.device["Timeout"] = self.page2.LE1.text()
+        if self.sender() == self.pageLAN_1.LE1:
+            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+                self.page.statusLabel.clear()
+
+        elif self.sender() == self.pageLAN_1.CB2:
+
+            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+                self.page.statusLabel.clear()
+
+        elif self.sender() == self.pageLAN_1.CB3:
+
+            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+                self.pageLAN_1.statusLabel.clear()
+
+        elif self.sender() == self.pageLAN_1.CB:
+
+            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+                if self.uiDialog.centerStackedWidget.count() == 2:
+                    self.step = 3
+                    self.device["IP ADDRESS"] = self.pageLAN_1.LE1.text()
+                    self.device["Address Family"] = self.pageLAN_1.CB2.currentText()
+                    self.device["Socket Type"] = self.pageLAN_1.CB3.currentText()
+                    print(self.device.keys())
+                    self.pageLAN_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE", "Enter Port Number","", "")
+                    self.addPage(self.pageLAN_2, [],[],[])
+                    self.pageLAN_2.LE1.installEventFilter(self)
+                    self.uiDialog.centerStackedWidget.setCurrentIndex(2)
+                    self.addDeviceSteps()
+                else:
+                    self.step = 3
+                    self.device["IP ADDRESS"] = self.pageLAN_1.LE1.text()
+                    self.device["Address Family"] = self.page.CB2.currentText()
+                    self.device["Socket Type"] = self.page.CB3.currentText()
+                    self.uiDialog.centerStackedWidget.setCurrentIndex(2)
+                    self.addDeviceSteps()
+            else:
+                self.pageLAN_1.statusLabel.setText("Please fill out all mandatory fields")
+
+        elif self.sender() == self.pageLAN_1.PB:
+            self.step = 1
+            self.uiDialog.centerStackedWidget.setCurrentIndex(0)
+
+    def step3RS232(self):
+
+        if self.sender() == self.pageRS232_2.CB:
+            if self.pageRS232_2.LE1.text() != "Enter Timeout (optional, Default:None)":
+                self.device["Timeout"] = self.pageRS232_2.LE1.text()
             else:
                 self.device["Timeout"] = ""
 
-            if self.page2.CB2.currentIndex() != 0:
-                self.device["Parity"] = self.page2.CB2.currentText()
+            if self.pageRS232_2.CB2.currentIndex() != 0:
+                self.device["Parity"] = self.pageRS232_2.CB2.currentText()
             else:
                 self.device["Parity"] = ""
 
-            if self.page2.CB3.currentIndex() != 0:
-                self.device["Stop Bits"] = self.page2.CB3.currentText()
+            if self.pageRS232_2.CB3.currentIndex() != 0:
+                self.device["Stop Bits"] = self.pageRS232_2.CB3.currentText()
             else:
                 self.device["Stop Bits"] = ""
 
@@ -402,6 +517,8 @@ class addDeviceDialog(QtWidgets.QDialog):
                 print("%s : %s " % (x, self.device[x]))
             self.close()
 
-        elif self.sender() == self.page2.PB:
+        elif self.sender() == self.pageRS232_2.PB:
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+
+    #def step3LAN(self):

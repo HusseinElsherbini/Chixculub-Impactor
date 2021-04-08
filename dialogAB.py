@@ -159,7 +159,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
             self.horizontalLayout_6.addWidget(self.LE2)
             self.LE2.setPlaceholderText(_translate("Dialog", args[3]))
             spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-            self.horizontalLayout_9.addItem(spacerItem9)
+            self.horizontalLayout_6.addItem(spacerItem9)
             self.setShadow(self.LE2)
 
         elif args[2] == "CB":
