@@ -29,9 +29,9 @@ class ChixculubImpactor(QMainWindow):
         uiFunctions.UIFunctions.activateTitleBarButtons(self)
         self.installEventFilters()
 
-        self.addDeviceFrame(["Power Supply", "power-supply.png", "HET-2", "RS232"])
-        self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "LAN"])
-        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN"])
+        self.addDeviceFrame(["Power Supply", "power-supply.png", "HET-2", "RS232", ""])
+        self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "LAN", "192.255.68.11"])
+        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN","192.255.68.234"])
         self.activateButtons()
         self.setShadow(self.ui.frame_14)
         self.setShadow(self.ui.frame_17)
@@ -76,7 +76,7 @@ class ChixculubImpactor(QMainWindow):
 
     def addDeviceFrame(self, args):
 
-        arguments = [args[0], args[1], args[2], args[3]]
+        arguments = [args[0], args[1], args[2], args[3], args[4]]
         newDevice = subclasses.deviceFrame(*arguments)
         self.ui.verticalLayout_9.addWidget(newDevice)
         return newDevice
@@ -102,7 +102,7 @@ class ChixculubImpactor(QMainWindow):
             elif addDevice.device["Device Type"] == "Digital Multimeter":
                 icon = "multimeter.png"
 
-            self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"], addDevice.device["Connection Type"]])
+            self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"], addDevice.device["Connection Type"], addDevice.device["IP ADDRESS"]])
         except:
             pass
 

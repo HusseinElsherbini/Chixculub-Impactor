@@ -180,7 +180,12 @@ background-color: rgba(0,0,0,0%);
         self.deleteBtn.setObjectName("deleteBtn")
         self.gridLayout.addWidget(self.deleteBtn, 0, 6, 1, 1)
         self.connectBtn.setText(_translate("MainWindow", "Connect"))
-        self.setToolTip(_translate("MainWindow",
+        if args[3] == "LAN":
+            self.setToolTip(_translate("MainWindow",
+                                       "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p><p><span style=\" font-weight:600;\">IP ADDRESS:</span> {}</p></body></html>".format(
+                                           args[2], args[3], args[4])))
+        else:
+            self.setToolTip(_translate("MainWindow",
                                    "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p></body></html>".format(
                                        args[2], args[3])))
         self.deleteBtn.setToolTip(_translate("MainWindow",
