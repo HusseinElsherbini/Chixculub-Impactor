@@ -88,10 +88,23 @@ class ChixculubImpactor(QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+
     def addDeviceDialog(self):
 
         addDevice = subclasses.addDeviceDialog()
         addDevice.exec_()
+        try:
+            icon = ""
+            if addDevice.device["Device Type"] == "Oscilloscope":
+                icon = "oscilloscope.png"
+            elif addDevice.device["Device Type"] == "Power Supply":
+                icon = "power-supply.png"
+            elif addDevice.device["Device Type"] == "Digital Multimeter":
+                icon = "multimeter.png"
+
+            self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"], addDevice.device["Connection Type"]])
+        except:
+            pass
 
 def main():
     Terminal = ChixculubImpactor()

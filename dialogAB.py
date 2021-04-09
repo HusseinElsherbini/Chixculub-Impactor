@@ -161,6 +161,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
             spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.horizontalLayout_6.addItem(spacerItem9)
             self.setShadow(self.LE2)
+            self.LE2.installEventFilter(self)
 
         elif args[2] == "CB":
 
@@ -252,6 +253,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
             self.setShadow(self.LE3)
             spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.horizontalLayout_12.addItem(spacerItem11)
+            self.LE3.installEventFilter(self)
         elif args[4] == "CB":
             spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.horizontalLayout_12.addItem(spacerItem10)
@@ -421,4 +423,16 @@ class dialogAbstractPage(QtWidgets.QWidget):
             self.LE1.graphicsEffect().setEnabled(False)
         if obj == self.LE1 and event.type() == QEvent.FocusOut:
             self.LE1.graphicsEffect().setEnabled(True)
+        try:
+            if obj == self.LE2 and event.type() == QEvent.MouseButtonPress:
+                self.LE2.graphicsEffect().setEnabled(False)
+            if obj == self.LE1 and event.type() == QEvent.FocusOut:
+                self.LE1.graphicsEffect().setEnabled(True)
+            if obj == self.LE3 and event.type() == QEvent.FocusOut:
+                self.LE3.graphicsEffect().setEnabled(True)
+
+            if obj == self.LE3 and event.type() == QEvent.FocusOut:
+                self.LE3.graphicsEffect().setEnabled(True)
+        except:
+            return False
         return False

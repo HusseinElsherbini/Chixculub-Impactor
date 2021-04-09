@@ -15,14 +15,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1062, 720)
-        MainWindow.setMinimumSize(QtCore.QSize(1000, 720))
-        MainWindow.setStyleSheet("")
+        MainWindow.setMinimumSize(QtCore.QSize(1062, 720))
+        MainWindow.setMaximumSize(QtCore.QSize(1062, 720))
+        MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("background:#ffecd9;")
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.MainFrame = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -341,7 +341,83 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setSpacing(0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
-        self.frame_12 = QtWidgets.QFrame(self.devicesPage)
+        self.scrollArea = QtWidgets.QScrollArea(self.devicesPage)
+        self.scrollArea.setStyleSheet(" QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgb(45, 45, 68);\n"
+"    width: 14px;\n"
+"    margin: 15px 0 15px 0;\n"
+"    border-radius: 0px;\n"
+" }\n"
+"\n"
+"/*  HANDLE BAR VERTICAL */\n"
+"QScrollBar::handle:vertical {    \n"
+"    background-color: rgb(80, 80, 122);\n"
+"    min-height: 30px;\n"
+"    border-radius: 7px;\n"
+"}\n"
+"QScrollBar::handle:vertical:hover{    \n"
+"    background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::handle:vertical:pressed {    \n"
+"    background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* BTN TOP - SCROLLBAR */\n"
+"QScrollBar::sub-line:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(59, 59, 90);\n"
+"    height: 15px;\n"
+"    border-top-left-radius: 7px;\n"
+"    border-top-right-radius: 7px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:vertical:hover {    \n"
+"    background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::sub-line:vertical:pressed {    \n"
+"    background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* BTN BOTTOM - SCROLLBAR */\n"
+"QScrollBar::add-line:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(59, 59, 90);\n"
+"    height: 15px;\n"
+"    border-bottom-left-radius: 7px;\n"
+"    border-bottom-right-radius: 7px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::add-line:vertical:hover {    \n"
+"    background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::add-line:vertical:pressed {    \n"
+"    background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* RESET ARROW */\n"
+"QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+"    background: none;\n"
+"}\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+"    background: none;\n"
+"}\n"
+"\n"
+"")
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 982, 645))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.frame_12 = QtWidgets.QFrame(self.scrollAreaWidgetContents)
         self.frame_12.setStyleSheet("QFrame{\n"
 "\n"
 "    border-radius:20px;\n"
@@ -354,70 +430,6 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(9, 9, 9, 9)
         self.gridLayout_2.setVerticalSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.frame_15 = QtWidgets.QFrame(self.frame_12)
-        self.frame_15.setMinimumSize(QtCore.QSize(0, 90))
-        self.frame_15.setMaximumSize(QtCore.QSize(16777215, 90))
-        self.frame_15.setStyleSheet("")
-        self.frame_15.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_15.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_15.setObjectName("frame_15")
-        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.frame_15)
-        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_15.setSpacing(0)
-        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
-        self.frame_16 = QtWidgets.QFrame(self.frame_15)
-        self.frame_16.setStyleSheet("background:transparent;")
-        self.frame_16.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_16.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_16.setObjectName("frame_16")
-        self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.frame_16)
-        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_16.setSpacing(0)
-        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_16.addItem(spacerItem)
-        self.frame_17 = QtWidgets.QFrame(self.frame_16)
-        self.frame_17.setStyleSheet("border-color:black;\n"
-"background:transparent;")
-        self.frame_17.setFrameShape(QtWidgets.QFrame.Panel)
-        self.frame_17.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_17.setLineWidth(5)
-        self.frame_17.setMidLineWidth(2)
-        self.frame_17.setObjectName("frame_17")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.frame_17)
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.pushButton_4 = QtWidgets.QPushButton(self.frame_17)
-        self.pushButton_4.setMinimumSize(QtCore.QSize(56, 56))
-        self.pushButton_4.setMaximumSize(QtCore.QSize(56, 56))
-        self.pushButton_4.setStyleSheet("QPushButton {\n"
-"    color: #333;\n"
-"\n"
-"    border-radius: 27px;\n"
-"    border-style: outset;\n"
-"    background-color:transparent;\n"
-"     border: 3px solid transparent;\n"
-"\n"
-"    }\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-color: rgb(0, 255, 128);\n"
-"        \n"
-"    }\n"
-"\n"
-"")
-        self.pushButton_4.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon5)
-        self.pushButton_4.setIconSize(QtCore.QSize(56, 56))
-        self.pushButton_4.setFlat(True)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.verticalLayout_10.addWidget(self.pushButton_4)
-        self.horizontalLayout_16.addWidget(self.frame_17)
-        spacerItem1 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_16.addItem(spacerItem1)
-        self.horizontalLayout_15.addWidget(self.frame_16)
-        self.gridLayout_2.addWidget(self.frame_15, 4, 0, 1, 1)
         self.frame_13 = QtWidgets.QFrame(self.frame_12)
         self.frame_13.setStyleSheet("background:transparent;")
         self.frame_13.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -472,8 +484,8 @@ class Ui_MainWindow(object):
 " }")
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_14.addWidget(self.label_6)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem2)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem)
         self.pushButton = QtWidgets.QPushButton(self.frame_14)
         self.pushButton.setMinimumSize(QtCore.QSize(120, 30))
         self.pushButton.setMaximumSize(QtCore.QSize(120, 30))
@@ -506,17 +518,83 @@ class Ui_MainWindow(object):
 "    border:transparent;\n"
 "}")
         self.pushButton_3.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_3.setIcon(icon6)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("resources/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3.setIcon(icon5)
         self.pushButton_3.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_3.setObjectName("pushButton_3")
         self.horizontalLayout_14.addWidget(self.pushButton_3)
         self.verticalLayout_9.addWidget(self.frame_14)
         self.gridLayout_2.addWidget(self.frame_13, 1, 0, 1, 1)
+        self.frame_15 = QtWidgets.QFrame(self.frame_12)
+        self.frame_15.setMinimumSize(QtCore.QSize(0, 90))
+        self.frame_15.setMaximumSize(QtCore.QSize(16777215, 90))
+        self.frame_15.setStyleSheet("")
+        self.frame_15.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_15.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_15.setObjectName("frame_15")
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.frame_15)
+        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_15.setSpacing(0)
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.frame_16 = QtWidgets.QFrame(self.frame_15)
+        self.frame_16.setStyleSheet("background:transparent;")
+        self.frame_16.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_16.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_16.setObjectName("frame_16")
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.frame_16)
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_16.setSpacing(0)
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_16.addItem(spacerItem1)
+        self.frame_17 = QtWidgets.QFrame(self.frame_16)
+        self.frame_17.setStyleSheet("border-color:black;\n"
+"background:transparent;")
+        self.frame_17.setFrameShape(QtWidgets.QFrame.Panel)
+        self.frame_17.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_17.setLineWidth(5)
+        self.frame_17.setMidLineWidth(2)
+        self.frame_17.setObjectName("frame_17")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.frame_17)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.pushButton_4 = QtWidgets.QPushButton(self.frame_17)
+        self.pushButton_4.setMinimumSize(QtCore.QSize(56, 56))
+        self.pushButton_4.setMaximumSize(QtCore.QSize(56, 56))
+        self.pushButton_4.setStyleSheet("QPushButton {\n"
+"    color: #333;\n"
+"\n"
+"    border-radius: 27px;\n"
+"    border-style: outset;\n"
+"    background-color:transparent;\n"
+"     border: 3px solid transparent;\n"
+"\n"
+"    }\n"
+"\n"
+"QPushButton:hover {\n"
+"    border-color: rgb(0, 255, 128);\n"
+"        \n"
+"    }\n"
+"\n"
+"")
+        self.pushButton_4.setText("")
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_4.setIcon(icon6)
+        self.pushButton_4.setIconSize(QtCore.QSize(56, 56))
+        self.pushButton_4.setFlat(True)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.verticalLayout_10.addWidget(self.pushButton_4)
+        self.horizontalLayout_16.addWidget(self.frame_17)
+        spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_16.addItem(spacerItem2)
+        self.horizontalLayout_15.addWidget(self.frame_16)
+        self.gridLayout_2.addWidget(self.frame_15, 4, 0, 1, 1)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_2.addItem(spacerItem3, 3, 0, 1, 1)
-        self.verticalLayout_8.addWidget(self.frame_12)
+        self.verticalLayout_2.addWidget(self.frame_12)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout_8.addWidget(self.scrollArea)
         self.stackedWidget.addWidget(self.devicesPage)
         self.scriptPage = QtWidgets.QWidget()
         self.scriptPage.setObjectName("scriptPage")
@@ -560,7 +638,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.bottomFrame)
         self.horizontalLayout_2.addWidget(self.eastFrame)
         self.verticalLayout.addWidget(self.CenterFrame)
-        self.verticalLayout_2.addWidget(self.MainFrame)
+        self.horizontalLayout_11.addWidget(self.MainFrame)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -575,6 +653,6 @@ class Ui_MainWindow(object):
         self.maxBtn.setToolTip(_translate("MainWindow", "Maximize"))
         self.closeBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Close</p></body></html>"))
         self.homeBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Home</p></body></html>"))
-        self.pushButton_4.setToolTip(_translate("MainWindow", "<html><head/><body><p>New Device</p></body></html>"))
         self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; color:#000000;\">Power Supply</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Connect"))
+        self.pushButton_4.setToolTip(_translate("MainWindow", "<html><head/><body><p>New Device</p></body></html>"))

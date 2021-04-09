@@ -8,6 +8,11 @@ import Dialog
 import dialogAB
 
 
+########################################################################################################################
+#  class: removeDialog                                                                                                 #
+#  purpose: a subclass that inherits from QDIALOG with additional functionality pertaining to the delete device dialog #
+#  returns: an instance of the remove dialog class                                                                     #
+########################################################################################################################
 class removeDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
@@ -18,6 +23,10 @@ class removeDialog(QtWidgets.QDialog):
         self.uiDialog.westTopFrame.installEventFilter(self)
         self.dialogTitleBar()
 
+    #######################################################################################################################################################################################
+    #  Function: eventFilter                                                                                                                                                              #
+    #  Purpose: triggered when the event filter installed on the Top Frame detects an event, it checks if the event is a mouseBtn press or mouseMove in order to move the whole dialog    #
+    #######################################################################################################################################################################################
     def eventFilter(self, obj, event):
 
         if obj == self.uiDialog.westTopFrame and event.type() == QEvent.MouseButtonPress:
@@ -29,6 +38,11 @@ class removeDialog(QtWidgets.QDialog):
             self.oldPos = event.globalPos()
         return False
 
+    #######################################################################################################################################################################################
+    #  Function: dialogTitleBar                                                                                                                                                           #
+    #  Purpose: removes native title bar and connects close and minimize button click events to self.close() and showMinimized() functions which close and minimized dialog respectively  #
+    #           adds shadow effect to the delete, cancel and line edit                                                                                                                    #
+    #######################################################################################################################################################################################
     def dialogTitleBar(self):
         self.uiDialog.closeBtn_3.clicked.connect(lambda: self.close())
         self.uiDialog.minBtn_3.clicked.connect(lambda: self.showMinimized())
@@ -43,6 +57,12 @@ class removeDialog(QtWidgets.QDialog):
         shadow2 = QGraphicsDropShadowEffect()
         shadow2.setBlurRadius(25)
         self.uiDialog.CancelBtn.setGraphicsEffect(shadow2)
+
+    #######################################################################################################################################################################################
+    #  Class: deviceFrame                                                                                                                                                                 #
+    #  Purpose: a subclass that inherits from the QFrame class, with added functionality pertaining to the frame containing any added new device on the home page                         #
+    #  Returns: an instance of the deviceFrame class                                                                                                                                      #
+    #######################################################################################################################################################################################
 
 
 class deviceFrame(QtWidgets.QFrame):
@@ -170,6 +190,11 @@ background-color: rgba(0,0,0,0%);
 
         self.deleteBtn.clicked.connect(self.deleteFrame)
 
+    ###########################################################################################################################################################################################
+    #  Function: deleteFrame                                                                                                                                                                  #
+    #  Purpose: creates an instance of the removeDialog class and executes it, connects the delete and cancel button clicked events to functions removeFrame and delDialog.close respectively #
+    ###########################################################################################################################################################################################
+
     def deleteFrame(self):
         self.delDialog = removeDialog()
         self.delDialog.uiDialog.DeleteBtn.clicked.connect(self.removeFrame)
@@ -184,8 +209,13 @@ background-color: rgba(0,0,0,0%);
         self.delDialog.close()
 
 
+#######################################################################################################################################################################################
+#  Class: addDeviceDialog                                                                                                                                                             #
+#  Purpose: a subclass that inherits from the QDialog class, with added functionality pertaining to adding a new device, collects information from user pertaining to said device     #
+#  Returns: an instance of the addDeviceDialog class                                                                                                                                  #
+#######################################################################################################################################################################################
+
 class addDeviceDialog(QtWidgets.QDialog):
-    # creates an instance of a dialog when the ADD device button is pressed
 
     def __init__(self, parent=None):
 
@@ -193,7 +223,8 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.uiDialog = Dialog.Ui_Dialog()  # create an instance of the dialog UI class
         self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
         self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
-        self.uiDialog.westTopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
+        self.uiDialog.westTopFrame.installEventFilter(
+            self)  # install an event filter to know when an event occurs on title bar
         self.uiDialog.DeviceNameLE.installEventFilter(self)
         self.dialogTitleBar()  # make window frameless
         self.setShadow(self.uiDialog.DeviceTypeCB)
@@ -204,6 +235,12 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.ConnectBtns()
         self.devices = {}
         self.device = {}
+
+    #######################################################################################################################################################################################
+    #  Function: dialogTitleBar                                                                                                                                                           #
+    #  Purpose: removes native title bar and connects close and minimize button click events to self.close_Event() and showMinimized() functions which close and minimized dialog respectively  #
+    #           adds shadow effect to the delete, cancel and line edit                                                                                                                    #
+    #######################################################################################################################################################################################
 
     def dialogTitleBar(self):
         self.uiDialog.closeBtn.clicked.connect(self.close_Event)
@@ -221,6 +258,12 @@ class addDeviceDialog(QtWidgets.QDialog):
         shadow.setBlurRadius(25)
         obj.setGraphicsEffect(shadow)
 
+    ####################################################################################################################################################################
+    #  Function: eventFilter                                                                                                                                           #
+    #  Purpose: filters for mouse press and mouse move events occurring on artificial title bar in order to move the dialog window,                                    #
+    #           also checks for mouse press events and out of focus events occurring on the line edit on the first page of dialog  in order to apply and remove shadow #
+    ####################################################################################################################################################################
+
     def eventFilter(self, obj, event):
 
         if obj == self.uiDialog.westTopFrame and event.type() == QEvent.MouseButtonPress:
@@ -235,11 +278,21 @@ class addDeviceDialog(QtWidgets.QDialog):
         if obj == self.uiDialog.DeviceNameLE and event.type() == QEvent.FocusOut:
             self.uiDialog.DeviceNameLE.graphicsEffect().setEnabled(True)
         return False
+    #######################################################################################
+    #  Function: changeCBcontent                                                          #
+    #  Purpose: clears a combobox and adds new items that are passed as a list of strings #
+    #######################################################################################
 
     def changeCBcontent(self, QComboBox, newList):
 
         QComboBox.clear()
         QComboBox.addItems(newList)
+
+    #############################################################################################################################
+    #  Function: ConnectBtns                                                                                                    #
+    #  Purpose: connects the confirm clicked event, device type and connection type comboboxes's current index changed events   #
+    #           to addDeviceSteps function                                                                                      #
+    #############################################################################################################################
 
     def ConnectBtns(self):
         self.step = 1
@@ -247,6 +300,11 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.uiDialog.DeviceTypeCB.currentIndexChanged.connect(self.addDeviceSteps)
         self.uiDialog.ConTypeCB.currentIndexChanged.connect(self.addDeviceSteps)
 
+    #############################################################################################################################
+    #  Function: addDeviceSteps                                                                                                 #
+    #  Purpose: there are 3 steps to adding any device, depending on the connection type the user chooses on the first step and #
+    #           which step they are currently on, the function reroutes to respective function                                  #
+    #############################################################################################################################
     def addDeviceSteps(self):
 
         if self.step == 1:
@@ -263,26 +321,37 @@ class addDeviceDialog(QtWidgets.QDialog):
             elif self.device["Connection Type"] == "LAN":
                 self.step3LAN()
 
+    #############################################################################################################################
+    #  Function: addPage                                                                                                        #
+    #  Purpose: adds a page to the stacked widget and connects combobox (if non empty list was passed) current index changed    #
+    #           events, confirm button event and previous button event to addDeviceSteps function                               #
+    #############################################################################################################################
+
     def addPage(self, page, CB1, CB2, CB3):
 
         if CB1:
-
             page.populateComboBox("Frame1", CB1)
             page.CB1.currentIndexChanged.connect(self.addDeviceSteps)
 
         if CB2:
-
             page.populateComboBox("Frame2", CB2)
             page.CB2.currentIndexChanged.connect(self.addDeviceSteps)
 
         if CB3:
-
             page.populateComboBox("Frame3", CB3)
             page.CB3.currentIndexChanged.connect(self.addDeviceSteps)
 
         self.uiDialog.centerStackedWidget.addWidget(page)
         page.CB.clicked.connect(self.addDeviceSteps)
         page.PB.clicked.connect(self.addDeviceSteps)
+
+        ####################################################################################################################################
+        #  Function: step1                                                                                                                 #
+        #  Purpose: this function is called when any of the events connected on the  comboBoxes or confirm button on first page occur      #
+        #           if the confirm button is clicked, checks are carried out to ensure mandatory fields are filled out properly.           #
+        #           it also includes functionality to ensure proper handling of the flow of the application in case the function is called #
+        #           when the user has reached the page through the previous button                                                         #
+        ####################################################################################################################################
 
     def step1(self):
         if self.sender() == self.uiDialog.DeviceTypeCB:
@@ -310,9 +379,10 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                         self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
                         self.addPage(self.pageRS232_1,
-                                 ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200", "128000",
-                                  "256000"], ["Select COM Port", "COM1"],
-                                 ["Select Data Size (bits)", "8", "7", "6", "5"])
+                                     ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200",
+                                      "128000",
+                                      "256000"], ["Select COM Port", "COM1"],
+                                     ["Select Data Size (bits)", "8", "7", "6", "5"])
                         self.uiDialog.centerStackedWidget.setCurrentIndex(1)
                         self.addDeviceSteps()
 
@@ -320,10 +390,13 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.step = 2
                         self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                         self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-                        self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS (e.g 255.255.255.255)", "CB", "", "CB", "")
-                        self.addPage(self.pageLAN_1,[],["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"], ["Select Socket Type", "Stream", "Datagram"])
+                        self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS (e.g 255.255.255.255)",
+                                                                     "CB", "", "CB", "")
+                        self.addPage(self.pageLAN_1, [], ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
+                                     ["Select Socket Type", "Stream", "Datagram"])
                         self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
-                        ipRegex = QRegExp("^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
+                        ipRegex = QRegExp(
+                            "^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
                         ipValidCheck = QRegExpValidator(ipRegex, self)
                         self.pageLAN_1.LE1.setValidator(ipValidCheck)
                         self.uiDialog.centerStackedWidget.setCurrentIndex(1)
@@ -342,13 +415,14 @@ class addDeviceDialog(QtWidgets.QDialog):
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                             self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                             for x in range(1, self.uiDialog.centerStackedWidget.count()):
-                                self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
-                            if hasattr(self,'pageRS232_1'):
-                                self.uiDialog.centerStackedWidget.addWidget(self.pageRS232_1)
-                            else:
-                                self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
-                                self.addPage(self.pageRS232_1,["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200","128000","256000"], ["Select COM Port", "COM1"],
-                                             ["Select Data Size (bits)", "8", "7", "6", "5"])
+                                # self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
+                                self.uiDialog.centerStackedWidget.widget(x).deleteLater()
+
+                            self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
+                            self.addPage(self.pageRS232_1,
+                                         ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200",
+                                          "128000", "256000"], ["Select COM Port", "COM1"],
+                                         ["Select Data Size (bits)", "8", "7", "6", "5"])
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
                             self.addDeviceSteps()
                         else:
@@ -372,21 +446,22 @@ class addDeviceDialog(QtWidgets.QDialog):
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                             self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                             for x in range(1, self.uiDialog.centerStackedWidget.count()):
-                                self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
-                            if hasattr(self, 'pageLAN_1'):
-                                print("exists")
-                                self.uiDialog.centerStackedWidget.addWidget(self.pageLAN_1)
-                            else:
-                                self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
-                                ipRegex = QRegExp("^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
-                                ipValidCheck = QRegExpValidator(ipRegex, self)
-                                self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB","")
-                                self.pageLAN_1.LE1.setValidator(ipValidCheck)
-                                self.addPage(self.pageLAN_1, [],
-                                             ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
-                                             ["Select Socket Type", "Stream", "Datagram"])
+                                print(self.uiDialog.centerStackedWidget.count())
+                                self.uiDialog.centerStackedWidget.widget(x).deleteLater()
+
+                            self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+                            ipRegex = QRegExp(
+                                "^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
+                            ipValidCheck = QRegExpValidator(ipRegex, self)
+                            self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB", "")
+                            self.pageLAN_1.LE1.setValidator(ipValidCheck)
+                            self.addPage(self.pageLAN_1, [],
+                                         ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
+                                         ["Select Socket Type", "Stream", "Datagram"])
 
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+                            print(self.uiDialog.centerStackedWidget.count())
+                            print("widgets")
                             self.addDeviceSteps()
 
                         else:
@@ -432,7 +507,8 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.device["Data size"] = self.pageRS232_1.CB3.currentText()
                     print(self.device.keys())
                     self.step = 3
-                    self.pageRS232_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB", "","CB", "")
+                    self.pageRS232_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB",
+                                                                   "", "CB", "")
                     self.addPage(self.pageRS232_2, [],
                                  ["Parity (Optional, Default:None)", "ODD", "EVEN", "MARK", "SPACE"],
                                  ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
@@ -478,9 +554,13 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.device["Address Family"] = self.pageLAN_1.CB2.currentText()
                     self.device["Socket Type"] = self.pageLAN_1.CB3.currentText()
                     print(self.device.keys())
-                    self.pageLAN_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE", "Enter Port Number","", "")
-                    self.addPage(self.pageLAN_2, [],[],[])
-                    self.pageLAN_2.LE1.installEventFilter(self)
+                    self.pageLAN_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE",
+                                                                 "Enter Port Number", "", "")
+                    self.PortnNumberFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+                    pnRegex = QRegExp(self.PortnNumberFormat)
+                    pnValidCheck = QRegExpValidator(pnRegex, self)
+                    self.pageLAN_2.LE2.setValidator(pnValidCheck)
+                    self.addPage(self.pageLAN_2, [], [], [])
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
                     self.addDeviceSteps()
                 else:
@@ -523,4 +603,23 @@ class addDeviceDialog(QtWidgets.QDialog):
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
 
-    #def step3LAN(self):
+    def step3LAN(self):
+
+        if self.sender() == self.pageLAN_2.CB:
+            if self.pageLAN_2.LE2.text() != "":
+                if self.pageLAN_2.LE1.text() != "Enter Timeout (optional, Default:None)":
+                    self.device["Timeout"] = self.pageLAN_2.LE1.text()
+                else:
+                    self.device["Timeout"] = ""
+
+                self.device["Port Number"] = self.pageLAN_2.LE2.text()
+
+                for x in self.device.keys():
+                    print("%s : %s " % (x, self.device[x]))
+                self.close()
+            else:
+                self.pageLAN_2.statusLabel.setText("Please Enter a Port Number")
+
+        elif self.sender() == self.pageLAN_2.PB:
+            self.step = 2
+            self.uiDialog.centerStackedWidget.setCurrentIndex(1)
