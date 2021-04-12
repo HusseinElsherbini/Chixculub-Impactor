@@ -614,6 +614,9 @@ QComboBox QAbstractItemView {
 }
 </string>
                   </property>
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContents</enum>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Select Device (optional)</string>
@@ -812,7 +815,7 @@ QComboBox QAbstractItemView {
                   </item>
                   <item>
                    <property name="text">
-                    <string>LAN</string>
+                    <string>ETHERNET</string>
                    </property>
                    <property name="icon">
                     <iconset>

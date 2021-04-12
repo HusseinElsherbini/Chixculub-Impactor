@@ -1,12 +1,15 @@
 import sys
 import time
+import serial.tools.list_ports as portsList
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
 from PyQt5.QtCore import QPoint, QEvent
 from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect, QFrame
 import Dialog
 import MainWindow
+import test
 import uiFunctions
 import subclasses
+import threading
 
 
 class ChixculubImpactor(QMainWindow):
@@ -18,7 +21,8 @@ class ChixculubImpactor(QMainWindow):
         self.dialogs = {}
         super().__init__()
         self.initUI()
-
+        self.ComPorts = [port[0] for port in list(portsList.comports())]
+        print(self.ComPorts)
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -28,23 +32,33 @@ class ChixculubImpactor(QMainWindow):
         self.createWindow()
         uiFunctions.UIFunctions.activateTitleBarButtons(self)
         self.installEventFilters()
-
         self.addDeviceFrame(["Power Supply", "power-supply.png", "HET-2", "RS232", ""])
         self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "LAN", "192.255.68.11"])
-        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN","192.255.68.234"])
+        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN", "192.255.68.234"])
         self.activateButtons()
+        self.watchedComPorts = []
         self.setShadow(self.ui.frame_14)
+        self.setShadow(self.ui.label_4)
+        self.setShadow(self.ui.homeBtn)
         self.setShadow(self.ui.frame_17)
         self.center()
         # keeps record of old position of window
         self.oldPos = self.pos()
         # activates the app
         self.show()
+    '''
+    def checkComPorts(self, interval):
 
-
+        self.ComPorts = [tuple(port) for port in list(portsList.comports())]
+        print(self.ComPorts)
+        while(True):
+            self.ComPorts = [tuple(port) for port in list(portsList.comports())]
+            for port in self.watchedComPorts:
+    '''
     def createWindow(self):
 
         self.ui = MainWindow.Ui_MainWindow()
+        #self.ui = test.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
@@ -88,12 +102,11 @@ class ChixculubImpactor(QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-
     def addDeviceDialog(self):
 
         addDevice = subclasses.addDeviceDialog()
         addDevice.exec_()
-        try:
+        if addDevice.step !=1:
             icon = ""
             if addDevice.device["Device Type"] == "Oscilloscope":
                 icon = "oscilloscope.png"
@@ -102,9 +115,13 @@ class ChixculubImpactor(QMainWindow):
             elif addDevice.device["Device Type"] == "Digital Multimeter":
                 icon = "multimeter.png"
 
-            self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"], addDevice.device["Connection Type"], addDevice.device["IP ADDRESS"]])
-        except:
-            pass
+            if addDevice.device["Connection Type"] == "LAN":
+                self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"],
+                                 addDevice.device["Connection Type"], addDevice.device["IP ADDRESS"]])
+            elif addDevice.device["Connection Type"] == "RS232":
+                self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"],
+                                 addDevice.device["Connection Type"], ""])
+
 
 def main():
     Terminal = ChixculubImpactor()

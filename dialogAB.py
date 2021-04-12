@@ -102,6 +102,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
             self.CB1.setIconSize(QtCore.QSize(24, 24))
             self.CB1.setFrame(False)
             self.CB1.setObjectName("CB1")
+            self.CB1.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
             self.horizontalLayout_9.addWidget(self.CB1)
             spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.horizontalLayout_9.addItem(spacerItem7)
@@ -195,6 +196,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
                                    "")
             self.CB2.setObjectName("CB2")
             self.horizontalLayout_6.addWidget(self.CB2)
+            self.CB2.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
             spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.horizontalLayout_6.addItem(spacerItem9)
             self.setShadow(self.CB2)
@@ -283,6 +285,7 @@ class dialogAbstractPage(QtWidgets.QWidget):
                                    "}\n"
                                    "")
             self.CB3.setObjectName("CB3")
+            self.CB3.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
             self.horizontalLayout_12.addWidget(self.CB3)
             spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             self.setShadow(self.CB3)

@@ -161,6 +161,14 @@ class Ui_Dialog(object):
 "    font: 14px;\n"
 "\n"
 "}\n"
+"\n"
+"\n"
+"QLineEdit:down-arrow {\n"
+"    image: url(resources/arrow.png);\n"
+"    width: 14px;\n"
+"    height: 14px;\n"
+"}\n"
+"\n"
 "QLineEdit QAbstractItemView {\n"
 "\n"
 "    border: 2px solid darkgray;\n"
@@ -233,6 +241,7 @@ class Ui_Dialog(object):
 "\n"
 "}\n"
 "")
+        self.DeviceTypeCB.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.DeviceTypeCB.setObjectName("DeviceTypeCB")
         self.DeviceTypeCB.addItem("")
         icon2 = QtGui.QIcon()
@@ -399,5 +408,5 @@ class Ui_Dialog(object):
         self.DeviceTypeCB.setItemText(4, _translate("Dialog", "Oscilloscope"))
         self.ConTypeCB.setItemText(0, _translate("Dialog", "Connection Type"))
         self.ConTypeCB.setItemText(1, _translate("Dialog", "RS232"))
-        self.ConTypeCB.setItemText(2, _translate("Dialog", "LAN"))
+        self.ConTypeCB.setItemText(2, _translate("Dialog", "ETHERNET"))
         self.ConfirmBtn.setText(_translate("Dialog", "Confirm"))

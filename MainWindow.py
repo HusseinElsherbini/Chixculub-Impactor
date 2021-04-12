@@ -14,15 +14,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1062, 720)
-        MainWindow.setMinimumSize(QtCore.QSize(1062, 720))
-        MainWindow.setMaximumSize(QtCore.QSize(1062, 720))
-        MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
+        MainWindow.resize(1449, 1038)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setMinimumSize(QtCore.QSize(1062, 720))
         self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.centralwidget)
-        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
         self.MainFrame = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -317,6 +316,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.frame_7)
         self.horizontalLayout_2.addWidget(self.westFrame)
         self.eastFrame = QtWidgets.QFrame(self.CenterFrame)
+        self.eastFrame.setStyleSheet("background-color:white")
         self.eastFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.eastFrame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.eastFrame.setObjectName("eastFrame")
@@ -324,7 +324,58 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.frame_11 = QtWidgets.QFrame(self.eastFrame)
+        self.tabWidget = QtWidgets.QTabWidget(self.eastFrame)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        self.tabWidget.setFont(font)
+        self.tabWidget.setStyleSheet("QTabBar::tab:hover{\n"
+"\n"
+"    background:transparent;\n"
+"    background-color:rgb(238, 238, 238);\n"
+"    border:10px\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    bottom:1px;\n"
+"    border-bottom-color:red\n"
+"}\n"
+"QTabWidget{\n"
+"    border-color:white\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"\n"
+"   border-bottom-color:red;\n"
+"border-color:blue;\n"
+"min-height:1ex;\n"
+"min-width:20ex;\n"
+"padding: 5px 5px 10px 10px;\n"
+"\n"
+"}\n"
+"QTabBar::tab:top:selected {\n"
+"border-bottom: 3px solid rgb(255, 125, 127);\n"
+"color:rgb(255, 125, 127);\n"
+"}\n"
+"\n"
+"QTabBar::tab:!selected {\n"
+"    bottom:1px;\n"
+"    background-colorrgb(241, 241, 241)\n"
+"}")
+        self.tabWidget.setTabPosition(QtWidgets.QTabWidget.North)
+        self.tabWidget.setTabShape(QtWidgets.QTabWidget.Rounded)
+        self.tabWidget.setDocumentMode(False)
+        self.tabWidget.setTabsClosable(False)
+        self.tabWidget.setMovable(True)
+        self.tabWidget.setTabBarAutoHide(False)
+        self.tabWidget.setObjectName("tabWidget")
+        self.Devices = QtWidgets.QWidget()
+        self.Devices.setObjectName("Devices")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.Devices)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.frame_11 = QtWidgets.QFrame(self.Devices)
         self.frame_11.setStyleSheet("background-color:white")
         self.frame_11.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_11.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -411,7 +462,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 982, 645))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1367, 926))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -600,7 +651,12 @@ class Ui_MainWindow(object):
         self.scriptPage.setObjectName("scriptPage")
         self.stackedWidget.addWidget(self.scriptPage)
         self.verticalLayout_7.addWidget(self.stackedWidget)
-        self.verticalLayout_6.addWidget(self.frame_11)
+        self.verticalLayout_12.addWidget(self.frame_11)
+        self.tabWidget.addTab(self.Devices, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tabWidget.addTab(self.tab, "")
+        self.verticalLayout_6.addWidget(self.tabWidget)
         self.bottomFrame = QtWidgets.QFrame(self.eastFrame)
         self.bottomFrame.setMinimumSize(QtCore.QSize(0, 20))
         self.bottomFrame.setMaximumSize(QtCore.QSize(16777215, 20))
@@ -638,10 +694,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.bottomFrame)
         self.horizontalLayout_2.addWidget(self.eastFrame)
         self.verticalLayout.addWidget(self.CenterFrame)
-        self.horizontalLayout_11.addWidget(self.MainFrame)
+        self.verticalLayout_11.addWidget(self.MainFrame)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -656,3 +713,5 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; color:#000000;\">Power Supply</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Connect"))
         self.pushButton_4.setToolTip(_translate("MainWindow", "<html><head/><body><p>New Device</p></body></html>"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Devices), _translate("MainWindow", "Devices"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Terminal 1"))

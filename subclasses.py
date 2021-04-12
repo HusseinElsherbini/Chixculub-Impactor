@@ -6,6 +6,11 @@ import deleteDialog
 import uiFunctions
 import Dialog
 import dialogAB
+import serial.tools.list_ports as portsList
+import threading
+import time
+from PyQt5.QtCore import pyqtSignal, QObject
+import sys
 
 
 ########################################################################################################################
@@ -83,7 +88,10 @@ class deviceFrame(QtWidgets.QFrame):
 		border-color:black;
 		background:transparent;
 }
-
+QToolTip{
+background-color:#ffecd9;
+color:black;
+}
 QFrame:hover{
 
 		background:transparent;
@@ -180,14 +188,14 @@ background-color: rgba(0,0,0,0%);
         self.deleteBtn.setObjectName("deleteBtn")
         self.gridLayout.addWidget(self.deleteBtn, 0, 6, 1, 1)
         self.connectBtn.setText(_translate("MainWindow", "Connect"))
-        if args[3] == "LAN":
+        if args[3] == "ETHERNET":
             self.setToolTip(_translate("MainWindow",
                                        "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p><p><span style=\" font-weight:600;\">IP ADDRESS:</span> {}</p></body></html>".format(
                                            args[2], args[3], args[4])))
         else:
             self.setToolTip(_translate("MainWindow",
-                                   "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p></body></html>".format(
-                                       args[2], args[3])))
+                                       "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p></body></html>".format(
+                                           args[2], args[3])))
         self.deleteBtn.setToolTip(_translate("MainWindow",
                                              "<html><head/><body><p align=\"center\"><span style=\" font-size:8pt;\">Delete</span></p></body></html>"))
         self.connectBtn.setToolTip(_translate("MainWindow",
@@ -214,11 +222,16 @@ background-color: rgba(0,0,0,0%);
         self.delDialog.close()
 
 
+class customSignal(QObject):
+    comChangedSignal = pyqtSignal()
+
+
 #######################################################################################################################################################################################
 #  Class: addDeviceDialog                                                                                                                                                             #
 #  Purpose: a subclass that inherits from the QDialog class, with added functionality pertaining to adding a new device, collects information from user pertaining to said device     #
 #  Returns: an instance of the addDeviceDialog class                                                                                                                                  #
 #######################################################################################################################################################################################
+
 
 class addDeviceDialog(QtWidgets.QDialog):
 
@@ -228,8 +241,7 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.uiDialog = Dialog.Ui_Dialog()  # create an instance of the dialog UI class
         self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
         self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
-        self.uiDialog.westTopFrame.installEventFilter(
-            self)  # install an event filter to know when an event occurs on title bar
+        self.uiDialog.westTopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
         self.uiDialog.DeviceNameLE.installEventFilter(self)
         self.dialogTitleBar()  # make window frameless
         self.setShadow(self.uiDialog.DeviceTypeCB)
@@ -237,21 +249,51 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.setShadow(self.uiDialog.ConTypeCB)
         self.setShadow(self.uiDialog.statusLabel)
         self.setShadow(self.uiDialog.DeviceNameLE)
+        self.ComPorts = [port[0] for port in list(portsList.comports())]
         self.ConnectBtns()
         self.devices = {}
         self.device = {}
 
-    #######################################################################################################################################################################################
-    #  Function: dialogTitleBar                                                                                                                                                           #
-    #  Purpose: removes native title bar and connects close and minimize button click events to self.close_Event() and showMinimized() functions which close and minimized dialog respectively  #
-    #           adds shadow effect to the delete, cancel and line edit                                                                                                                    #
-    #######################################################################################################################################################################################
+
+    ###############################################################################################################################################################################
+    #  Function: dialogTitleBar                                                                                                                                                   #
+    #  Purpose: removes native title bar and connects close and minimize button click events to self.close_Event() and showMinimized() functions which close and minimized dialog #
+    #  respectively adds shadow effect to the delete, cancel and line edit                                                                                                        #
+    ###############################################################################################################################################################################
 
     def dialogTitleBar(self):
         self.uiDialog.closeBtn.clicked.connect(self.close_Event)
         self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Dialog)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def updateComPorts(self, interval):
+        self.customSignal = customSignal()
+        self.customSignal.comChangedSignal.connect(self.addDeviceSteps)
+        print("here")
+        ComPorts = self.fetchComPorts()[1:]
+        while True:
+            x = self.fetchComPorts()[1:]
+
+            if ComPorts != x:
+                print("different")
+                print("com ports: {}".format(ComPorts))
+                print("x: {}".format(x))
+                self.customSignal.comChangedSignal.emit()
+                ComPorts = x
+            elif self.uiDialog.centerStackedWidget.currentWidget() != self.pageRS232_1:
+                break
+
+            time.sleep(interval)
+        print("ended")
+
+    def startThread(self, function, arguments):
+
+        self.threadx = threading.Thread(target=function, args=arguments)
+        print("started")
+        self.threadx.daemon = True
+        print(sys.getrefcount(self.pageRS232_1))
+        self.threadx.start()
 
     def close_Event(self):
         self.step = 1
@@ -262,6 +304,14 @@ class addDeviceDialog(QtWidgets.QDialog):
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(25)
         obj.setGraphicsEffect(shadow)
+
+    def fetchComPorts(self):
+
+        comPortParam = ["Select COM Port"]
+        self.ComPorts = [port[0] for port in list(portsList.comports())]
+        for i in self.ComPorts:
+            comPortParam.append(i)
+        return comPortParam
 
     ####################################################################################################################################################################
     #  Function: eventFilter                                                                                                                                           #
@@ -283,6 +333,7 @@ class addDeviceDialog(QtWidgets.QDialog):
         if obj == self.uiDialog.DeviceNameLE and event.type() == QEvent.FocusOut:
             self.uiDialog.DeviceNameLE.graphicsEffect().setEnabled(True)
         return False
+
     #######################################################################################
     #  Function: changeCBcontent                                                          #
     #  Purpose: clears a combobox and adds new items that are passed as a list of strings #
@@ -317,14 +368,14 @@ class addDeviceDialog(QtWidgets.QDialog):
         elif self.step == 2:
             if self.device["Connection Type"] == "RS232":
                 self.step2RS232()
-            elif self.device["Connection Type"] == "LAN":
-                self.step2LAN()
+            elif self.device["Connection Type"] == "ETHERNET":
+                self.step2ETHERNET()
 
         elif self.step == 3:
             if self.device["Connection Type"] == "RS232":
                 self.step3RS232()
-            elif self.device["Connection Type"] == "LAN":
-                self.step3LAN()
+            elif self.device["Connection Type"] == "ETHERNET":
+                self.step3ETHERNET()
 
     #############################################################################################################################
     #  Function: addPage                                                                                                        #
@@ -385,27 +436,28 @@ class addDeviceDialog(QtWidgets.QDialog):
                         self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
                         self.addPage(self.pageRS232_1,
                                      ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200",
-                                      "128000",
-                                      "256000"], ["Select COM Port", "COM1"],
+                                      "128000", "256000"], self.fetchComPorts(),
                                      ["Select Data Size (bits)", "8", "7", "6", "5"])
                         self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                        self.addDeviceSteps()
+                        self.startThread(self.updateComPorts, (1,))
 
-                    elif self.uiDialog.ConTypeCB.currentText() == "LAN":
+
+                    elif self.uiDialog.ConTypeCB.currentText() == "ETHERNET":
                         self.step = 2
                         self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                         self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
-                        self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS (e.g 255.255.255.255)",
+                        self.pageETHERNET_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS (e.g 255.255.255.255)",
                                                                      "CB", "", "CB", "")
-                        self.addPage(self.pageLAN_1, [], ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
+
+                        self.addPage(self.pageETHERNET_1, [], ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
                                      ["Select Socket Type", "Stream", "Datagram"])
                         self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
                         ipRegex = QRegExp(
                             "^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
                         ipValidCheck = QRegExpValidator(ipRegex, self)
-                        self.pageLAN_1.LE1.setValidator(ipValidCheck)
+                        self.pageETHERNET_1.LE1.setValidator(ipValidCheck)
                         self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                        self.addDeviceSteps()
+
 
                 else:
                     print(self.uiDialog.ConTypeCB.currentText())
@@ -420,16 +472,15 @@ class addDeviceDialog(QtWidgets.QDialog):
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                             self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                             for x in range(1, self.uiDialog.centerStackedWidget.count()):
-                                # self.uiDialog.centerStackedWidget.removeWidget(self.uiDialog.centerStackedWidget.widget(x))
                                 self.uiDialog.centerStackedWidget.widget(x).deleteLater()
 
                             self.pageRS232_1 = dialogAB.dialogAbstractPage("CB", "", "CB", "", "CB", "")
                             self.addPage(self.pageRS232_1,
                                          ["Select Baud Rate", "9600", "14400", "19200", "38400", "57600", "115200",
-                                          "128000", "256000"], ["Select COM Port", "COM1"],
+                                          "128000", "256000"], self.fetchComPorts(),
                                          ["Select Data Size (bits)", "8", "7", "6", "5"])
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                            self.addDeviceSteps()
+                            self.startThread(self.updateComPorts, (1,))
                         else:
                             self.step = 2
                             if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
@@ -437,12 +488,14 @@ class addDeviceDialog(QtWidgets.QDialog):
                             else:
                                 self.device["DEVICE NAME"] = ""
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
+                            self.pageRS232_1.CB2.clear()
+                            self.pageRS232_1.CB2.addItems(self.fetchComPorts())
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                            self.addDeviceSteps()
+                            self.startThread(self.updateComPorts, (1,))
 
 
-                    elif self.uiDialog.ConTypeCB.currentText() == "LAN":
-                        if self.device["Connection Type"] != "LAN":
+                    elif self.uiDialog.ConTypeCB.currentText() == "ETHERNET":
+                        if self.device["Connection Type"] != "ETHERNET":
                             self.step = 2
                             if self.uiDialog.DeviceNameLE.text() != "Enter Device Name (Optional)":
                                 self.device["DEVICE NAME"] = self.uiDialog.DeviceNameLE.text()
@@ -458,16 +511,14 @@ class addDeviceDialog(QtWidgets.QDialog):
                             ipRegex = QRegExp(
                                 "^" + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "\\." + self.ipFormat + "$")
                             ipValidCheck = QRegExpValidator(ipRegex, self)
-                            self.pageLAN_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB", "")
-                            self.pageLAN_1.LE1.setValidator(ipValidCheck)
-                            self.addPage(self.pageLAN_1, [],
+                            self.pageETHERNET_1 = dialogAB.dialogAbstractPage("LE", "ENTER IP ADDRESS", "CB", "", "CB", "")
+                            self.pageETHERNET_1.LE1.setValidator(ipValidCheck)
+                            self.addPage(self.pageETHERNET_1, [],
                                          ["Select Socket Family", "AF_INET", "AF_INET6", "AF_UNIX"],
                                          ["Select Socket Type", "Stream", "Datagram"])
 
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                            print(self.uiDialog.centerStackedWidget.count())
-                            print("widgets")
-                            self.addDeviceSteps()
+
 
                         else:
                             self.step = 2
@@ -477,7 +528,7 @@ class addDeviceDialog(QtWidgets.QDialog):
                                 self.device["DEVICE NAME"] = ""
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
-                            self.addDeviceSteps()
+
 
 
             else:
@@ -492,6 +543,15 @@ class addDeviceDialog(QtWidgets.QDialog):
         if self.sender() == self.pageRS232_1.CB1:
             if self.pageRS232_1.CB1.currentIndex() != 0 and self.pageRS232_1.CB2.currentIndex() != 0 and self.pageRS232_1.CB3.currentIndex() != 0:
                 self.pageRS232_1.statusLabel.clear()
+
+        elif self.sender() == self.customSignal:
+            x = self.pageRS232_1.CB2.currentText()
+            self.changeCBcontent(self.pageRS232_1.CB2, self.fetchComPorts())
+            self.pageRS232_1.CB2.setEnabled(False)
+            self.pageRS232_1.CB2.setEnabled(True)
+            if self.pageRS232_1.CB2.findText(x) != -1:
+
+                self.pageRS232_1.CB2.setCurrentIndex(self.pageRS232_1.CB2.findText(x))
 
         elif self.sender() == self.pageRS232_1.CB2:
 
@@ -519,14 +579,14 @@ class addDeviceDialog(QtWidgets.QDialog):
                                  ["Stop Bits (Optional, Default:None)", "1", "1.5", "2"])
                     self.pageRS232_2.LE1.installEventFilter(self)
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
-                    self.addDeviceSteps()
+
                 else:
                     self.step = 3
                     self.device["Baud Rate"] = self.pageRS232_1.CB1.currentText()
                     self.device["COM PORT"] = self.pageRS232_1.CB2.currentText()
                     self.device["Data size"] = self.pageRS232_1.CB3.currentText()
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
-                    self.addDeviceSteps()
+
             else:
                 self.pageRS232_1.statusLabel.setText("Please fill out all mandatory fields")
 
@@ -534,51 +594,51 @@ class addDeviceDialog(QtWidgets.QDialog):
             self.step = 1
             self.uiDialog.centerStackedWidget.setCurrentIndex(0)
 
-    def step2LAN(self):
+    def step2ETHERNET(self):
 
-        if self.sender() == self.pageLAN_1.LE1:
-            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+        if self.sender() == self.pageETHERNET_1.LE1:
+            if self.pageETHERNET_1.LE1.text() != "" and self.pageETHERNET_1.CB2.currentIndex() != 0 and self.pageETHERNET_1.CB3.currentIndex() != 0:
                 self.page.statusLabel.clear()
 
-        elif self.sender() == self.pageLAN_1.CB2:
+        elif self.sender() == self.pageETHERNET_1.CB2:
 
-            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+            if self.pageETHERNET_1.LE1.text() != "" and self.pageETHERNET_1.CB2.currentIndex() != 0 and self.pageETHERNET_1.CB3.currentIndex() != 0:
                 self.page.statusLabel.clear()
 
-        elif self.sender() == self.pageLAN_1.CB3:
+        elif self.sender() == self.pageETHERNET_1.CB3:
 
-            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
-                self.pageLAN_1.statusLabel.clear()
+            if self.pageETHERNET_1.LE1.text() != "" and self.pageETHERNET_1.CB2.currentIndex() != 0 and self.pageETHERNET_1.CB3.currentIndex() != 0:
+                self.pageETHERNET_1.statusLabel.clear()
 
-        elif self.sender() == self.pageLAN_1.CB:
+        elif self.sender() == self.pageETHERNET_1.CB:
 
-            if self.pageLAN_1.LE1.text() != "" and self.pageLAN_1.CB2.currentIndex() != 0 and self.pageLAN_1.CB3.currentIndex() != 0:
+            if self.pageETHERNET_1.LE1.text() != "" and self.pageETHERNET_1.CB2.currentIndex() != 0 and self.pageETHERNET_1.CB3.currentIndex() != 0:
                 if self.uiDialog.centerStackedWidget.count() == 2:
                     self.step = 3
-                    self.device["IP ADDRESS"] = self.pageLAN_1.LE1.text()
-                    self.device["Address Family"] = self.pageLAN_1.CB2.currentText()
-                    self.device["Socket Type"] = self.pageLAN_1.CB3.currentText()
+                    self.device["IP ADDRESS"] = self.pageETHERNET_1.LE1.text()
+                    self.device["Address Family"] = self.pageETHERNET_1.CB2.currentText()
+                    self.device["Socket Type"] = self.pageETHERNET_1.CB3.currentText()
                     print(self.device.keys())
-                    self.pageLAN_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE",
+                    self.pageETHERNET_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE",
                                                                  "Enter Port Number", "", "")
                     self.PortnNumberFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
                     pnRegex = QRegExp(self.PortnNumberFormat)
                     pnValidCheck = QRegExpValidator(pnRegex, self)
-                    self.pageLAN_2.LE2.setValidator(pnValidCheck)
-                    self.addPage(self.pageLAN_2, [], [], [])
+                    self.pageETHERNET_2.LE2.setValidator(pnValidCheck)
+                    self.addPage(self.pageETHERNET_2, [], [], [])
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
-                    self.addDeviceSteps()
+
                 else:
                     self.step = 3
-                    self.device["IP ADDRESS"] = self.pageLAN_1.LE1.text()
+                    self.device["IP ADDRESS"] = self.pageETHERNET_1.LE1.text()
                     self.device["Address Family"] = self.page.CB2.currentText()
                     self.device["Socket Type"] = self.page.CB3.currentText()
                     self.uiDialog.centerStackedWidget.setCurrentIndex(2)
-                    self.addDeviceSteps()
-            else:
-                self.pageLAN_1.statusLabel.setText("Please fill out all mandatory fields")
 
-        elif self.sender() == self.pageLAN_1.PB:
+            else:
+                self.pageETHERNET_1.statusLabel.setText("Please fill out all mandatory fields")
+
+        elif self.sender() == self.pageETHERNET_1.PB:
             self.step = 1
             self.uiDialog.centerStackedWidget.setCurrentIndex(0)
 
@@ -608,23 +668,23 @@ class addDeviceDialog(QtWidgets.QDialog):
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
 
-    def step3LAN(self):
+    def step3ETHERNET(self):
 
-        if self.sender() == self.pageLAN_2.CB:
-            if self.pageLAN_2.LE2.text() != "":
-                if self.pageLAN_2.LE1.text() != "Enter Timeout (optional, Default:None)":
-                    self.device["Timeout"] = self.pageLAN_2.LE1.text()
+        if self.sender() == self.pageETHERNET_2.CB:
+            if self.pageETHERNET_2.LE2.text() != "":
+                if self.pageETHERNET_2.LE1.text() != "Enter Timeout (optional, Default:None)":
+                    self.device["Timeout"] = self.pageETHERNET_2.LE1.text()
                 else:
                     self.device["Timeout"] = ""
 
-                self.device["Port Number"] = self.pageLAN_2.LE2.text()
+                self.device["Port Number"] = self.pageETHERNET_2.LE2.text()
 
                 for x in self.device.keys():
                     print("%s : %s " % (x, self.device[x]))
                 self.close()
             else:
-                self.pageLAN_2.statusLabel.setText("Please Enter a Port Number")
+                self.pageETHERNET_2.statusLabel.setText("Please Enter a Port Number")
 
-        elif self.sender() == self.pageLAN_2.PB:
+        elif self.sender() == self.pageETHERNET_2.PB:
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
