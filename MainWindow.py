@@ -14,9 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1449, 1038)
+        MainWindow.resize(916, 653)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setMinimumSize(QtCore.QSize(1062, 720))
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
@@ -218,7 +217,8 @@ class Ui_MainWindow(object):
         self.westFrame = QtWidgets.QFrame(self.CenterFrame)
         self.westFrame.setMinimumSize(QtCore.QSize(80, 0))
         self.westFrame.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.westFrame.setStyleSheet("background:rgb(51,51,51);")
+        self.westFrame.setStyleSheet("background:rgb(51,51,51);\n"
+"")
         self.westFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.westFrame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.westFrame.setObjectName("westFrame")
@@ -462,7 +462,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1367, 926))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 834, 541))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)

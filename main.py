@@ -1,28 +1,28 @@
 import sys
 import time
 import serial.tools.list_ports as portsList
-from PyQt5 import QtWidgets, QtGui, QtCore, uic
+from PyQt5 import QtWidgets, QtGui, QtCore, uic, Qt
 from PyQt5.QtCore import QPoint, QEvent
 from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect, QFrame
 import Dialog
 import MainWindow
-import test
 import uiFunctions
 import subclasses
 import threading
+import detectUsb
+import pythoncom
 
 
 class ChixculubImpactor(QMainWindow):
 
     def __init__(self):
-
         self.app = QtWidgets.QApplication(sys.argv)
         self.buttons = {}
         self.dialogs = {}
         super().__init__()
         self.initUI()
         self.ComPorts = [port[0] for port in list(portsList.comports())]
-        print(self.ComPorts)
+
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -33,8 +33,8 @@ class ChixculubImpactor(QMainWindow):
         uiFunctions.UIFunctions.activateTitleBarButtons(self)
         self.installEventFilters()
         self.addDeviceFrame(["Power Supply", "power-supply.png", "HET-2", "RS232", ""])
-        self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "LAN", "192.255.68.11"])
-        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "LAN", "192.255.68.234"])
+        self.addDeviceFrame(["Digital Multimeter", "multimeter.png", "Tektronix", "ETHERNET", "192.255.68.11"])
+        self.addDeviceFrame(["Oscilloscope", "oscilloscope.png", "Yokogawa", "ETHERNET", "192.255.68.234"])
         self.activateButtons()
         self.watchedComPorts = []
         self.setShadow(self.ui.frame_14)
@@ -60,6 +60,7 @@ class ChixculubImpactor(QMainWindow):
         self.ui = MainWindow.Ui_MainWindow()
         #self.ui = test.Ui_MainWindow()
         self.ui.setupUi(self)
+        #self.resize(self.app.desktop().geometry().width()/4, self.app.desktop().geometry().height()/2)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
 
@@ -99,6 +100,7 @@ class ChixculubImpactor(QMainWindow):
 
         qr = self.frameGeometry()
         cp = self.app.desktop().availableGeometry().center()
+        print(self.app.desktop().geometry().height())
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
