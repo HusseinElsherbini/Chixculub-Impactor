@@ -9,7 +9,7 @@ import MainWindow
 import uiFunctions
 import subclasses
 import threading
-import detectUsb
+#import detectUsb
 import pythoncom
 
 
