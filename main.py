@@ -9,8 +9,7 @@ import MainWindow
 import uiFunctions
 import subclasses
 import threading
-#import detectUsb
-import pythoncom
+
 
 
 class ChixculubImpactor(QMainWindow):

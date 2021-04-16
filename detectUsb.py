@@ -1,8 +1,11 @@
-
+import pyvisa
 from pysetupdi import setupdi
+'''
+rm = pyvisa.ResourceManager('@py')
 
+print(rm.list_resources())
 
-
+'''
 class detectUsb:
 
     def driveStatus(self):
@@ -10,12 +13,13 @@ class detectUsb:
         devs = setupdi.devices(enumerator = "USB")
 
         for x in devs:
-            name = x.device_class[:7]
-            print(name)
-            if name == "USBTest":
+            if x.device_desc == '34461A':
+                print(x)
+            '''
+            if "USB" in x.device_class and "Hub" in x.device_class:
                 u.append(x)
-
-
+                print(x)
+            '''
 
 
 u = detectUsb()
