@@ -99,7 +99,6 @@ class ChixculubImpactor(QMainWindow):
 
         qr = self.frameGeometry()
         cp = self.app.desktop().availableGeometry().center()
-        print(self.app.desktop().geometry().height())
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 

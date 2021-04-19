@@ -1,25 +1,21 @@
 import pyvisa
 from pysetupdi import setupdi
-'''
-rm = pyvisa.ResourceManager('@py')
+import sys
+import usb.backend.libusb0
+import usb.backend.libusb1
+import usb.backend.openusb
 
-print(rm.list_resources())
-
-'''
 class detectUsb:
 
     def driveStatus(self):
-        u = []
-        devs = setupdi.devices(enumerator = "USB")
+        resourceManager = pyvisa.ResourceManager('@py')
+        #instrument = resourceManager.open_resource("TCPIP::169.254.4.61::INSTR")
+        print(resourceManager.list_resources())
 
-        for x in devs:
-            if x.device_desc == '34461A':
-                print(x)
-            '''
-            if "USB" in x.device_class and "Hub" in x.device_class:
-                u.append(x)
-                print(x)
-            '''
+        for device in resourceManager.list_resources():
+            print(device)
+
+
 
 
 u = detectUsb()
