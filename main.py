@@ -40,6 +40,7 @@ class ChixculubImpactor(QMainWindow):
         self.setShadow(self.ui.label_4)
         self.setShadow(self.ui.homeBtn)
         self.setShadow(self.ui.frame_17)
+        self.setShadow(self.ui.textEdit)
         self.center()
         # keeps record of old position of window
         self.oldPos = self.pos()
