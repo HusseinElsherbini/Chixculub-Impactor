@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1391</width>
-    <height>836</height>
+    <width>825</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -863,6 +863,9 @@ QPushButton:pressed {
                  <pointsize>9</pointsize>
                 </font>
                </property>
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QTabBar::tab:hover{
 
@@ -1070,8 +1073,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>1309</width>
-                             <height>724</height>
+                             <width>743</width>
+                             <height>466</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1531,7 +1534,7 @@ QPushButton:hover {
                  </item>
                 </layout>
                </widget>
-               <widget class="QWidget" name="tab">
+               <widget class="QWidget" name="Terminal">
                 <attribute name="title">
                  <string>Terminal 1</string>
                 </attribute>
@@ -1642,8 +1645,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>1291</width>
-                         <height>706</height>
+                         <width>725</width>
+                         <height>448</height>
                         </rect>
                        </property>
                        <property name="styleSheet">
@@ -1685,6 +1688,12 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei UI'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;Enter Command &amp;gt;&amp;gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                          <property name="overwriteMode">
+                           <bool>true</bool>
+                          </property>
+                          <property name="cursorWidth">
+                           <number>3</number>
                           </property>
                          </widget>
                         </item>

@@ -246,7 +246,6 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.dialogTitleBar()  # make window frameless
         self.setShadow(self.uiDialog.DeviceTypeCB)
         self.setShadow(self.uiDialog.ConfirmBtn)
-        print()
         self.setShadow(self.uiDialog.ConTypeCB)
         self.setShadow(self.uiDialog.statusLabel)
         self.setShadow(self.uiDialog.DeviceNameLE)

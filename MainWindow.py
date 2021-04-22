@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1391, 836)
+        MainWindow.resize(825, 578)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -329,6 +329,7 @@ class Ui_MainWindow(object):
         font.setFamily("Microsoft YaHei UI")
         font.setPointSize(9)
         self.tabWidget.setFont(font)
+        self.tabWidget.setMouseTracking(True)
         self.tabWidget.setStyleSheet("QTabBar::tab:hover{\n"
 "\n"
 "    background:transparent;\n"
@@ -462,7 +463,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1309, 724))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 743, 466))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -735,7 +736,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1291, 706))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 725, 448))
         self.scrollAreaWidgetContents_2.setStyleSheet("background: transparent;")
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
@@ -749,6 +750,8 @@ class Ui_MainWindow(object):
         self.textEdit.setFont(font)
         self.textEdit.setFrameShape(QtWidgets.QFrame.Panel)
         self.textEdit.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.textEdit.setOverwriteMode(True)
+        self.textEdit.setCursorWidth(3)
         self.textEdit.setObjectName("textEdit")
         self.verticalLayout_15.addWidget(self.textEdit)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
