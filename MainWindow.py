@@ -14,13 +14,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(825, 578)
+        MainWindow.resize(1463, 804)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_14.setSpacing(0)
-        self.verticalLayout_14.setObjectName("verticalLayout_14")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
         self.MainFrame = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -463,7 +462,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 743, 466))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1381, 692))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -482,102 +481,6 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(9, 9, 9, 9)
         self.gridLayout_2.setVerticalSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.frame_13 = QtWidgets.QFrame(self.frame_12)
-        self.frame_13.setStyleSheet("background:transparent;")
-        self.frame_13.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_13.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_13.setObjectName("frame_13")
-        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.frame_13)
-        self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.frame_14 = QtWidgets.QFrame(self.frame_13)
-        self.frame_14.setMinimumSize(QtCore.QSize(0, 100))
-        self.frame_14.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.frame_14.setStyleSheet("QFrame{\n"
-"        color: black;\n"
-"        border: 1px solid black;\n"
-"        border-color:black;\n"
-"        background:transparent;\n"
-"}\n"
-"\n"
-"QFrame:hover{\n"
-"\n"
-"        background:transparent;\n"
-"        border-color: red;\n"
-"        border-radius:20px;\n"
-"}")
-        self.frame_14.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_14.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_14.setObjectName("frame_14")
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.frame_14)
-        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.label_5 = QtWidgets.QLabel(self.frame_14)
-        self.label_5.setMinimumSize(QtCore.QSize(50, 50))
-        self.label_5.setMaximumSize(QtCore.QSize(50, 50))
-        self.label_5.setStyleSheet("background-color: rgba(0,0,0,0%);\n"
-"border: transparent;")
-        self.label_5.setText("")
-        self.label_5.setPixmap(QtGui.QPixmap("resources/oscilloscope (1).png"))
-        self.label_5.setScaledContents(True)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout_14.addWidget(self.label_5)
-        self.label_6 = QtWidgets.QLabel(self.frame_14)
-        self.label_6.setMinimumSize(QtCore.QSize(0, 0))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(18)
-        self.label_6.setFont(font)
-        self.label_6.setStyleSheet("\n"
-"\n"
-"QLabel{\n"
-" color:black;\n"
-"border: transparent;\n"
-"background-color: rgba(0,0,0,0%);\n"
-"\n"
-" }")
-        self.label_6.setObjectName("label_6")
-        self.horizontalLayout_14.addWidget(self.label_6)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem)
-        self.pushButton = QtWidgets.QPushButton(self.frame_14)
-        self.pushButton.setMinimumSize(QtCore.QSize(120, 30))
-        self.pushButton.setMaximumSize(QtCore.QSize(120, 30))
-        self.pushButton.setStyleSheet("\n"
-"QPushButton {\n"
-"  font: 75 10pt \"Microsoft YaHei UI\";\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:#78e4ff;\n"
-" padding:18px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-" border-color:rgb(0, 255, 128);\n"
-"}")
-        self.pushButton.setFlat(True)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_14.addWidget(self.pushButton)
-        self.pushButton_3 = QtWidgets.QPushButton(self.frame_14)
-        self.pushButton_3.setMinimumSize(QtCore.QSize(30, 30))
-        self.pushButton_3.setMaximumSize(QtCore.QSize(30, 30))
-        self.pushButton_3.setStyleSheet("\n"
-"\n"
-"QPushButton:pressed{\n"
-"\n"
-"    background-color: rgb(249, 249, 249);\n"
-"    border:transparent;\n"
-"}")
-        self.pushButton_3.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_3.setIcon(icon5)
-        self.pushButton_3.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout_14.addWidget(self.pushButton_3)
-        self.verticalLayout_9.addWidget(self.frame_14)
-        self.gridLayout_2.addWidget(self.frame_13, 1, 0, 1, 1)
         self.frame_15 = QtWidgets.QFrame(self.frame_12)
         self.frame_15.setMinimumSize(QtCore.QSize(0, 90))
         self.frame_15.setMaximumSize(QtCore.QSize(16777215, 90))
@@ -598,8 +501,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_16.setSpacing(0)
         self.horizontalLayout_16.setObjectName("horizontalLayout_16")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_16.addItem(spacerItem1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_16.addItem(spacerItem)
         self.frame_17 = QtWidgets.QFrame(self.frame_16)
         self.frame_17.setStyleSheet("border-color:black;\n"
 "background:transparent;")
@@ -630,20 +533,28 @@ class Ui_MainWindow(object):
 "\n"
 "")
         self.pushButton_4.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon6)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_4.setIcon(icon5)
         self.pushButton_4.setIconSize(QtCore.QSize(56, 56))
         self.pushButton_4.setFlat(True)
         self.pushButton_4.setObjectName("pushButton_4")
         self.verticalLayout_10.addWidget(self.pushButton_4)
         self.horizontalLayout_16.addWidget(self.frame_17)
-        spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_16.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_16.addItem(spacerItem1)
         self.horizontalLayout_15.addWidget(self.frame_16)
         self.gridLayout_2.addWidget(self.frame_15, 4, 0, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem3, 3, 0, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_2.addItem(spacerItem2, 3, 0, 1, 1)
+        self.frame_13 = QtWidgets.QFrame(self.frame_12)
+        self.frame_13.setStyleSheet("background:transparent;")
+        self.frame_13.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_13.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_13.setObjectName("frame_13")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.frame_13)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.gridLayout_2.addWidget(self.frame_13, 1, 0, 1, 1)
         self.verticalLayout_2.addWidget(self.frame_12)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_8.addWidget(self.scrollArea)
@@ -654,18 +565,17 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.stackedWidget)
         self.verticalLayout_12.addWidget(self.frame_11)
         self.tabWidget.addTab(self.Devices, "")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.tab)
-        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_11.setSpacing(0)
-        self.verticalLayout_11.setObjectName("verticalLayout_11")
-        self.frame_3 = QtWidgets.QFrame(self.tab)
+        self.Terminal = QtWidgets.QWidget()
+        self.Terminal.setObjectName("Terminal")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.Terminal)
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.frame_3 = QtWidgets.QFrame(self.Terminal)
         self.frame_3.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_3.setObjectName("frame_3")
-        self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.frame_3)
-        self.verticalLayout_13.setObjectName("verticalLayout_13")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.frame_3)
+        self.gridLayout_4.setObjectName("gridLayout_4")
         self.scrollArea_2 = QtWidgets.QScrollArea(self.frame_3)
         self.scrollArea_2.setStyleSheet(" QScrollBar:vertical {\n"
 "    border: none;\n"
@@ -736,7 +646,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 725, 448))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1257, 674))
         self.scrollAreaWidgetContents_2.setStyleSheet("background: transparent;")
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
@@ -754,12 +664,27 @@ class Ui_MainWindow(object):
         self.textEdit.setCursorWidth(3)
         self.textEdit.setObjectName("textEdit")
         self.verticalLayout_15.addWidget(self.textEdit)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_15.addItem(spacerItem4)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_15.addItem(spacerItem3)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
-        self.verticalLayout_13.addWidget(self.scrollArea_2)
-        self.verticalLayout_11.addWidget(self.frame_3)
-        self.tabWidget.addTab(self.tab, "")
+        self.gridLayout_4.addWidget(self.scrollArea_2, 0, 0, 1, 1)
+        self.frame_4 = QtWidgets.QFrame(self.frame_3)
+        self.frame_4.setMinimumSize(QtCore.QSize(100, 0))
+        self.frame_4.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.frame_4.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_4.setObjectName("frame_4")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.frame_4)
+        self.verticalLayout_11.setContentsMargins(0, 0, -1, -1)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.listView = QtWidgets.QListView(self.frame_4)
+        self.listView.setFrameShape(QtWidgets.QFrame.Panel)
+        self.listView.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.listView.setObjectName("listView")
+        self.verticalLayout_11.addWidget(self.listView)
+        self.gridLayout_4.addWidget(self.frame_4, 0, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.frame_3, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.Terminal, "")
         self.verticalLayout_6.addWidget(self.tabWidget)
         self.bottomFrame = QtWidgets.QFrame(self.eastFrame)
         self.bottomFrame.setMinimumSize(QtCore.QSize(0, 20))
@@ -798,11 +723,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.bottomFrame)
         self.horizontalLayout_2.addWidget(self.eastFrame)
         self.verticalLayout.addWidget(self.CenterFrame)
-        self.verticalLayout_14.addWidget(self.MainFrame)
+        self.gridLayout.addWidget(self.MainFrame, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -814,8 +739,6 @@ class Ui_MainWindow(object):
         self.maxBtn.setToolTip(_translate("MainWindow", "Maximize"))
         self.closeBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Close</p></body></html>"))
         self.homeBtn.setToolTip(_translate("MainWindow", "<html><head/><body><p>Home</p></body></html>"))
-        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; color:#000000;\">Power Supply</span></p></body></html>"))
-        self.pushButton.setText(_translate("MainWindow", "Connect"))
         self.pushButton_4.setToolTip(_translate("MainWindow", "<html><head/><body><p>New Device</p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Devices), _translate("MainWindow", "Devices"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -823,4 +746,4 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Microsoft YaHei UI\'; font-size:14pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">Enter Command &gt;&gt; </span></p></body></html>"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Terminal 1"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Terminal), _translate("MainWindow", "Terminal 1"))

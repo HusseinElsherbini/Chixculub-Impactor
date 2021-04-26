@@ -1,62 +1,121 @@
 import pyvisa
-from pysetupdi import setupdi
-import usb.core
-import usb.backend.libusb1
+from pyvisa import attributes
 import sys
-import usbtmc
+import threading
+import time
+from pysetupdi import setupdi
 
-devices = []
-devices_VID_PID = []
-devs = setupdi.devices()
 
-for dev in devs:
-    try:
-        if dev.enumerator_name == "USB":
-            if dev.device_class == "Bluetooth" or dev.device_class == "HIDClass" or dev.device_class == "Net" or dev.device_class == "MEDIA":
+class initDevice:
+
+    def __init__(self):
+
+        self.resourceManager = pyvisa.ResourceManager()
+        self.devices = {}
+        self.connectedDevices = []
+        self.detectDevices()
+
+
+
+    def deviceStatus(self):
+
+        print(self.resourceManager.list_resources())
+        d = self.vidValidator()
+        while True:
+            for device in self.resourceManager.list_resources():
+                try:
+                    if str(device)[8:12] + str(device)[16:20] in d:
+                        if str(device)[8:12] + str(device)[16:20] not in self.devices.keys():
+                            self.updateDevicesDB(device)
+                        if self.devices[str(device)[8:12] + str(device)[16:20]]['Model Name'] not in self.connectedDevices:
+                            self.connectedDevices.append(self.devices[str(device)[8:12] + str(device)[16:20]]['Model Name'])
+                    else:
+                        print(self.devices)
+                        try:
+                            if self.devices[str(device)[8:12] + str(device)[16:20]]['Model Name'] in self.connectedDevices:
+                                self.connectedDevices.remove(self.devices[str(device)[8:12] + str(device)[16:20]]['Model Name'])
+                        except KeyError:
+                            pass
+
+
+                except pyvisa.errors.VisaIOError:
+                    pass
+            print(self.connectedDevices)
+            break
+            time.sleep(2)
+
+    def updateDevicesDB(self,device):
+        dev = self.resourceManager.open_resource(device)
+        self.devices.update({str(device)[8:12] + str(device)[16:20]: {
+            'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
+            'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
+            'Connection Type': str(dev.interface_type)[14:],
+        }})
+
+    def detectDevices(self):
+        i = 1
+        for device in self.resourceManager.list_resources():
+
+            try:
+                dev = self.resourceManager.open_resource(device)
+
+                dev.timeout = 100
+                self.devices.update({str(device)[8:12] + str(device)[16:20]: {
+                    'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
+                    'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
+                    'Connection Type': str(dev.interface_type)[14:],
+                }})
+                #print(dev.query("*IDN?"))
+                i += 1
+            except pyvisa.errors.VisaIOError:
+                try:
+                    #print(dev.last_status)
+                    self.devices[str(device)[8:12] + str(device)[16:20]].update(({'timeoutError': True}))
+                    i += 1
+                except KeyError:
+                    pass
+            try:
+                dev.close()
+
+            except UnboundLocalError:
                 pass
-            elif "HUB" in dev.manufacturer or "Hub" in dev.device_desc or "Controller" in dev.manufacturer or "storage" in dev.manufacturer:
-                # print(dev.manufacturer)
+        print(self.devices)
+
+    def startThread(self, function, arguments):
+
+        self.threadx = threading.Thread(target=function, args=arguments)
+        self.threadx.daemon = True
+        self.threadx.start()
+
+    def vidValidator(self):
+        devices = []
+        devices_VID_PID = []
+        devs = setupdi.devices(enumerator="USB")
+
+        for dev in devs:
+
+            try:
+                if "USB Test and Measurement" in str(dev):
+                    devices.append(dev)
+
+            except (KeyError, AttributeError,):
+                continue
+
+        for x in devices:
+            try:
+                h = x.hardware_id
+                devices_VID_PID.append( h[1][8:12] + h[1][17:])
+
+            except AttributeError:
                 pass
-            else:
-                devices.append(dev)
+        return devices_VID_PID
 
-    except (KeyError, AttributeError,):
-        continue
+class device(pyvisa.resources.Resource):
 
-print("\n")
-for x in devices:
-    try:
-        print("Device name: {}   Device class: {}".format(x, x.manufacturer))
-        h = x.hardware_id
-        devices_VID_PID.append(("0x"+h[1][8:12], "0x"+h[1][17:]))
-
-    except AttributeError:
-        pass
-
-print(devices_VID_PID)
+    def __init__(self, parent=None):
+        super.__init__(parent)
 
 
-class device:
-
-    def __init__(self, vid, pid):
-
-        self.VID = vid
-        self.PID = pid
-        self.dev = usbtmc.list_devices()
-
-
-    def driveStatus(self):
-        resourceManager = pyvisa.ResourceManager()
-        # instrument = resourceManager.open_resource("TCPIP::169.254.202.45::INSTR")
-
-        print(resourceManager.list_resources())
-
-        for device in resourceManager.list_resources():
-            print(device)
-            dev = resourceManager.open_resource(device)
-            #print(dev.query('*IDN?'))
-
-
-u = device(devices_VID_PID[1][0], devices_VID_PID[1][1])
-u.driveStatus()
-print(u.dev)
+u = initDevice()
+u.deviceStatus()
+#u.vidValidator()

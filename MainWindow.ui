@@ -6,18 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>825</width>
-    <height>578</height>
+    <width>1463</width>
+    <height>804</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_14">
-    <property name="spacing">
-     <number>0</number>
-    </property>
+   <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -30,7 +27,7 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item>
+    <item row="0" column="0">
      <widget class="QFrame" name="MainFrame">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -908,7 +905,7 @@ QTabBar::tab:!selected {
                 <enum>QTabWidget::Rounded</enum>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -1073,8 +1070,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>743</width>
-                             <height>466</height>
+                             <width>1381</width>
+                             <height>692</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1126,208 +1123,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                                <property name="verticalSpacing">
                                 <number>0</number>
                                </property>
-                               <item row="1" column="0">
-                                <widget class="QFrame" name="frame_13">
-                                 <property name="styleSheet">
-                                  <string notr="true">background:transparent;</string>
-                                 </property>
-                                 <property name="frameShape">
-                                  <enum>QFrame::NoFrame</enum>
-                                 </property>
-                                 <property name="frameShadow">
-                                  <enum>QFrame::Plain</enum>
-                                 </property>
-                                 <layout class="QVBoxLayout" name="verticalLayout_9">
-                                  <item>
-                                   <widget class="QFrame" name="frame_14">
-                                    <property name="minimumSize">
-                                     <size>
-                                      <width>0</width>
-                                      <height>100</height>
-                                     </size>
-                                    </property>
-                                    <property name="maximumSize">
-                                     <size>
-                                      <width>16777215</width>
-                                      <height>100</height>
-                                     </size>
-                                    </property>
-                                    <property name="styleSheet">
-                                     <string notr="true">QFrame{
-		color: black;
-		border: 1px solid black;
-		border-color:black;
-		background:transparent;
-}
-
-QFrame:hover{
-
-		background:transparent;
-		border-color: red;
-		border-radius:20px;
-}</string>
-                                    </property>
-                                    <property name="frameShape">
-                                     <enum>QFrame::NoFrame</enum>
-                                    </property>
-                                    <property name="frameShadow">
-                                     <enum>QFrame::Plain</enum>
-                                    </property>
-                                    <layout class="QHBoxLayout" name="horizontalLayout_14">
-                                     <item>
-                                      <widget class="QLabel" name="label_5">
-                                       <property name="minimumSize">
-                                        <size>
-                                         <width>50</width>
-                                         <height>50</height>
-                                        </size>
-                                       </property>
-                                       <property name="maximumSize">
-                                        <size>
-                                         <width>50</width>
-                                         <height>50</height>
-                                        </size>
-                                       </property>
-                                       <property name="styleSheet">
-                                        <string notr="true">background-color: rgba(0,0,0,0%);
-border: transparent;</string>
-                                       </property>
-                                       <property name="text">
-                                        <string/>
-                                       </property>
-                                       <property name="pixmap">
-                                        <pixmap>resources/oscilloscope (1).png</pixmap>
-                                       </property>
-                                       <property name="scaledContents">
-                                        <bool>true</bool>
-                                       </property>
-                                      </widget>
-                                     </item>
-                                     <item>
-                                      <widget class="QLabel" name="label_6">
-                                       <property name="minimumSize">
-                                        <size>
-                                         <width>0</width>
-                                         <height>0</height>
-                                        </size>
-                                       </property>
-                                       <property name="font">
-                                        <font>
-                                         <family>Segoe UI</family>
-                                         <pointsize>18</pointsize>
-                                        </font>
-                                       </property>
-                                       <property name="styleSheet">
-                                        <string notr="true">
-
-QLabel{
- color:black;
-border: transparent;
-background-color: rgba(0,0,0,0%);
-
- }</string>
-                                       </property>
-                                       <property name="text">
-                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#000000;&quot;&gt;Power Supply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                       </property>
-                                      </widget>
-                                     </item>
-                                     <item>
-                                      <spacer name="horizontalSpacer">
-                                       <property name="orientation">
-                                        <enum>Qt::Horizontal</enum>
-                                       </property>
-                                       <property name="sizeHint" stdset="0">
-                                        <size>
-                                         <width>40</width>
-                                         <height>20</height>
-                                        </size>
-                                       </property>
-                                      </spacer>
-                                     </item>
-                                     <item>
-                                      <widget class="QPushButton" name="pushButton">
-                                       <property name="minimumSize">
-                                        <size>
-                                         <width>120</width>
-                                         <height>30</height>
-                                        </size>
-                                       </property>
-                                       <property name="maximumSize">
-                                        <size>
-                                         <width>120</width>
-                                         <height>30</height>
-                                        </size>
-                                       </property>
-                                       <property name="styleSheet">
-                                        <string notr="true">
-QPushButton {
-  font: 75 10pt &quot;Microsoft YaHei UI&quot;;
- color:black;
- background:transparent;
- border-radius:15px;
- border: 3px solid transparent;
- 
-	border-color:#78e4ff;
- padding:18px;
-}
-
-QPushButton:hover {
- border-color:rgb(0, 255, 128);
-}</string>
-                                       </property>
-                                       <property name="text">
-                                        <string>Connect</string>
-                                       </property>
-                                       <property name="flat">
-                                        <bool>true</bool>
-                                       </property>
-                                      </widget>
-                                     </item>
-                                     <item>
-                                      <widget class="QPushButton" name="pushButton_3">
-                                       <property name="minimumSize">
-                                        <size>
-                                         <width>30</width>
-                                         <height>30</height>
-                                        </size>
-                                       </property>
-                                       <property name="maximumSize">
-                                        <size>
-                                         <width>30</width>
-                                         <height>30</height>
-                                        </size>
-                                       </property>
-                                       <property name="styleSheet">
-                                        <string notr="true">
-
-QPushButton:pressed{
-
-	background-color: rgb(249, 249, 249);
-	border:transparent;
-}</string>
-                                       </property>
-                                       <property name="text">
-                                        <string/>
-                                       </property>
-                                       <property name="icon">
-                                        <iconset>
-                                         <normaloff>resources/delete.png</normaloff>resources/delete.png</iconset>
-                                       </property>
-                                       <property name="iconSize">
-                                        <size>
-                                         <width>30</width>
-                                         <height>30</height>
-                                        </size>
-                                       </property>
-                                      </widget>
-                                     </item>
-                                    </layout>
-                                   </widget>
-                                  </item>
-                                 </layout>
-                                </widget>
-                               </item>
                                <item row="4" column="0">
                                 <widget class="QFrame" name="frame_15">
                                  <property name="minimumSize">
@@ -1517,6 +1312,20 @@ QPushButton:hover {
                                  </property>
                                 </spacer>
                                </item>
+                               <item row="1" column="0">
+                                <widget class="QFrame" name="frame_13">
+                                 <property name="styleSheet">
+                                  <string notr="true">background:transparent;</string>
+                                 </property>
+                                 <property name="frameShape">
+                                  <enum>QFrame::NoFrame</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Plain</enum>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_9"/>
+                                </widget>
+                               </item>
                               </layout>
                              </widget>
                             </item>
@@ -1538,10 +1347,7 @@ QPushButton:hover {
                 <attribute name="title">
                  <string>Terminal 1</string>
                 </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_11">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
+                <layout class="QGridLayout" name="gridLayout_3">
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -1554,7 +1360,7 @@ QPushButton:hover {
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item>
+                 <item row="0" column="0">
                   <widget class="QFrame" name="frame_3">
                    <property name="frameShape">
                     <enum>QFrame::NoFrame</enum>
@@ -1562,8 +1368,8 @@ QPushButton:hover {
                    <property name="frameShadow">
                     <enum>QFrame::Plain</enum>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_13">
-                    <item>
+                   <layout class="QGridLayout" name="gridLayout_4">
+                    <item row="0" column="0">
                      <widget class="QScrollArea" name="scrollArea_2">
                       <property name="styleSheet">
                        <string notr="true"> QScrollBar:vertical {
@@ -1645,8 +1451,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>725</width>
-                         <height>448</height>
+                         <width>1257</width>
+                         <height>674</height>
                         </rect>
                        </property>
                        <property name="styleSheet">
@@ -1712,6 +1518,46 @@ p, li { white-space: pre-wrap; }
                         </item>
                        </layout>
                       </widget>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QFrame" name="frame_4">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>70</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::NoFrame</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Plain</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_11">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QListView" name="listView">
+                         <property name="frameShape">
+                          <enum>QFrame::Panel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Plain</enum>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>
