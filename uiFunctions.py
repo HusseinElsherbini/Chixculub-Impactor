@@ -10,7 +10,7 @@ WINDOW_STATE = 0
 class UIFunctions(ChixculubImpactor):
 
     def activateTitleBarButtons(self):
-        self.ui.closeBtn.clicked.connect(lambda: self.close())
+
         self.ui.minBtn.clicked.connect(lambda: self.showMinimized())
         self.ui.maxBtn.clicked.connect(lambda: UIFunctions.maximizeRestore(self))
         self.ui.Toodle.clicked.connect(lambda: UIFunctions.toodle(self, 250, True))

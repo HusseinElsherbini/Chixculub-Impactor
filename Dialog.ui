@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>350</height>
+    <width>418</width>
+    <height>408</height>
    </rect>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>408</width>
-    <height>350</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -42,12 +36,6 @@ background-color:#ffecd9;</string>
    <item>
     <widget class="QFrame" name="MainFrame">
      <property name="minimumSize">
-      <size>
-       <width>408</width>
-       <height>350</height>
-      </size>
-     </property>
-     <property name="maximumSize">
       <size>
        <width>408</width>
        <height>350</height>

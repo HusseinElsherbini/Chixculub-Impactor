@@ -75,6 +75,7 @@ class deviceFrame(QtWidgets.QFrame):
     def __init__(self, *args):
         super().__init__()
         _translate = QtCore.QCoreApplication.translate
+        self.VID_PID = args[5]
         self.setMinimumSize(QtCore.QSize(0, 100))
         self.setMaximumSize(QtCore.QSize(16777215, 100))
         font = QtGui.QFont()
@@ -134,6 +135,7 @@ QFrame:hover{
 
 QPushButton:hover {
  border-color:rgb(0, 255, 128);
+ color: rgb(0, 255, 128);
 }
 ''')
         self.connectBtn.setDefault(False)
@@ -180,13 +182,42 @@ background-color: rgba(0,0,0,0%);
                                      "}\n"
                                      "")
         self.deleteBtn.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.deleteBtn.setIcon(icon5)
+        self.icon5 = QtGui.QIcon()
+        self.icon5.addPixmap(QtGui.QPixmap("resources/del.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.deleteBtn.setIcon(self.icon5)
+        self.deleteBtn.installEventFilter(self)
         self.deleteBtn.setIconSize(QtCore.QSize(30, 30))
         self.deleteBtn.setFlat(True)
         self.deleteBtn.setObjectName("deleteBtn")
-        self.gridLayout.addWidget(self.deleteBtn, 0, 6, 1, 1)
+        self.gridLayout.addWidget(self.deleteBtn, 0, 7, 1, 1)
+        self.editBtn = QtWidgets.QPushButton(self)
+        self.editBtn.setStyleSheet("QPushButton:hover{\n"
+                                     "\n"
+                                     "    background-color: rgb(91,91,91);\n"
+                                     "ur"
+                                     "}\n"
+                                     "\n"
+                                     "QPushButton{\n"
+                                     "    background:transparent;\n"
+                                     "}\n"
+                                     "\n"
+                                     "QPushButton:pressed{\n"
+                                     "\n"
+                                     "    	background-color: transparent;\n;"
+                                     "border:transparent;"
+                                     "}\n"
+                                     "")
+        self.editBtn.setText("")
+        self.icon6 = QtGui.QIcon()
+        self.icon6.addPixmap(QtGui.QPixmap("resources/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.editBtn.setIcon(self.icon6)
+        self.editBtn.installEventFilter(self)
+        self.editBtn.setIconSize(QtCore.QSize(30, 30))
+        self.editBtn.setToolTip("Modify Device")
+        self.editBtn.setFlat(True)
+        self.editBtn.setObjectName("editBtn")
+        self.gridLayout.addWidget(self.editBtn, 0, 6, 1, 1)
+
         self.connectBtn.setText(_translate("MainWindow", "Connect"))
         if args[3] == "ETHERNET":
             self.setToolTip(_translate("MainWindow",
@@ -194,8 +225,8 @@ background-color: rgba(0,0,0,0%);
                                            args[2], args[3], args[4])))
         else:
             self.setToolTip(_translate("MainWindow",
-                                       "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p></body></html>".format(
-                                           args[2], args[3])))
+                                       "<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> {}</p></body></html>".format(args[0],
+                                           args[3].upper())))
         self.deleteBtn.setToolTip(_translate("MainWindow",
                                              "<html><head/><body><p align=\"center\"><span style=\" font-size:8pt;\">Delete</span></p></body></html>"))
         self.connectBtn.setToolTip(_translate("MainWindow",
@@ -213,6 +244,34 @@ background-color: rgba(0,0,0,0%);
         self.delDialog.uiDialog.DeleteBtn.clicked.connect(self.removeFrame)
         self.delDialog.uiDialog.CancelBtn.clicked.connect(self.delDialog.close)
         self.delDialog.exec_()
+
+    def eventFilter(self, obj, event):
+
+        if obj == self.editBtn and event.type() == QEvent.HoverEnter:
+
+            self.icon6.addPixmap(QtGui.QPixmap("resources/edit (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.editBtn.setIcon(self.icon6)
+            return True
+
+        if obj == self.editBtn and event.type() == QEvent.HoverLeave:
+
+            self.icon6.addPixmap(QtGui.QPixmap("resources/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.editBtn.setIcon(self.icon6)
+            return True
+
+        if obj == self.deleteBtn and event.type() == QEvent.HoverEnter:
+
+            self.icon5.addPixmap(QtGui.QPixmap("resources/delete (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.deleteBtn.setIcon(self.icon5)
+            return True
+
+        if obj == self.deleteBtn and event.type() == QEvent.HoverLeave:
+
+            self.icon5.addPixmap(QtGui.QPixmap("resources/del.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.deleteBtn.setIcon(self.icon5)
+            return True
+
+        return False
 
     def removeFrame(self):
         self.deleteLater()
@@ -270,7 +329,6 @@ class addDeviceDialog(QtWidgets.QDialog):
     def updateComPorts(self, interval):
         self.customSignal = customSignal()
         self.customSignal.comChangedSignal.connect(self.addDeviceSteps)
-        print("here")
         ComPorts = self.fetchComPorts()[1:]
         while True:
             x = self.fetchComPorts()[1:]
@@ -292,7 +350,6 @@ class addDeviceDialog(QtWidgets.QDialog):
         self.threadx = threading.Thread(target=function, args=arguments)
         print("started")
         self.threadx.daemon = True
-        print(sys.getrefcount(self.pageRS232_1))
         self.threadx.start()
 
     def close_Event(self):
@@ -688,3 +745,35 @@ class addDeviceDialog(QtWidgets.QDialog):
         elif self.sender() == self.pageETHERNET_2.PB:
             self.step = 2
             self.uiDialog.centerStackedWidget.setCurrentIndex(1)
+
+
+class noDeviceFrame(QtWidgets.QFrame):
+
+    def __init__(self):
+
+        super().__init__()
+        self.setStyleSheet("QFrame{background:transparent;}")
+        self.setMinimumSize(QtCore.QSize(0, 500))
+        self.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.setObjectName("noDeviceFrame")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.label_2 = QtWidgets.QLabel(self)
+        self.label_2.setText("")
+        self.label_2.setPixmap(QtGui.QPixmap("resources/tyrannosaurus-rex.png"))
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_5.addWidget(self.label_2, 0, 0, 1, 1)
+        self.label_5 = QtWidgets.QLabel(self)
+        self.label_5.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff5500;\">No Devices Detected!</span></p><p align=\"center\"><span style=\" font-size:10pt;\">Make sure devices are connected, turned on, and a suitable Visa library is installed!</span></p></body></html>")
+        self.label_5.setObjectName("label_5")
+        self.gridLayout_5.addWidget(self.label_5, 1, 0, 1, 1)
+        self.setShadow(self.label_5)
+        self.setShadow(self.label_2)
+
+    def setShadow(self, obj):
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        obj.setGraphicsEffect(shadow)

@@ -14,8 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(408, 350)
-        Dialog.setMaximumSize(QtCore.QSize(408, 350))
+        Dialog.resize(418, 408)
         Dialog.setWindowOpacity(1.0)
         Dialog.setStyleSheet("\n"
 "background-color:#ffecd9;")
@@ -24,7 +23,6 @@ class Ui_Dialog(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.MainFrame = QtWidgets.QFrame(Dialog)
         self.MainFrame.setMinimumSize(QtCore.QSize(408, 350))
-        self.MainFrame.setMaximumSize(QtCore.QSize(408, 350))
         self.MainFrame.setStyleSheet("")
         self.MainFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.MainFrame.setFrameShadow(QtWidgets.QFrame.Plain)

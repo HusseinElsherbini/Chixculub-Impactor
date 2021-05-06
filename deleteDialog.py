@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(378, 324)
+        Dialog.resize(410, 333)
         self.MainFrame = QtWidgets.QFrame(Dialog)
         self.MainFrame.setGeometry(QtCore.QRect(15, 14, 370, 300))
         self.MainFrame.setMinimumSize(QtCore.QSize(370, 300))
@@ -149,6 +149,10 @@ class Ui_Dialog(object):
         font.setFamily("Microsoft YaHei UI Light")
         font.setPointSize(11)
         self.label_2.setFont(font)
+        self.label_2.setTextFormat(QtCore.Qt.RichText)
+        self.label_2.setScaledContents(False)
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_2.setWordWrap(False)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_7.addWidget(self.label_2)
         self.frame_4 = QtWidgets.QFrame(self.frame_3)
@@ -221,7 +225,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.label_2.setText(_translate("Dialog", "        Are you sure you want to delete this device?"))
+        self.label_2.setText(_translate("Dialog", "<html><head/><body><p>Are you sure you want to delete this device?</p></body></html>"))
         self.CancelBtn.setText(_translate("Dialog", "Cancel"))
         self.DeleteBtn.setText(_translate("Dialog", "Delete"))
         self.checkBox.setText(_translate("Dialog", "Don\'t show this again"))

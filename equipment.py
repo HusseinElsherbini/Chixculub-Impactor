@@ -3,17 +3,17 @@ import time
 import socket
 
 
-class EquipmentRS232(serial):
+class EquipmentRS232(serial.Serial):
 
     def __init__(self, *args):
-
+        super().__init__()
         self.connectionType = args[0]
         self.portNumber = args[1]
         self.baudRate = args[2]
         self.timeout = args[3]
-        self.channels = args[4]
-        self.addresses = args[5]
-        self.deviceType = args[6]
+        #self.channels = args[4]
+        #self.addresses = args[5]
+        #self.deviceType = args[6]
         self.userInput = ''
         self.ser = serial.Serial(port=self.portNumber,
                                  baudrate=self.baudRate,
@@ -22,6 +22,7 @@ class EquipmentRS232(serial):
                                  bytesize=serial.EIGHTBITS,
                                  timeout=self.timeout)
         self.out = 0
+        print(self.ser.isOpen())
 
     def connect(self, portNumber, baudRate, timeout, deviceType):
 
@@ -38,12 +39,12 @@ class EquipmentRS232(serial):
 
     def send(self, userInput):
 
-        self.userInput += "\r\n"
+        self.userInput += "\n"
         self.ser.reset_input_buffer()
         self.ser.reset_output_buffer()
         result = self.ser.write(self.userInput.encode())
         time.sleep(.1)
-        print(result)
+        #print(result)
         time.sleep(.1)
         return result
 
@@ -54,7 +55,7 @@ class EquipmentRS232(serial):
             self.send('OUT 0')
 
 
-class EquipmentLAN(socket):
+class EquipmentLAN(socket.socket):
 
     def __init__(self, *args):
         self.device = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -86,3 +87,9 @@ class EquipmentLAN(socket):
         time.sleep(.1)
 
 
+
+ard = EquipmentRS232(*["", 'COM3', 115200,  1])
+while True:
+    ard.send("*IDN?")
+    x = ard.ser.readline()
+    print(x)
