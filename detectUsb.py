@@ -7,22 +7,31 @@ from pysetupdi import setupdi
 import serial.tools.list_ports as portsList
 
 class initDevice:
-
+    devices = {}
     def __init__(self):
 
 
-        self.devices = {}
         self.connectedDevices = []
 
 
-    def updateDevicesDB(self,device, present=False):
+    def updateDevicesDB(self,device,devName="",visaHandle="", present=False):
 
         try:
             if present:
-                self.devices[device]['Resource'].open()
+                initDevice.devices[device]['Resource'].open()
+                return
+            if "COM" in devName:
+                dev = self.resourceManager.open_resource(visaHandle)
+                initDevice.devices.update({device: {
+                    'Model Name': 'Device' + ' (COM' + str(visaHandle).rsplit("::")[0][4:] + ')',
+                    'Device Type': 'COM' + str(visaHandle).rsplit("::")[0][4:],
+                    'Connection Type': 'Serial',
+                    'Visa Handle': visaHandle,
+                    'Resource': dev
+                    }})
                 return
             dev = self.resourceManager.open_resource(device)
-            self.devices.update({str(dev.resource_name)[8:12] + str(dev.resource_name)[16:20]: {
+            initDevice.devices.update({str(dev.resource_name)[8:12] + str(dev.resource_name)[16:20]: {
             'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
             'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
             'Connection Type': str(dev.interface_type)[14:],
@@ -44,7 +53,7 @@ class initDevice:
 
 
                 if "ASRL" in str(device):
-                    dev = self.resourceManager.open_resource(device, baud_rate=115200)
+                    dev = self.resourceManager.open_resource(device)
 
                     devs = setupdi.devices(enumerator="USB")
                     x = [port[0] for port in list(portsList.comports())]
@@ -55,7 +64,7 @@ class initDevice:
                             h= h[1][8:12] + h[1][17:]
                             break
 
-                    self.devices.update({h: {
+                    initDevice.devices.update({h: {
                         'Model Name': 'Device' + ' (COM'+ str(device).rsplit("::")[0][4:] + ')',
                         'Device Type': 'COM'+ str(device).rsplit("::")[0][4:] if 'COM' + str(device).rsplit("::")[0][4:] in x else 'PORT_ERROR',
                         'Connection Type': 'Serial',
@@ -65,7 +74,7 @@ class initDevice:
 
                 elif "USB" in str(device):
                     dev = self.resourceManager.open_resource(device)
-                    self.devices.update({str(device)[8:12] + str(device)[16:20]: {
+                    initDevice.devices.update({str(device)[8:12] + str(device)[16:20]: {
                         'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
                         'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
                         'Connection Type': str(dev.interface_type)[14:],
@@ -75,7 +84,7 @@ class initDevice:
 
 
             except Exception as e:
-                print(self.devices)
+                print(initDevice.devices)
                 print(e)
 
 
@@ -89,6 +98,8 @@ class initDevice:
     def vidValidator(self):
         devices = []
         devices_VID_PID = []
+        devNames = []
+        devInfo = {}
         devs = setupdi.devices(enumerator="USB")
 
         for dev in devs:
@@ -105,14 +116,16 @@ class initDevice:
             try:
                 h = x.hardware_id
                 devices_VID_PID.append( h[1][8:12] + h[1][17:])
-
+                devNames.append(x.friendly_name)
+                devInfo.update({h[1][8:12] + h[1][17:]: x.friendly_name})
             except AttributeError:
+                devInfo.update({h[1][8:12] + h[1][17:]: str(x)})
                 pass
-        return devices_VID_PID
+        return devInfo
 
 class device:
 
-    def __init__(self, args):
+    def __init__(self, *args):
 
         self.deviceName = args[0]
         self.VID_PID = args[1]
@@ -121,23 +134,15 @@ class device:
         pass
 
     def open(self):
-
+        initDevice.devices.update({"first": "Two"})
         pass
 
-"""
+
 u = initDevice()
 u.detectDevices()
 
-while True:
-    print(u.resourceManager.list_resources())
-    print(u.vidValidator())
-    if len(u.resourceManager.list_resources()) != 0:
-        break
-    time.sleep(1)
-while True:
-    dev = u.resourceManager.open_resource(u.resourceManager.list_resources()[0])
-    print(dev.query("*IDN?"))
-    time.sleep(2)
-#print(u.devices)
-"""
+print(u.vidValidator())
+
+#print(u.resourceManager.list_resources())
+print(initDevice.devices)
 

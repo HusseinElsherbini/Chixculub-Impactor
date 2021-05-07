@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-from PyQt5.QtCore import QEvent, QPoint, QRegExp
+from PyQt5.QtCore import QEvent, QPoint, QRegExp, Qt
 from PyQt5.QtGui import QRegExpValidator
 import deleteDialog
 import uiFunctions
@@ -761,7 +761,9 @@ class noDeviceFrame(QtWidgets.QFrame):
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.label_2 = QtWidgets.QLabel(self)
         self.label_2.setText("")
-        self.label_2.setPixmap(QtGui.QPixmap("resources/tyrannosaurus-rex.png"))
+        w = self.label_2.height()
+        h = self.label_2.width()
+        self.label_2.setPixmap(QtGui.QPixmap("resources/tyrannosaurus-rex.png")) #scaled(w,h, Qt.KeepAspectRatio)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.gridLayout_5.addWidget(self.label_2, 0, 0, 1, 1)

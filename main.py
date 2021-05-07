@@ -10,7 +10,7 @@ import MainWindow
 import uiFunctions
 import subclasses
 import threading
-import detectUsb
+from detectUsb import initDevice
 from pyvisa import constants
 import random
 import terminal
@@ -50,7 +50,7 @@ class communication(QObject):
 
 class worker(QObject):
 
-    newDeviceSignal = pyqtSignal(str)
+    newDeviceSignal = pyqtSignal(str, str)
     DeviceDisconnectedSignal = pyqtSignal(str, bool)
     removeDeviceSignal = pyqtSignal(str)
     noDevicesSignal = pyqtSignal()
@@ -58,7 +58,7 @@ class worker(QObject):
     def __init__(self, connectedDevices, dataBase, present):
         super().__init__()
         self.dataBase = list(dataBase)
-        self.detectusb = detectUsb.initDevice()
+        self.detectusb = initDevice()
         self.connectedDevices = connectedDevices
         self.present = present
 
@@ -67,24 +67,21 @@ class worker(QObject):
 
         while True:
             d = self.detectusb.vidValidator()
-            for device in d:
+            for device in d.keys():
 
                 try:
                     if (device not in self.connectedDevices) and (device not in self.dataBase):
 
-                        self.newDeviceSignal.emit(device)
-                        #self.lock.wait(timeout=None)
+                        self.newDeviceSignal.emit(device, d[device])
                         self.dataBase.append(device)
                         self.connectedDevices.append(device)
                         self.present = False
 
                     elif (device not in self.connectedDevices) and (device in self.dataBase):
 
-                        self.newDeviceSignal.emit(device)
-                        #self.lock.wait(timeout=None)
+                        self.newDeviceSignal.emit(device, d[device])
                         self.DeviceDisconnectedSignal.emit(device, False)
                         self.connectedDevices.append(device)
-                        #self.lock.wait(timeout=None)
                         self.present = False
 
                 except Exception as e:
@@ -93,7 +90,7 @@ class worker(QObject):
             for device in self.connectedDevices:
 
                 try:
-                    if device not in d:
+                    if device not in d.keys():
 
 
                         self.removeDeviceSignal.emit(device)
@@ -123,7 +120,7 @@ class ChixculubImpactor(QMainWindow):
         super().__init__()
         self.connectedDevices = []
         ErrorLog = open('Error Log.txt', 'w')
-        self.devices = detectUsb.initDevice()
+        self.devices = initDevice()
         self.devices.detectDevices()
         self.comSignal = Signal()
         print(self.devices.resourceManager.list_opened_resources())
@@ -159,10 +156,10 @@ class ChixculubImpactor(QMainWindow):
     def enumerateDevices(self):
 
         i = 1
-        for Device in self.devices.devices.keys():
+        for Device in initDevice.devices.keys():
 
-            self.addDeviceFrame([self.devices.devices[Device]['Model Name'], "Device" + str(i) + '.png', "",
-                                 self.devices.devices[Device]['Connection Type'], "", Device])
+            self.addDeviceFrame([initDevice.devices[Device]['Model Name'], "Device" + str(i) + '.png', "",
+                                 initDevice.devices[Device]['Connection Type'], "", Device])
             self.connectedDevices.append(Device)
             i += 1
 
@@ -235,10 +232,10 @@ class ChixculubImpactor(QMainWindow):
         return newDevice
 
     def removeDeviceFrame(self, deviceName):
-        device = self.devices.devices[deviceName]['Model Name']
+        device = initDevice.devices[deviceName]['Model Name']
         try:
             self.ui.frame_13.findChild(QFrame, device).deleteLater()
-            self.devices.devices[deviceName]['Resource'].close()
+            initDevice.devices[deviceName]['Resource'].close()
             print(self.devices.resourceManager.list_opened_resources())
         except Exception as e:
             print(e)
@@ -246,7 +243,7 @@ class ChixculubImpactor(QMainWindow):
 
     def installInstrumentHandler(self, dev):
 
-        instr = self.devices.devices[dev]['Resource']
+        instr = initDevice.devices[dev]['Resource']
         instr.called = False
         eventType = constants.EventType.service_request
         eventMech = constants.EventMechanism.queue
@@ -280,9 +277,9 @@ class ChixculubImpactor(QMainWindow):
             term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
             try:
                 if msg[-1] == "?":
-                    term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(self.devices.devices[VID_PID]['Resource'].query(msg)))
+                    term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(initDevice.devices[VID_PID]['Resource'].query(msg)))
                 else:
-                    self.devices.devices[VID_PID]['Resource'].write(msg)
+                    initDevice.devices[VID_PID]['Resource'].write(msg)
             except Exception as e:
                 term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(e))
 
@@ -295,21 +292,24 @@ class ChixculubImpactor(QMainWindow):
 
         self.app.closeAllWindows()
 
-    def add(self, device):
+    def add(self, device, devName):
 
         if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is not None:
             self.ui.frame_13.findChild(QFrame, "noDeviceFrame").deleteLater()
 
-        if device not in self.devices.devices.keys():
+        if device not in initDevice.devices.keys():
 
             for i in self.devices.resourceManager.list_resources():
-                if device == str(i)[8:12] + str(i)[16:20]:
+                if "ASRL" in i:
+                    self.devices.updateDevicesDB(device, devName,i)
+
+                elif device == str(i)[8:12] + str(i)[16:20]:
 
                     self.devices.updateDevicesDB(i)
         else:
             self.devices.updateDevicesDB(device, present=True)
 
-        arguments = [self.devices.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",self.devices.devices[device]['Connection Type'], "",device]
+        arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
         newDevice = subclasses.deviceFrame(*arguments)
         newDevice.connectBtn.clicked.connect(self.addTerminal)
         newDevice.editBtn.clicked.connect(self.modifyDialog)
@@ -319,7 +319,7 @@ class ChixculubImpactor(QMainWindow):
 
     def disableTerminal(self, tab, disconnected):
 
-        term = self.ui.tabWidget.findChild(QtWidgets.QWidget,self.devices.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
+        term = self.ui.tabWidget.findChild(QtWidgets.QWidget,initDevice.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
 
         if term is not None:
             try:
@@ -353,7 +353,7 @@ class ChixculubImpactor(QMainWindow):
 
     def communicationThread(self):
         self.comThread = QThread()
-        self.comWorker = communication(self.devices.devices)
+        self.comWorker = communication(initDevice.devices)
         self.comWorker.moveToThread(self.comThread)
         self.comWorker.messageRcvdSignal.connect(self.appendMsg)
         self.comSignal.comSignal.connect(self.comWorker.processMsg)
@@ -369,22 +369,21 @@ class ChixculubImpactor(QMainWindow):
             dev = self.ui.frame_13.findChild(QFrame, devName)
             if data['Device Name'] != " ":
                 dev.deviceName.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">{}</span></p></body></html>".format(data['Device Name']))
-
             if data["Timeout"] != " ":
                 VID = dev.VID_PID
-                self.devices.devices[VID]['Resource'].timeout = int(data['Timeout'])
+                initDevice.devices[VID]['Resource'].timeout = int(data['Timeout'])
+                print(initDevice.devices[VID]['Resource'])
             if data["Baud Rate"] != " ":
                 VID = dev.VID_PID
-                self.devices.devices[VID]['Resource'].baud_rate = int(data['Baud Rate'])
+                initDevice.devices[VID]['Resource'].baud_rate = int(data['Baud Rate'])
             if data["Data Bits"] != " ":
                 VID = dev.VID_PID
-                self.devices.devices[VID]['Resource'].data_bits = int(data['Data Bits'])
+                initDevice.devices[VID]['Resource'].data_bits = int(data['Data Bits'])
             if data["Parity Bit"] != " ":
                 VID = dev.VID_PID
-                self.devices.devices[VID]['Resource'].parity_bit = data['Parity Bit']
-
-
-
+                initDevice.devices[VID]['Resource'].parity_bit = data['Parity Bit']
+            initDevice.devices[VID]['Resource'].close()
+            initDevice.devices[VID]['Resource'].open()
         else:
             dev = self.ui.frame_13.findChild(QFrame, devName)
             if data['Device Name'] != "":
@@ -392,12 +391,14 @@ class ChixculubImpactor(QMainWindow):
 
             if data["Timeout"] != "":
                 VID = dev.VID_PID
-                self.devices.devices[VID]['Resource'].timeout = int(data['Timeout'])
+                initDevice.devices[VID]['Resource'].timeout = int(data['Timeout'])
+                print(initDevice.devices[VID]['Resource'].timeout)
+
 
     def deviceChangeThread(self):
 
         self.thread = QtCore.QThread()
-        self.worker = worker(self.connectedDevices, self.devices.devices.keys(), self.present)
+        self.worker = worker(self.connectedDevices, initDevice.devices.keys(), self.present)
         self.worker.moveToThread(self.thread)
         self.worker.newDeviceSignal.connect(self.add)
         self.worker.noDevicesSignal.connect(self.addNoDevicesPage)

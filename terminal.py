@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QTextEdit, QListWidget
 from PyQt5.QtGui import QPainter
 from PyQt5.QtCore import QEvent, QThread, QObject, pyqtSignal
 from PyQt5.Qt import QTextCursor
-
+import detectUsb
 
 class Signal(QObject):
 
@@ -69,6 +69,7 @@ class editor(QTextEdit):
         else:
             self.userInput.append(input)
 
+        print(detectUsb.initDevice.devices)
         self.msgSignal.customSignal.emit(input, self.VID_PID, self.terminalName)
 
 

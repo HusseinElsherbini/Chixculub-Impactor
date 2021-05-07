@@ -36,9 +36,8 @@ class modifySerialDialog(QtWidgets.QDialog):
         self.dialogFinishedSignal = mySignal()
         self.uiDialog.TimeoutLE.setValidator(validator)
         self.data = {}
-
-
         self.ConnectBtns()
+
     def dialogTitleBar(self):
         self.uiDialog.closeBtn.clicked.connect(self.close)
         self.uiDialog.minBtn.clicked.connect(lambda: self.showMinimized())
