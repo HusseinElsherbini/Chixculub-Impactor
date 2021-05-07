@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UsbDialog.ui'
+# Form implementation generated from reading ui file 'addDeviceToScript.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -11,17 +11,17 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_UsbModDialog(object):
-    def setupUi(self, UsbModDialog):
-        UsbModDialog.setObjectName("UsbModDialog")
-        UsbModDialog.resize(408, 350)
-        UsbModDialog.setStyleSheet("\n"
+class Ui_DeviceInScript(object):
+    def setupUi(self, DeviceInScript):
+        DeviceInScript.setObjectName("DeviceInScript")
+        DeviceInScript.resize(408, 350)
+        DeviceInScript.setStyleSheet("\n"
 "background-color:#ffecd9;")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(UsbModDialog)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(DeviceInScript)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.MainFrame = QtWidgets.QFrame(UsbModDialog)
+        self.MainFrame = QtWidgets.QFrame(DeviceInScript)
         self.MainFrame.setMinimumSize(QtCore.QSize(408, 350))
         self.MainFrame.setStyleSheet("")
         self.MainFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -126,120 +126,6 @@ class Ui_UsbModDialog(object):
         self.statusLabel.setIndent(0)
         self.statusLabel.setObjectName("statusLabel")
         self.verticalLayout_3.addWidget(self.statusLabel)
-        self.DeviceNameFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
-        self.DeviceNameFrame.setMinimumSize(QtCore.QSize(0, 30))
-        self.DeviceNameFrame.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.DeviceNameFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.DeviceNameFrame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.DeviceNameFrame.setObjectName("DeviceNameFrame")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.DeviceNameFrame)
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_4.setSpacing(0)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.frame_7 = QtWidgets.QFrame(self.DeviceNameFrame)
-        self.frame_7.setStyleSheet("QFrame{\n"
-"\n"
-"    background:transparent;\n"
-"}")
-        self.frame_7.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_7.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_7.setObjectName("frame_7")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_7)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_3.setSpacing(0)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem)
-        self.DeviceNameLE = QtWidgets.QLineEdit(self.frame_7)
-        self.DeviceNameLE.setMinimumSize(QtCore.QSize(300, 30))
-        self.DeviceNameLE.setMaximumSize(QtCore.QSize(300, 30))
-        self.DeviceNameLE.setStyleSheet("QLineEdit{\n"
-"    border:transparent;\n"
-"    border-bottom: 1px solid black;\n"
-"    font: 14px;\n"
-"\n"
-"}\n"
-"\n"
-"\n"
-"QLineEdit:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
-"    width: 14px;\n"
-"    height: 14px;\n"
-"}\n"
-"\n"
-"QLineEdit QAbstractItemView {\n"
-"\n"
-"    border: 2px solid darkgray;\n"
-"    selection-background-color: rgb(174, 255, 193);\n"
-"    selection-color: black;\n"
-"    background-color: white;\n"
-"\n"
-"}")
-        self.DeviceNameLE.setText("")
-        self.DeviceNameLE.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
-        self.DeviceNameLE.setClearButtonEnabled(True)
-        self.DeviceNameLE.setObjectName("DeviceNameLE")
-        self.horizontalLayout_3.addWidget(self.DeviceNameLE)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem1)
-        self.verticalLayout_4.addWidget(self.frame_7)
-        self.verticalLayout_3.addWidget(self.DeviceNameFrame)
-        self.DeviceTimeoutFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
-        self.DeviceTimeoutFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.DeviceTimeoutFrame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.DeviceTimeoutFrame.setObjectName("DeviceTimeoutFrame")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.DeviceTimeoutFrame)
-        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_5.setSpacing(0)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.frame_8 = QtWidgets.QFrame(self.DeviceTimeoutFrame)
-        self.frame_8.setStyleSheet("QFrame{\n"
-"\n"
-"    background:transparent;\n"
-"}")
-        self.frame_8.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_8.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_8.setObjectName("frame_8")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.frame_8)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setSpacing(0)
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem2)
-        self.DeviceTimeoutLE = QtWidgets.QLineEdit(self.frame_8)
-        self.DeviceTimeoutLE.setMinimumSize(QtCore.QSize(300, 30))
-        self.DeviceTimeoutLE.setMaximumSize(QtCore.QSize(300, 30))
-        self.DeviceTimeoutLE.setStyleSheet("QLineEdit{\n"
-"    border:transparent;\n"
-"    border-bottom: 1px solid black;\n"
-"    font: 14px;\n"
-"\n"
-"}\n"
-"\n"
-"\n"
-"QLineEdit:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
-"    width: 14px;\n"
-"    height: 14px;\n"
-"}\n"
-"\n"
-"QLineEdit QAbstractItemView {\n"
-"\n"
-"    border: 2px solid darkgray;\n"
-"    selection-background-color: rgb(174, 255, 193);\n"
-"    selection-color: black;\n"
-"    background-color: white;\n"
-"\n"
-"}")
-        self.DeviceTimeoutLE.setText("")
-        self.DeviceTimeoutLE.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
-        self.DeviceTimeoutLE.setClearButtonEnabled(True)
-        self.DeviceTimeoutLE.setObjectName("DeviceTimeoutLE")
-        self.horizontalLayout_5.addWidget(self.DeviceTimeoutLE)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem3)
-        self.verticalLayout_5.addWidget(self.frame_8)
-        self.verticalLayout_3.addWidget(self.DeviceTimeoutFrame)
         self.DeviceTypeFrame_2 = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.DeviceTypeFrame_2.setMinimumSize(QtCore.QSize(0, 30))
         self.DeviceTypeFrame_2.setMaximumSize(QtCore.QSize(16777215, 30))
@@ -262,18 +148,18 @@ class Ui_UsbModDialog(object):
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem4)
-        self.DeviceTypeCB = QtWidgets.QComboBox(self.frame_4)
-        self.DeviceTypeCB.setMinimumSize(QtCore.QSize(300, 30))
-        self.DeviceTypeCB.setMaximumSize(QtCore.QSize(300, 30))
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem)
+        self.DeviceCB = QtWidgets.QComboBox(self.frame_4)
+        self.DeviceCB.setMinimumSize(QtCore.QSize(300, 30))
+        self.DeviceCB.setMaximumSize(QtCore.QSize(300, 30))
         font = QtGui.QFont()
         font.setPointSize(-1)
         font.setBold(False)
         font.setItalic(False)
         font.setWeight(50)
-        self.DeviceTypeCB.setFont(font)
-        self.DeviceTypeCB.setStyleSheet("QComboBox{\n"
+        self.DeviceCB.setFont(font)
+        self.DeviceCB.setStyleSheet("QComboBox{\n"
 "    border:transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
@@ -296,28 +182,16 @@ class Ui_UsbModDialog(object):
 "\n"
 "}\n"
 "")
-        self.DeviceTypeCB.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.DeviceTypeCB.setObjectName("DeviceTypeCB")
-        self.DeviceTypeCB.addItem("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceTypeCB.addItem(icon2, "")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceTypeCB.addItem(icon3, "")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceTypeCB.addItem(icon4, "")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/Device3.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DeviceTypeCB.addItem(icon5, "")
-        self.horizontalLayout_9.addWidget(self.DeviceTypeCB)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem5)
+        self.DeviceCB.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.DeviceCB.setObjectName("DeviceCB")
+        self.DeviceCB.addItem("")
+        self.horizontalLayout_9.addWidget(self.DeviceCB)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem1)
         self.verticalLayout_6.addWidget(self.frame_4)
         self.verticalLayout_3.addWidget(self.DeviceTypeFrame_2)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_3.addItem(spacerItem6)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem2)
         self.frame_2 = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.frame_2.setMinimumSize(QtCore.QSize(0, 50))
         self.frame_2.setStyleSheet("")
@@ -379,18 +253,12 @@ class Ui_UsbModDialog(object):
         self.verticalLayout.addWidget(self.centerStackedWidget)
         self.verticalLayout_2.addWidget(self.MainFrame)
 
-        self.retranslateUi(UsbModDialog)
+        self.retranslateUi(DeviceInScript)
         self.centerStackedWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(UsbModDialog)
+        QtCore.QMetaObject.connectSlotsByName(DeviceInScript)
 
-    def retranslateUi(self, UsbModDialog):
+    def retranslateUi(self, DeviceInScript):
         _translate = QtCore.QCoreApplication.translate
-        UsbModDialog.setWindowTitle(_translate("UsbModDialog", "Dialog"))
-        self.DeviceNameLE.setPlaceholderText(_translate("UsbModDialog", "Enter Device Name (optional)"))
-        self.DeviceTimeoutLE.setPlaceholderText(_translate("UsbModDialog", "Enter read timeout (milliseconds)"))
-        self.DeviceTypeCB.setItemText(0, _translate("UsbModDialog", "Select Device (optional)"))
-        self.DeviceTypeCB.setItemText(1, _translate("UsbModDialog", "Power Supply"))
-        self.DeviceTypeCB.setItemText(2, _translate("UsbModDialog", "Digital Multimeter"))
-        self.DeviceTypeCB.setItemText(3, _translate("UsbModDialog", "Electronic Load"))
-        self.DeviceTypeCB.setItemText(4, _translate("UsbModDialog", "Oscilloscope"))
-        self.ConfirmBtn.setText(_translate("UsbModDialog", "Confirm"))
+        DeviceInScript.setWindowTitle(_translate("DeviceInScript", "Dialog"))
+        self.DeviceCB.setItemText(0, _translate("DeviceInScript", "Select Device "))
+        self.ConfirmBtn.setText(_translate("DeviceInScript", "Confirm"))

@@ -1,9 +1,9 @@
-from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QTextEdit, QListWidget
-from PyQt5.QtGui import QPainter
-from PyQt5.QtCore import QEvent, QThread, QObject, pyqtSignal
+from PyQt5.QtCore import QEvent, QObject, pyqtSignal
 from PyQt5.Qt import QTextCursor
 import detectUsb
+import DeviceInScript
 
 class Signal(QObject):
 
@@ -87,16 +87,20 @@ class script(QTextEdit):
 
         super().__init__(frame)
 
+
 class deviceList(QListWidget):
 
-    def __init__(self, frame, connectedDevices):
+    def __init__(self, frame):
         super().__init__(frame)
-        self.availableDevices = connectedDevices
 
-    def appendItems(self):
+    def appendItems(self, items):
 
-        for device in self.availableDevices:
-            self.addItem()
+        for device in items:
+            self.addItem(device)
+
+    def appendItem(self, item):
+
+        self.addItem(item)
 
 
 class terminal(QtWidgets.QWidget):
@@ -227,6 +231,7 @@ class terminal(QtWidgets.QWidget):
         self.horizontalLayout_14.addWidget(self.frame_22)
         self.verticalLayout_15.addWidget(self.frame_4)
         self.frame_23 = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_14.addWidget(self.frame_21)
         self.frame_23.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_23.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_23.setObjectName("frame_23")
@@ -275,18 +280,23 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_20.setSpacing(0)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
-        self.textEdit = QtWidgets.QTextEdit(self.frame_24)
-        self.textEdit.setFont(font)
-        self.textEdit.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.textEdit.setCursorWidth(10)
-        self.textEdit.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.textEdit.setObjectName("textEdit")
-        self.textEdit.setStyleSheet("\n"
+        self.scriptArea = QtWidgets.QTextEdit(self.frame_24)
+        self.scriptArea.setFont(font)
+        self.scriptArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scriptArea.setCursorWidth(10)
+        self.scriptArea.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.scriptArea.setObjectName("textEdit")
+        self.scriptArea.setStyleSheet("\n"
                                     "QTextEdit{\n"
                                     "border:1px solid #AFACAC;\n"
                                     "background-color: #FFFFFF\n"
                                     "}")
-        self.verticalLayout_20.addWidget(self.textEdit)
+        self.verticalLayout_20.addWidget(self.scriptArea)
+        self.scriptArea.setPlaceholderText("Script format\n"
+
+                                           "Loops : # number of desired loops, use keyword 'Loops:' followed by a number\n"
+                                           "Name of Device as it appears in list : SCPI command "
+                                           "")
         self.gridLayout_5.addWidget(self.frame_24, 0, 0, 1, 1)
         self.frame_25 = QtWidgets.QFrame(self.page_2)
         self.frame_25.setMaximumSize(QtCore.QSize(120, 16777215))
@@ -438,7 +448,9 @@ class terminal(QtWidgets.QWidget):
         self.addDeviceBtn.setIcon(icon11)
         self.addDeviceBtn.setIconSize(QtCore.QSize(24, 24))
         self.addDeviceBtn.setFlat(True)
-        self.addDeviceBtn.setObjectName("pushButton_6")
+        self.addDeviceBtn.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.addDeviceBtn.customContextMenuRequested.connect(self.on_context_menu)
+        self.addDeviceBtn.setObjectName("addDeviceBtn")
         self.verticalLayout_25.addWidget(self.addDeviceBtn)
         self.horizontalLayout_17.addWidget(self.frame_30)
         self.frame_29 = QtWidgets.QFrame(self.frame_28)
@@ -474,7 +486,8 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_24.addWidget(self.removeDeviceBtn)
         self.horizontalLayout_17.addWidget(self.frame_29)
         self.verticalLayout_23.addWidget(self.frame_28)
-        self.listWidget = QtWidgets.QListWidget(self.frame_27)
+        self.listWidget = deviceList(self.frame_27)
+        self.listWidget.addItem(detectUsb.initDevice.devices[self.VID_PID]['Model Name'])
         self.listWidget.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Plain)
         self.listWidget.setObjectName("listWidget")
@@ -484,6 +497,16 @@ class terminal(QtWidgets.QWidget):
                                       "background-color: #FFFFFF;\n"
                                       "}")
         self.verticalLayout_23.addWidget(self.listWidget)
+        self.timeSensitiveCheckBox = QtWidgets.QCheckBox(self.frame_27)
+        self.timeSensitiveCheckBox.setAutoFillBackground(False)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap("resources/dinosaur.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.timeSensitiveCheckBox.setIcon(icon13)
+        self.timeSensitiveCheckBox.setTristate(False)
+        self.timeSensitiveCheckBox.setObjectName("timeSensitiveCheckBox")
+        self.timeSensitiveCheckBox.setText("Time sensitive")
+        self.timeSensitiveCheckBox.setToolTip("Application will not wait for read back from instrument!")
+        self.verticalLayout_23.addWidget(self.timeSensitiveCheckBox)
         self.gridLayout_5.addWidget(self.frame_27, 0, 1, 1, 1)
         self.stackedWidget_2.addWidget(self.page_2)
         self.verticalLayout_18.addWidget(self.stackedWidget_2)
@@ -512,25 +535,17 @@ class terminal(QtWidgets.QWidget):
         self.comboBox.lineEdit().setReadOnly(True)
         self.pauseBtn.setToolTip("Pause Script")
         self.addDeviceBtn.setToolTip("Add device to script")
+        self.popMenu = QtWidgets.QMenu(self)
         self.stopBtn.setToolTip("Stop script")
         self.runScriptBtn.setToolTip("Run script")
         self.removeDeviceBtn.setToolTip("Remove device from script")
         self.readBack.setReadOnly(True)
-        '''
-        self.setShadow(self.terminalEdit)
-        self.setShadow(self.textEdit)
-        self.setShadow(self.addDeviceBtn)
-        self.setShadow(self.pauseBtn)
-        self.setShadow(self.stopBtn)
-        self.setShadow(self.removeDeviceBtn)
-        self.setShadow(self.runScriptBtn)
-        self.setShadow(self.comboBox)
-        '''
         self.connectBtns()
 
     def connectBtns(self):
 
         self.comboBox.currentTextChanged.connect(self.changePage)
+        self.addDeviceBtn.clicked.connect(self.addDeviceToList)
 
     def changePage(self):
 
@@ -544,3 +559,14 @@ class terminal(QtWidgets.QWidget):
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(25)
         object.setGraphicsEffect(shadow)
+
+    def on_context_menu(self, point):
+
+        for dev in detectUsb.initDevice.connectedDevices:
+            self.popMenu.addAction(QtGui.QAction(detectUsb.initDevice.devices[dev]['Model Name'], self))
+
+    def addDeviceToList(self):
+
+        addDeviceDialog = DeviceInScript.deviceInScriptDialog(detectUsb.initDevice.connectedDevices, self.VID_PID)
+        addDeviceDialog.addItems(detectUsb.initDevice.connectedDevices)
+        addDeviceDialog.exec_()

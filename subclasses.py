@@ -1,16 +1,15 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-from PyQt5.QtCore import QEvent, QPoint, QRegExp, Qt
+from PyQt5.QtCore import QEvent, QPoint, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 import deleteDialog
-import uiFunctions
 import Dialog
 import dialogAB
 import serial.tools.list_ports as portsList
 import threading
 import time
 from PyQt5.QtCore import pyqtSignal, QObject
-import sys
+
 
 
 ########################################################################################################################
@@ -334,21 +333,20 @@ class addDeviceDialog(QtWidgets.QDialog):
             x = self.fetchComPorts()[1:]
 
             if ComPorts != x:
-                print("different")
-                print("com ports: {}".format(ComPorts))
-                print("x: {}".format(x))
+
+                #print("com ports: {}".format(ComPorts))
+                #print("x: {}".format(x))
                 self.customSignal.comChangedSignal.emit()
                 ComPorts = x
             elif self.uiDialog.centerStackedWidget.currentWidget() != self.pageRS232_1:
                 break
 
             time.sleep(interval)
-        print("ended")
+
 
     def startThread(self, function, arguments):
 
         self.threadx = threading.Thread(target=function, args=arguments)
-        print("started")
         self.threadx.daemon = True
         self.threadx.start()
 
@@ -517,7 +515,7 @@ class addDeviceDialog(QtWidgets.QDialog):
 
 
                 else:
-                    print(self.uiDialog.ConTypeCB.currentText())
+
                     if self.uiDialog.ConTypeCB.currentText() == "RS232":
 
                         if self.device["Connection Type"] != "RS232":
@@ -561,7 +559,7 @@ class addDeviceDialog(QtWidgets.QDialog):
                             self.device["Device Type"] = self.uiDialog.DeviceTypeCB.currentText()
                             self.device["Connection Type"] = self.uiDialog.ConTypeCB.currentText()
                             for x in range(1, self.uiDialog.centerStackedWidget.count()):
-                                print(self.uiDialog.centerStackedWidget.count())
+
                                 self.uiDialog.centerStackedWidget.widget(x).deleteLater()
 
                             self.ipFormat = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
@@ -627,7 +625,6 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.device["Baud Rate"] = self.pageRS232_1.CB1.currentText()
                     self.device["COM PORT"] = self.pageRS232_1.CB2.currentText()
                     self.device["Data size"] = self.pageRS232_1.CB3.currentText()
-                    print(self.device.keys())
                     self.step = 3
                     self.pageRS232_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "CB",
                                                                    "", "CB", "")
@@ -675,7 +672,6 @@ class addDeviceDialog(QtWidgets.QDialog):
                     self.device["IP ADDRESS"] = self.pageETHERNET_1.LE1.text()
                     self.device["Address Family"] = self.pageETHERNET_1.CB2.currentText()
                     self.device["Socket Type"] = self.pageETHERNET_1.CB3.currentText()
-                    print(self.device.keys())
                     self.pageETHERNET_2 = dialogAB.dialogAbstractPage("LE", "Enter Timeout (optional, Default:None)", "LE",
                                                                  "Enter Port Number", "", "")
                     self.PortnNumberFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
@@ -717,8 +713,6 @@ class addDeviceDialog(QtWidgets.QDialog):
             else:
                 self.device["Stop Bits"] = ""
 
-            for x in self.device.keys():
-                print("%s : %s " % (x, self.device[x]))
             self.close()
 
         elif self.sender() == self.pageRS232_2.PB:
@@ -736,8 +730,6 @@ class addDeviceDialog(QtWidgets.QDialog):
 
                 self.device["Port Number"] = self.pageETHERNET_2.LE2.text()
 
-                for x in self.device.keys():
-                    print("%s : %s " % (x, self.device[x]))
                 self.close()
             else:
                 self.pageETHERNET_2.statusLabel.setText("Please Enter a Port Number")

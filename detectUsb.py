@@ -1,18 +1,15 @@
 import pyvisa
-from pyvisa import attributes, constants
-import sys
+from pyvisa import attributes
 import threading
-import time
 from pysetupdi import setupdi
 import serial.tools.list_ports as portsList
 
 class initDevice:
     devices = {}
+    connectedDevices = []
+
     def __init__(self):
-
-
-        self.connectedDevices = []
-
+        pass
 
     def updateDevicesDB(self,device,devName="",visaHandle="", present=False):
 
@@ -48,7 +45,7 @@ class initDevice:
 
         self.resourceManager = pyvisa.ResourceManager()
         for device in self.resourceManager.list_resources():
-            print(str(device))
+
             try:
 
 
@@ -84,7 +81,7 @@ class initDevice:
 
 
             except Exception as e:
-                print(initDevice.devices)
+
                 print(e)
 
 
@@ -138,11 +135,5 @@ class device:
         pass
 
 
-u = initDevice()
-u.detectDevices()
 
-print(u.vidValidator())
-
-#print(u.resourceManager.list_resources())
-print(initDevice.devices)
 

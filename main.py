@@ -1,17 +1,11 @@
 import sys
-import time
-import serial.tools.list_ports as portsList
-from pyvisa.constants import StopBits, Parity
-from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, QEvent, QObject, pyqtSignal, QThread, pyqtSlot, QMutex
 from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect, QFrame
-import Dialog
 import MainWindow
 import uiFunctions
 import subclasses
-import threading
 from detectUsb import initDevice
-from pyvisa import constants
 import random
 import terminal
 import modifyDialog
@@ -102,15 +96,10 @@ class worker(QObject):
                 except Exception as e:
                         print(e)
 
-
-
             if len(self.connectedDevices) == 0 and self.present is not True:
 
                 self.noDevicesSignal.emit()
-                #self.lock.wait(timeout=None)
                 self.present = True
-
-            #time.sleep(5)
 
 
 class ChixculubImpactor(QMainWindow):
@@ -118,14 +107,11 @@ class ChixculubImpactor(QMainWindow):
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
         super().__init__()
-        self.connectedDevices = []
         ErrorLog = open('Error Log.txt', 'w')
         self.devices = initDevice()
         self.devices.detectDevices()
         self.comSignal = Signal()
-        print(self.devices.resourceManager.list_opened_resources())
         self.initUI()
-        self.ComPorts = [port[0] for port in list(portsList.comports())]
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -137,7 +123,6 @@ class ChixculubImpactor(QMainWindow):
         self.installEventFilters()
         self.activateButtons()
         self.present = False
-        self.watchedComPorts = []
         self.enumerateDevices()
         self.deviceChangeThread()
         self.communicationThread()
@@ -160,10 +145,10 @@ class ChixculubImpactor(QMainWindow):
 
             self.addDeviceFrame([initDevice.devices[Device]['Model Name'], "Device" + str(i) + '.png', "",
                                  initDevice.devices[Device]['Connection Type'], "", Device])
-            self.connectedDevices.append(Device)
+            initDevice.connectedDevices.append(Device)
             i += 1
 
-        if len(self.connectedDevices) == 0:
+        if len(initDevice.connectedDevices) == 0:
             if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") == None:
                 noDeviceFrame = subclasses.noDeviceFrame()
                 self.ui.verticalLayout_9.addWidget(noDeviceFrame)
@@ -173,7 +158,7 @@ class ChixculubImpactor(QMainWindow):
 
         self.ui = MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
-        # self.resize(self.app.desktop().geometry().width()/4, self.app.desktop().geometry().height()/2)
+        #self.resize(self.app.desktop().geometry().width(), self.app.desktop().geometry().height())
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
         self.ui.tabWidget.tabBar().setTabButton(0, QtWidgets.QTabBar.RightSide, None)
@@ -236,25 +221,11 @@ class ChixculubImpactor(QMainWindow):
         try:
             self.ui.frame_13.findChild(QFrame, device).deleteLater()
             initDevice.devices[deviceName]['Resource'].close()
-            print(self.devices.resourceManager.list_opened_resources())
+
         except Exception as e:
             print(e)
-        #self.lock.set()
 
-    def installInstrumentHandler(self, dev):
 
-        instr = initDevice.devices[dev]['Resource']
-        instr.called = False
-        eventType = constants.EventType.service_request
-        eventMech = constants.EventMechanism.queue
-        wrapped = instr.wrap_handler(self.handle_event)
-        user_handle = instr.install_handler(eventType, wrapped, 42)
-        instr.enable_event(eventType, eventMech, None)
-        instr.write("*SRE 1")
-
-    def handle_event(self, resource, event, user_handle):
-        resource.called = True
-        print(f"Handled event {event.event_type} on {resource}")
 
     def addTerminal(self):
 
@@ -286,9 +257,11 @@ class ChixculubImpactor(QMainWindow):
     def closeWindow(self):
 
         for device in self.devices.resourceManager.list_opened_resources():
-            print(self.devices.resourceManager.list_opened_resources())
-            device.close()
-            print(self.devices.resourceManager.list_opened_resources())
+            try:
+                device.close()
+            except Exception as e:
+                print(e)
+
 
         self.app.closeAllWindows()
 
@@ -372,7 +345,7 @@ class ChixculubImpactor(QMainWindow):
             if data["Timeout"] != " ":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].timeout = int(data['Timeout'])
-                print(initDevice.devices[VID]['Resource'])
+
             if data["Baud Rate"] != " ":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].baud_rate = int(data['Baud Rate'])
@@ -392,13 +365,11 @@ class ChixculubImpactor(QMainWindow):
             if data["Timeout"] != "":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].timeout = int(data['Timeout'])
-                print(initDevice.devices[VID]['Resource'].timeout)
-
 
     def deviceChangeThread(self):
 
         self.thread = QtCore.QThread()
-        self.worker = worker(self.connectedDevices, initDevice.devices.keys(), self.present)
+        self.worker = worker(initDevice.connectedDevices, initDevice.devices.keys(), self.present)
         self.worker.moveToThread(self.thread)
         self.worker.newDeviceSignal.connect(self.add)
         self.worker.noDevicesSignal.connect(self.addNoDevicesPage)
@@ -408,8 +379,6 @@ class ChixculubImpactor(QMainWindow):
         self.thread.start()
 
     def modifyDialog(self):
-
-        print(self.sender().parent().objectName())
 
         if "COM" in self.sender().parent().objectName():
             self.modify_dialog = modifyDialog.modifySerialDialog(*[self.sender().parent().objectName()])

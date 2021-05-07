@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1463</width>
-    <height>804</height>
+    <width>1113</width>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1091,8 +1091,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>1381</width>
-                             <height>691</height>
+                             <width>1031</width>
+                             <height>661</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1479,8 +1479,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>1363</width>
-                         <height>673</height>
+                         <width>1013</width>
+                         <height>643</height>
                         </rect>
                        </property>
                        <property name="styleSheet">
@@ -2387,6 +2387,23 @@ background-color: #FFFFFF;
                                     </property>
                                     <property name="frameShadow">
                                      <enum>QFrame::Plain</enum>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QCheckBox" name="timeSensitiveCheckBox">
+                                    <property name="autoFillBackground">
+                                     <bool>false</bool>
+                                    </property>
+                                    <property name="text">
+                                     <string>Time sensitive</string>
+                                    </property>
+                                    <property name="icon">
+                                     <iconset>
+                                      <normaloff>resources/dinosaur.png</normaloff>resources/dinosaur.png</iconset>
+                                    </property>
+                                    <property name="tristate">
+                                     <bool>false</bool>
                                     </property>
                                    </widget>
                                   </item>

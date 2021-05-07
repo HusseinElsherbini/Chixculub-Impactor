@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1463, 804)
+        MainWindow.resize(1113, 773)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -478,7 +478,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1381, 691))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1031, 661))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -663,7 +663,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1363, 673))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1013, 643))
         self.scrollAreaWidgetContents_2.setStyleSheet("background: transparent;")
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
@@ -1030,6 +1030,14 @@ class Ui_MainWindow(object):
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Plain)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout_23.addWidget(self.listWidget)
+        self.timeSensitiveCheckBox = QtWidgets.QCheckBox(self.frame_27)
+        self.timeSensitiveCheckBox.setAutoFillBackground(False)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap("resources/dinosaur.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.timeSensitiveCheckBox.setIcon(icon13)
+        self.timeSensitiveCheckBox.setTristate(False)
+        self.timeSensitiveCheckBox.setObjectName("timeSensitiveCheckBox")
+        self.verticalLayout_23.addWidget(self.timeSensitiveCheckBox)
         self.gridLayout_5.addWidget(self.frame_27, 0, 1, 1, 1)
         self.stackedWidget_2.addWidget(self.page_2)
         self.verticalLayout_18.addWidget(self.stackedWidget_2)
@@ -1047,9 +1055,9 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
         self.gridLayout_4.addWidget(self.scrollArea_2, 0, 0, 1, 1)
         self.gridLayout_3.addWidget(self.frame_3, 0, 0, 1, 1)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.tabWidget.addTab(self.Terminal, icon13, "")
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.Terminal, icon14, "")
         self.verticalLayout_6.addWidget(self.tabWidget)
         self.bottomFrame = QtWidgets.QFrame(self.eastFrame)
         self.bottomFrame.setMinimumSize(QtCore.QSize(0, 20))
@@ -1131,6 +1139,7 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'Microsoft YaHei UI\'; font-size:14pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; color:#0033b3;\">Enter Command &gt;&gt; </span></p></body></html>"))
         self.toolButton.setText(_translate("MainWindow", "..."))
+        self.timeSensitiveCheckBox.setText(_translate("MainWindow", "Time sensitive"))
         self.textEdit_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

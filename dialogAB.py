@@ -1,6 +1,6 @@
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-from PyQt5.QtCore import QEvent, QPoint
+from PyQt5.QtCore import QEvent
 
 
 class dialogAbstractPage(QtWidgets.QWidget):

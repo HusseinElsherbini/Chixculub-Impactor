@@ -458,6 +458,9 @@ QLineEdit QAbstractItemView {
                   <property name="cursorMoveStyle">
                    <enum>Qt::VisualMoveStyle</enum>
                   </property>
+                  <property name="clearButtonEnabled">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -1302,7 +1305,7 @@ QLineEdit QAbstractItemView {
                    <string/>
                   </property>
                   <property name="placeholderText">
-                   <string>Enter Timeout (seconds)</string>
+                   <string>Enter Timeout (milliseconds)</string>
                   </property>
                   <property name="cursorMoveStyle">
                    <enum>Qt::VisualMoveStyle</enum>

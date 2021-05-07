@@ -1,4 +1,3 @@
-import Dialog
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from PyQt5.QtCore import QEvent, QPoint, QRegExp, QObject, pyqtSignal
@@ -115,7 +114,6 @@ class modifySerialDialog(QtWidgets.QDialog):
             self.data.update({"Parity Bit": self.uiDialog.ParityBitCB.currentText()})
 
         self.close()
-        print(self.data)
         self.dialogFinishedSignal.dialogClosedSignal.emit(self.data, self.dev)
 
 
