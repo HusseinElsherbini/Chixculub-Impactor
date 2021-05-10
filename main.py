@@ -39,7 +39,28 @@ class communication(QObject):
             mutex.unlock()
             self.messageRcvdSignal.emit(str(e), terminalName)
 
+class runningScript(QObject):
 
+    messageRcvdSignal = pyqtSignal(str, str)
+
+    def __init__(self, database):
+        super().__init__()
+        self.dataBase = database
+
+    @pyqtSlot(str, str, str)
+    def processMsg(self, input, VID_PID, terminalName):
+
+        try:
+            mutex.lock()
+            msgRcvd = self.dataBase[VID_PID]['Resource'].query_ascii_values(input)
+            mutex.unlock()
+
+            self.messageRcvdSignal.emit(msgRcvd, terminalName)
+
+        except Exception as e:
+            mutex.unlock()
+
+            self.messageRcvdSignal.emit(str(e), terminalName)
 
 
 class worker(QObject):
@@ -79,7 +100,7 @@ class worker(QObject):
                         self.present = False
 
                 except Exception as e:
-                    print(e)
+                    print(e + ' {worker, run, line 103}')
 
             for device in self.connectedDevices:
 
@@ -94,7 +115,7 @@ class worker(QObject):
                         self.connectedDevices.remove(device)
 
                 except Exception as e:
-                        print(e)
+                        print(e + ' {worker, run, line 118}')
 
             if len(self.connectedDevices) == 0 and self.present is not True:
 
@@ -223,7 +244,7 @@ class ChixculubImpactor(QMainWindow):
             initDevice.devices[deviceName]['Resource'].close()
 
         except Exception as e:
-            print(e)
+            print(e  + ' {MainWindow, removeDeviceFrame, line 247}')
 
 
 
@@ -260,7 +281,7 @@ class ChixculubImpactor(QMainWindow):
             try:
                 device.close()
             except Exception as e:
-                print(e)
+                print(e  + ' {MainWindow, closeWindow, line 284}')
 
 
         self.app.closeAllWindows()
@@ -305,7 +326,7 @@ class ChixculubImpactor(QMainWindow):
                         self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(False)
                         term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Reconnected! </span>")
             except Exception as e:
-                print(e)
+                print(e  + ' {MainWindow, disableTerminal, line 329}')
 
 
     def addNoDevicesPage(self):

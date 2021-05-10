@@ -54,7 +54,7 @@ class editor(QTextEdit):
                     cursor.movePosition(QTextCursor.End)
                     self.setTextCursor(cursor)
                     return True
-                #print(self.textCursor().position())
+
 
         return False
 
@@ -69,7 +69,6 @@ class editor(QTextEdit):
         else:
             self.userInput.append(input)
 
-        print(detectUsb.initDevice.devices)
         self.msgSignal.customSignal.emit(input, self.VID_PID, self.terminalName)
 
 
@@ -83,9 +82,101 @@ class readBack(QTextEdit):
 
 class script(QTextEdit):
 
+
+
     def __init__(self, frame):
 
         super().__init__(frame)
+        self.processedScript = []
+
+
+    def intChecker(self, string):
+
+        try:
+            x = int(string)
+            return True
+        except Exception as e:
+
+            print(str(e) + ' {script, intChecker, 98}')
+            return False
+
+    def processScript(self, deviceCount, deviceList):
+
+        self.deviceCount = deviceCount
+        self.deviceList = deviceList
+        preprocessedScript = self.preProcessor()
+        self.checkRunningStatus(self.syntaxAnalyzer(preprocessedScript))
+
+
+    def preProcessor(self):
+
+
+        commands = {}
+        x = self.toPlainText().rsplit('\n')
+        preprocessedScript = []
+
+
+        try:
+            for cmd in x:
+                if cmd.isspace() or cmd == "":
+                    continue
+                y = cmd.split(':', 1)
+
+                for i in range(len(y)):
+                    y[i] = y[i].replace(" ", "")
+
+                preprocessedScript.append({y[0] : y[1].rsplit(';')})
+
+            return preprocessedScript
+
+        except Exception as e:
+            print(str(e)  + ' {script, preProcessor, line 132}')
+            return 'ERROR'
+
+    def syntaxAnalyzer(self, preprocessedScript):
+
+        if preprocessedScript == 'ERROR':
+            return 'ERROR'
+        else:
+            try:
+                for line in preprocessedScript:
+                    if list(line.keys())[0].lower() == 'loops':
+                        try:
+                            int(list(line.values())[0][0])
+                        except Exception as e:
+                            print(str(e)   + ' {script, syntaxAnalyzer, line 146}')
+                            return
+
+                    elif list(line.keys())[0].lower() == 'delay':
+                        int(list(line.values())[0][0])
+
+                    elif self.intChecker(list(line.keys())[0]):
+                        if int(list(line.keys())[0]) > self.deviceCount:
+                            print("Device #{} doesn't exist!".format(list(line.keys())[0]))
+                            return "ERROR"
+
+                    else:
+                        return "line {} doesn't match script format".format(preprocessedScript.index(line))
+
+            except Exception as e:
+                print(str(e) + ' {script, syntaxAnalyzer, 163}')
+
+        print("Script Successfully processed")
+        return True
+
+    def checkRunningStatus(self, syntaxAnalyzer):
+
+        if syntaxAnalyzer:
+
+            for dev in self.deviceList:
+                for VID, attributes in detectUsb.initDevice.devices.items():
+                    if detectUsb.initDevice.devices[VID]['Model Name'] == dev:
+                        if detectUsb.initDevice.devices[VID]['Script Status'] == 'Inactive':
+                            return "ERROR: {} is in an active script".format(dev)
+                        else:
+                            detectUsb.initDevice.devices[VID]['Script Status'] = 'Active'
+        print("Success")
+        return True
 
 
 class deviceList(QListWidget):
@@ -100,7 +191,8 @@ class deviceList(QListWidget):
 
     def appendItem(self, item):
 
-        self.addItem(item)
+        if item != " ":
+            self.addItem(item)
 
 
 class terminal(QtWidgets.QWidget):
@@ -280,7 +372,7 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_20.setSpacing(0)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
-        self.scriptArea = QtWidgets.QTextEdit(self.frame_24)
+        self.scriptArea = script(self.frame_24)
         self.scriptArea.setFont(font)
         self.scriptArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scriptArea.setCursorWidth(10)
@@ -295,8 +387,13 @@ class terminal(QtWidgets.QWidget):
         self.scriptArea.setPlaceholderText("Script format\n"
 
                                            "Loops : # number of desired loops, use keyword 'Loops:' followed by a number\n"
-                                           "Name of Device as it appears in list : SCPI command "
-                                           "")
+                                           "Device # preceeding name in list : command\n"
+                                           "\nExample\n"
+                                           "\nLoops : 1\n"
+                                           "1 : *IDN?\n"
+                                           "Delay : 2\n"
+                                           "2 : *IDN?\n"
+                                           )
         self.gridLayout_5.addWidget(self.frame_24, 0, 0, 1, 1)
         self.frame_25 = QtWidgets.QFrame(self.page_2)
         self.frame_25.setMaximumSize(QtCore.QSize(120, 16777215))
@@ -448,8 +545,6 @@ class terminal(QtWidgets.QWidget):
         self.addDeviceBtn.setIcon(icon11)
         self.addDeviceBtn.setIconSize(QtCore.QSize(24, 24))
         self.addDeviceBtn.setFlat(True)
-        self.addDeviceBtn.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.addDeviceBtn.customContextMenuRequested.connect(self.on_context_menu)
         self.addDeviceBtn.setObjectName("addDeviceBtn")
         self.verticalLayout_25.addWidget(self.addDeviceBtn)
         self.horizontalLayout_17.addWidget(self.frame_30)
@@ -482,12 +577,15 @@ class terminal(QtWidgets.QWidget):
         self.removeDeviceBtn.setIcon(icon12)
         self.removeDeviceBtn.setIconSize(QtCore.QSize(24, 24))
         self.removeDeviceBtn.setFlat(True)
-        self.removeDeviceBtn.setObjectName("pushButton_7")
+        self.removeDeviceBtn.setObjectName("removeDeviceBtn")
+        self.removeDeviceBtn.clicked.connect(self.removeDevice)
         self.verticalLayout_24.addWidget(self.removeDeviceBtn)
         self.horizontalLayout_17.addWidget(self.frame_29)
         self.verticalLayout_23.addWidget(self.frame_28)
         self.listWidget = deviceList(self.frame_27)
-        self.listWidget.addItem(detectUsb.initDevice.devices[self.VID_PID]['Model Name'])
+        self.listWidget.addItem(str(self.listWidget.count() + 1) + "." + " " +  detectUsb.initDevice.devices[self.VID_PID]['Model Name'])
+        #self.listWidget.item(0).setTextAlignment(QtCore.Qt.AlignCenter)
+        self.listWidget.item(0).setFlags(self.listWidget.item(0).flags() & ~QtCore.Qt.ItemIsSelectable)
         self.listWidget.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Plain)
         self.listWidget.setObjectName("listWidget")
@@ -497,21 +595,55 @@ class terminal(QtWidgets.QWidget):
                                       "background-color: #FFFFFF;\n"
                                       "}")
         self.verticalLayout_23.addWidget(self.listWidget)
-        self.timeSensitiveCheckBox = QtWidgets.QCheckBox(self.frame_27)
+        self.frame_31 = QtWidgets.QFrame(self.frame_27)
+        self.frame_31.setStyleSheet("QFrame{\n"
+                                    "background:transparent;\n"
+                                    "}\n"
+                                    "\n"
+                                    "QFrame:hover{\n"
+                                    "background-color:rgb(226, 226, 226)\n"
+                                    "}")
+        self.frame_31.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_31.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_31.setObjectName("frame_31")
+        self.verticalLayout_26 = QtWidgets.QVBoxLayout(self.frame_31)
+        self.verticalLayout_26.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_26.setSpacing(0)
+        self.verticalLayout_26.setObjectName("verticalLayout_26")
+        self.timeSensitiveCheckBox = QtWidgets.QCheckBox(self.frame_31)
         self.timeSensitiveCheckBox.setAutoFillBackground(False)
         icon13 = QtGui.QIcon()
         icon13.addPixmap(QtGui.QPixmap("resources/dinosaur.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.timeSensitiveCheckBox.setIcon(icon13)
         self.timeSensitiveCheckBox.setTristate(False)
-        self.timeSensitiveCheckBox.setObjectName("timeSensitiveCheckBox")
         self.timeSensitiveCheckBox.setText("Time sensitive")
+        self.timeSensitiveCheckBox.setObjectName("timeSensitiveCheckBox")
+        self.verticalLayout_26.addWidget(self.timeSensitiveCheckBox)
+        self.verticalLayout_23.addWidget(self.frame_31)
         self.timeSensitiveCheckBox.setToolTip("Application will not wait for read back from instrument!")
-        self.verticalLayout_23.addWidget(self.timeSensitiveCheckBox)
+        self.frame_32 = QtWidgets.QFrame(self.frame_27)
+        self.frame_32.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_32.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_32.setObjectName("frame_32")
+        self.verticalLayout_27 = QtWidgets.QVBoxLayout(self.frame_32)
+        self.verticalLayout_27.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_27.setSpacing(0)
+        self.verticalLayout_27.setObjectName("verticalLayout_27")
+        self.PythonCB = QtWidgets.QCheckBox(self.frame_32)
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap("resources/python.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.PythonCB.setIcon(icon14)
+        self.PythonCB.setObjectName("PythonCB")
+        self.PythonCB.setText("Python")
+        self.frame_32.setStyleSheet("QFrame{\nbackground:transparent;\n}\n\nQFrame:hover{\nbackground-color:rgb(225, 225, 225)\n}")
+        self.verticalLayout_27.addWidget(self.PythonCB)
+        self.verticalLayout_23.addWidget(self.frame_32)
+        self.PythonCB.setToolTip("Enables inclusion of python syntax")
         self.gridLayout_5.addWidget(self.frame_27, 0, 1, 1, 1)
         self.stackedWidget_2.addWidget(self.page_2)
         self.verticalLayout_18.addWidget(self.stackedWidget_2)
         self.verticalLayout_15.addWidget(self.frame_23)
-        self.readBack = readBack(self.scrollAreaWidgetContents_2, objectName)#QtWidgets.QTextEdit(self.scrollAreaWidgetContents_2)
+        self.readBack = readBack(self.scrollAreaWidgetContents_2, objectName)
         self.readBack.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.readBack.setFrameShadow(QtWidgets.QFrame.Raised)
         self.readBack.setObjectName("textEdit_2")
@@ -546,6 +678,7 @@ class terminal(QtWidgets.QWidget):
 
         self.comboBox.currentTextChanged.connect(self.changePage)
         self.addDeviceBtn.clicked.connect(self.addDeviceToList)
+        self.runScriptBtn.clicked.connect(self.processScript)
 
     def changePage(self):
 
@@ -560,13 +693,32 @@ class terminal(QtWidgets.QWidget):
         shadow.setBlurRadius(25)
         object.setGraphicsEffect(shadow)
 
-    def on_context_menu(self, point):
-
-        for dev in detectUsb.initDevice.connectedDevices:
-            self.popMenu.addAction(QtGui.QAction(detectUsb.initDevice.devices[dev]['Model Name'], self))
 
     def addDeviceToList(self):
 
-        addDeviceDialog = DeviceInScript.deviceInScriptDialog(detectUsb.initDevice.connectedDevices, self.VID_PID)
-        addDeviceDialog.addItems(detectUsb.initDevice.connectedDevices)
+        addDeviceDialog = DeviceInScript.deviceInScriptDialog()
+        self.addItems(addDeviceDialog)
         addDeviceDialog.exec_()
+        if addDeviceDialog.data != " ":
+            self.listWidget.appendItem(str(self.listWidget.count() + 1) + "." + " " + addDeviceDialog.data)
+
+
+    def addItems(self, dialog):
+
+        items = []
+        for x in range(self.listWidget.count()):
+            items.append(self.listWidget.item(x).text())
+        for dev in detectUsb.initDevice.connectedDevices:
+            if dev != self.VID_PID and detectUsb.initDevice.devices[dev]['Model Name'] not in items:
+                dialog.uiDialog.DeviceCB.addItem(detectUsb.initDevice.devices[dev]['Model Name'])
+
+    def removeDevice(self):
+
+        for dev in self.listWidget.selectedItems():
+            self.listWidget.takeItem(self.listWidget.row(dev))
+
+    def processScript(self):
+        items = []
+        for dev in range(self.listWidget.count()):
+            items.append(dev)
+        self.scriptArea.processScript(self.listWidget.count(),items)

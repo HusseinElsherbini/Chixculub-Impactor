@@ -24,6 +24,7 @@ class initDevice:
                     'Device Type': 'COM' + str(visaHandle).rsplit("::")[0][4:],
                     'Connection Type': 'Serial',
                     'Visa Handle': visaHandle,
+                    'Script Status': 'Inactive',
                     'Resource': dev
                     }})
                 return
@@ -33,11 +34,12 @@ class initDevice:
             'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
             'Connection Type': str(dev.interface_type)[14:],
             'Visa Handle': device,
+            'Script Status': 'Inactive',
             'Resource': dev
             }})
 
         except Exception as e:
-            print(e)
+            print(e  + ' {initDevice, updateDevicesDB, line 46}')
 
 
 
@@ -66,6 +68,7 @@ class initDevice:
                         'Device Type': 'COM'+ str(device).rsplit("::")[0][4:] if 'COM' + str(device).rsplit("::")[0][4:] in x else 'PORT_ERROR',
                         'Connection Type': 'Serial',
                         'Visa Handle': device,
+                        'Script Status': 'Inactive',
                         'Resource': dev
                     }})
 
@@ -76,13 +79,14 @@ class initDevice:
                         'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
                         'Connection Type': str(dev.interface_type)[14:],
                         'Visa Handle': device,
+                        'Script Status': 'Inactive',
                         'Resource': dev
                     }})
 
 
             except Exception as e:
 
-                print(e)
+                print(e  + ' {initDevice, detectDevices, line 85}')
 
 
 

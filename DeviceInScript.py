@@ -11,18 +11,17 @@ class mySignal(QObject):
 
 class deviceInScriptDialog(QtWidgets.QDialog):
 
-    def __init__(self, connectedDevices, VID_PID):
+    def __init__(self):
 
         super().__init__()
-        #self.dev = args[0]
         self.uiDialog = addDeviceToScript.Ui_DeviceInScript() # create an instance of the dialog UI class
         self.uiDialog.setupUi(self)  # pass our dialog to the setup function of the UI wrapper
         self.oldPos = self.pos()  # keep track of the position of the dialog when it is first instantiated
         self.uiDialog.westTopFrame.installEventFilter(self)  # install an event filter to know when an event occurs on title bar
         self.dialogTitleBar()  # make window frameless
-        self.connectedDevices = connectedDevices
+        self.setShadow(self.uiDialog.ConfirmBtn)
+        self.setShadow(self.uiDialog.DeviceCB)
         self.data = ""
-        self.callingDev = VID_PID
         self.ConnectBtns()
 
     def dialogTitleBar(self):
@@ -42,11 +41,7 @@ class deviceInScriptDialog(QtWidgets.QDialog):
         shadow.setBlurRadius(25)
         obj.setGraphicsEffect(shadow)
 
-    def addItems(self, connectedDevices):
 
-        for dev in connectedDevices:
-            if dev != self.callingDev:
-                self.uiDialog.DeviceCB.addItem(detectUsb.initDevice.devices[dev]['Model Name'])
 
     def eventFilter(self, obj, event):
 
@@ -64,6 +59,9 @@ class deviceInScriptDialog(QtWidgets.QDialog):
 
         if self.uiDialog.DeviceCB.currentIndex() != 0:
             self.data = self.uiDialog.DeviceCB.currentText()
+        else:
+            self.data = " "
+        self.close()
 
 
 
