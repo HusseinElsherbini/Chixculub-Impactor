@@ -8,6 +8,7 @@ import DeviceInScript
 class Signal(QObject):
 
     customSignal = pyqtSignal(str, str, str)
+    runScriptSignal = pyqtSignal(list)
 
 class editor(QTextEdit):
 
@@ -102,16 +103,17 @@ class script(QTextEdit):
 
     def processScript(self, deviceCount, deviceList):
 
+        self.finishedAnalysis = Signal()
         self.deviceCount = deviceCount
         self.deviceList = deviceList
         preprocessedScript = self.preProcessor()
-        self.checkRunningStatus(self.syntaxAnalyzer(preprocessedScript))
+        processedScript = self.checkRunningStatus(self.syntaxAnalyzer(preprocessedScript))
 
+        if processedScript:
+            self.finishedAnalysis.runScriptSignal.emit()
 
     def preProcessor(self):
 
-
-        commands = {}
         x = self.toPlainText().rsplit('\n')
         preprocessedScript = []
 
@@ -123,9 +125,13 @@ class script(QTextEdit):
                 y = cmd.split(':', 1)
 
                 for i in range(len(y)):
+
                     y[i] = y[i].replace(" ", "")
 
-                preprocessedScript.append({y[0] : y[1].rsplit(';')})
+                a = y[1].rsplit(';')
+                a[:] = [x for x in a if x != ""]
+
+                preprocessedScript.append({y[0] : a})
 
             return preprocessedScript
 
@@ -140,7 +146,7 @@ class script(QTextEdit):
         else:
             try:
                 for line in preprocessedScript:
-                    if list(line.keys())[0].lower() == 'loops':
+                    if list(line.keys())[0].lower() == 'loop':
                         try:
                             int(list(line.values())[0][0])
                         except Exception as e:
@@ -161,7 +167,7 @@ class script(QTextEdit):
             except Exception as e:
                 print(str(e) + ' {script, syntaxAnalyzer, 163}')
 
-        print("Script Successfully processed")
+        print(preprocessedScript)
         return True
 
     def checkRunningStatus(self, syntaxAnalyzer):
@@ -175,7 +181,7 @@ class script(QTextEdit):
                             return "ERROR: {} is in an active script".format(dev)
                         else:
                             detectUsb.initDevice.devices[VID]['Script Status'] = 'Active'
-        print("Success")
+
         return True
 
 
@@ -386,13 +392,17 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_20.addWidget(self.scriptArea)
         self.scriptArea.setPlaceholderText("Script format\n"
 
-                                           "Loops : # number of desired loops, use keyword 'Loops:' followed by a number\n"
-                                           "Device # preceeding name in list : command\n"
+                                           "Loop : # number of desired loops, use keyword 'Loop:' followed by a number\n"
+                                           "{         # open bracket always follows the line after keyword loop\n" 
+                                           "Device number preceeding name in list : command\n"
+                                           "}         # closing bracket around code inside specified loop\n"
                                            "\nExample\n"
-                                           "\nLoops : 1\n"
+                                           "\nLoop : 1\n"
+                                           "{\n"
                                            "1 : *IDN?\n"
                                            "Delay : 2\n"
                                            "2 : *IDN?\n"
+                                           "}\n"
                                            )
         self.gridLayout_5.addWidget(self.frame_24, 0, 0, 1, 1)
         self.frame_25 = QtWidgets.QFrame(self.page_2)
@@ -699,7 +709,7 @@ class terminal(QtWidgets.QWidget):
         addDeviceDialog = DeviceInScript.deviceInScriptDialog()
         self.addItems(addDeviceDialog)
         addDeviceDialog.exec_()
-        if addDeviceDialog.data != " ":
+        if addDeviceDialog.data != " " and addDeviceDialog.data != "":
             self.listWidget.appendItem(str(self.listWidget.count() + 1) + "." + " " + addDeviceDialog.data)
 
 

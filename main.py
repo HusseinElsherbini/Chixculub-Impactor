@@ -100,7 +100,8 @@ class worker(QObject):
                         self.present = False
 
                 except Exception as e:
-                    print(e + ' {worker, run, line 103}')
+                    print(str(e) + ' {worker, run, line 103}')
+                    continue
 
             for device in self.connectedDevices:
 
@@ -115,7 +116,7 @@ class worker(QObject):
                         self.connectedDevices.remove(device)
 
                 except Exception as e:
-                        print(e + ' {worker, run, line 118}')
+                        print(str(e) + ' {worker, run, line 118}')
 
             if len(self.connectedDevices) == 0 and self.present is not True:
 
@@ -130,7 +131,6 @@ class ChixculubImpactor(QMainWindow):
         super().__init__()
         ErrorLog = open('Error Log.txt', 'w')
         self.devices = initDevice()
-        self.devices.detectDevices()
         self.comSignal = Signal()
         self.initUI()
         sys.exit(self.app.exec_())
@@ -161,6 +161,7 @@ class ChixculubImpactor(QMainWindow):
 
     def enumerateDevices(self):
 
+        self.devices.detectDevices()
         i = 1
         for Device in initDevice.devices.keys():
 
@@ -238,13 +239,14 @@ class ChixculubImpactor(QMainWindow):
         return newDevice
 
     def removeDeviceFrame(self, deviceName):
-        device = initDevice.devices[deviceName]['Model Name']
+
         try:
+            device = initDevice.devices[deviceName]['Model Name']
             self.ui.frame_13.findChild(QFrame, device).deleteLater()
             initDevice.devices[deviceName]['Resource'].close()
 
         except Exception as e:
-            print(e  + ' {MainWindow, removeDeviceFrame, line 247}')
+            print(str(e)  + ' {MainWindow, removeDeviceFrame, line 249}')
 
 
 
@@ -281,7 +283,7 @@ class ChixculubImpactor(QMainWindow):
             try:
                 device.close()
             except Exception as e:
-                print(e  + ' {MainWindow, closeWindow, line 284}')
+                print(str(e)  + ' {MainWindow, closeWindow, line 284}')
 
 
         self.app.closeAllWindows()
@@ -303,20 +305,24 @@ class ChixculubImpactor(QMainWindow):
         else:
             self.devices.updateDevicesDB(device, present=True)
 
-        arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
-        newDevice = subclasses.deviceFrame(*arguments)
-        newDevice.connectBtn.clicked.connect(self.addTerminal)
-        newDevice.editBtn.clicked.connect(self.modifyDialog)
-        self.ui.verticalLayout_9.addWidget(newDevice)
+        try:
+            arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
+            newDevice = subclasses.deviceFrame(*arguments)
+            newDevice.connectBtn.clicked.connect(self.addTerminal)
+            newDevice.editBtn.clicked.connect(self.modifyDialog)
+            self.ui.verticalLayout_9.addWidget(newDevice)
 
+        except Exception as e:
+            print(str(e) + ' {{MainWindow, add, line 315}}')
         #self.lock.set()
 
     def disableTerminal(self, tab, disconnected):
 
-        term = self.ui.tabWidget.findChild(QtWidgets.QWidget,initDevice.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
+        try:
+            term = self.ui.tabWidget.findChild(QtWidgets.QWidget,initDevice.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
 
-        if term is not None:
-            try:
+            if term is not None:
+
                 if disconnected:
                     self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(True)
                     term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Disconnected! </span>")
@@ -325,8 +331,8 @@ class ChixculubImpactor(QMainWindow):
                     if not self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).isEnabled():
                         self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(False)
                         term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Reconnected! </span>")
-            except Exception as e:
-                print(e  + ' {MainWindow, disableTerminal, line 329}')
+        except Exception as e:
+            print(str(e)  + ' {{MainWindow, disableTerminal, line 335}}')
 
 
     def addNoDevicesPage(self):

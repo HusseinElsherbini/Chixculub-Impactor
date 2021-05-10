@@ -9,6 +9,7 @@ class initDevice:
     connectedDevices = []
 
     def __init__(self):
+        self.resourceManager = pyvisa.ResourceManager()
         pass
 
     def updateDevicesDB(self,device,devName="",visaHandle="", present=False):
@@ -39,13 +40,14 @@ class initDevice:
             }})
 
         except Exception as e:
-            print(e  + ' {initDevice, updateDevicesDB, line 46}')
+            print(str(e)  + ' {initDevice, updateDevicesDB, line 46}')
+            pass
 
 
 
     def detectDevices(self):
 
-        self.resourceManager = pyvisa.ResourceManager()
+        #self.resourceManager = pyvisa.ResourceManager()
         for device in self.resourceManager.list_resources():
 
             try:
@@ -86,7 +88,7 @@ class initDevice:
 
             except Exception as e:
 
-                print(e  + ' {initDevice, detectDevices, line 85}')
+                print(str(e)  + ' {initDevice, detectDevices, line 85}')
 
 
 
