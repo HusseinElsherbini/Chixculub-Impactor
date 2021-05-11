@@ -7,52 +7,54 @@ class EquipmentRS232(serial.Serial):
 
     def __init__(self, *args):
         super().__init__()
-        self.connectionType = args[0]
-        self.portNumber = args[1]
-        self.baudRate = args[2]
-        self.timeout = args[3]
+        self.portNumber = args[0]
+        self.baudRate = args[1]
+        self.timeout = args[2]
         #self.channels = args[4]
         #self.addresses = args[5]
         #self.deviceType = args[6]
         self.userInput = ''
-        self.ser = serial.Serial(port=self.portNumber,
-                                 baudrate=self.baudRate,
-                                 stopbits=serial.STOPBITS_ONE,
-                                 parity=serial.PARITY_NONE,
-                                 bytesize=serial.EIGHTBITS,
-                                 timeout=self.timeout)
-        self.out = 0
-        print(self.ser.isOpen())
 
-    def connect(self, portNumber, baudRate, timeout, deviceType):
+        self.connect()
 
-        print('Hello! attempting to connect to {}'.format(deviceType))
+    def connect(self):
 
-        self.ser.open()
-        time.sleep(.1)
-        if bool(self.ser.isOpen()):
-            print('Connected successfully!')
-        else:
-            print('Failed to connect!')
+        try:
+            # sets up a serial object with given parameters and tries to open the communication port
+            print("Attempting communication with power supply..")
 
-        return self.ser.isOpen()
+            self.ser = serial.Serial(port=self.portNumber,
+                                     baudrate=self.baudRate,
+                                     stopbits=serial.STOPBITS_ONE,
+                                     parity=serial.PARITY_NONE,
+                                     bytesize=serial.EIGHTBITS,
+                                     timeout=self.timeout)
+
+            self.ser.isOpen()
+            print('port opened successfully')
+
+        except IOError:
+            # if port is already opened, close it and open it again
+            self.ser.close()
+            self.ser.open()
+            print('port was already open, was closed and opened again')
 
     def send(self, userInput):
+        #userinput = userInput.strip()
+        userInput += "\r\n"
+        self.ser.write(userInput.encode())
+        #time.sleep(.2)
+        return self.ser.readline().decode()
 
-        self.userInput += "\n"
+    def send_without_read(self, input):
+        self.userInput += "\r\n"
         self.ser.reset_input_buffer()
         self.ser.reset_output_buffer()
-        result = self.ser.write(self.userInput.encode())
-        time.sleep(.1)
-        #print(result)
-        time.sleep(.1)
-        return result
+        self.ser.write(self.userInput.encode())
 
     def close(self):
 
-        for x in range(self.channels):
-            self.send('ADR {}'.format(x))
-            self.send('OUT 0')
+        self.ser.close()
 
 
 class EquipmentLAN(socket.socket):
@@ -88,8 +90,11 @@ class EquipmentLAN(socket.socket):
 
 
 
-ard = EquipmentRS232(*["", 'COM3', 115200,  1])
-while True:
-    ard.send("*IDN?")
-    x = ard.ser.readline()
-    print(x)
+
+"""
+u.ser.write("ADR 6\r\n".encode())
+print(u.ser.readline().decode())
+
+u.ser.write("IDN?\r\n".encode())
+print(u.ser.readline().decode())
+"""

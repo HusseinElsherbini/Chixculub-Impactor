@@ -31,9 +31,15 @@ class communication(QObject):
 
         try:
             mutex.lock()
-            msgRcvd = self.dataBase[VID_PID]['Resource'].query(input)
+            if 'COM' in self.dataBase[VID_PID]['Model Name']:
+                msgRcvd = self.dataBase[VID_PID]['Resource'].send(input)
+                print(self.dataBase[VID_PID]['Resource'].ser.timeout)
+                self.messageRcvdSignal.emit(msgRcvd, terminalName)
+            else:
+                msgRcvd = self.dataBase[VID_PID]['Resource'].query(input)
+                self.messageRcvdSignal.emit(msgRcvd, terminalName)
             mutex.unlock()
-            self.messageRcvdSignal.emit(msgRcvd, terminalName)
+
 
         except Exception as e:
             mutex.unlock()
@@ -52,7 +58,7 @@ class runningScript(QObject):
 
         try:
             mutex.lock()
-            msgRcvd = self.dataBase[VID_PID]['Resource'].query_ascii_values(input)
+            msgRcvd = self.dataBase[VID_PID]['Resource'].query(input)
             mutex.unlock()
 
             self.messageRcvdSignal.emit(msgRcvd, terminalName)
@@ -243,7 +249,10 @@ class ChixculubImpactor(QMainWindow):
         try:
             device = initDevice.devices[deviceName]['Model Name']
             self.ui.frame_13.findChild(QFrame, device).deleteLater()
-            initDevice.devices[deviceName]['Resource'].close()
+            if 'COM' in initDevice.devices[deviceName]['Model Name']:
+                initDevice.devices[deviceName]['Resource'].ser.close()
+            else:
+                initDevice.devices[deviceName]['Resource'].close()
 
         except Exception as e:
             print(str(e)  + ' {MainWindow, removeDeviceFrame, line 249}')
@@ -279,9 +288,11 @@ class ChixculubImpactor(QMainWindow):
 
     def closeWindow(self):
 
-        for device in self.devices.resourceManager.list_opened_resources():
+        for device in initDevice.connectedDevices:
+
             try:
-                device.close()
+                 initDevice.devices[device]['Resource'].close()
+
             except Exception as e:
                 print(str(e)  + ' {MainWindow, closeWindow, line 284}')
 
@@ -314,7 +325,7 @@ class ChixculubImpactor(QMainWindow):
 
         except Exception as e:
             print(str(e) + ' {{MainWindow, add, line 315}}')
-        #self.lock.set()
+
 
     def disableTerminal(self, tab, disconnected):
 
@@ -371,19 +382,17 @@ class ChixculubImpactor(QMainWindow):
                 dev.deviceName.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">{}</span></p></body></html>".format(data['Device Name']))
             if data["Timeout"] != " ":
                 VID = dev.VID_PID
-                initDevice.devices[VID]['Resource'].timeout = int(data['Timeout'])
+                initDevice.devices[VID]['Resource'].ser.timeout = int(data['Timeout'])/1000.00
 
             if data["Baud Rate"] != " ":
                 VID = dev.VID_PID
-                initDevice.devices[VID]['Resource'].baud_rate = int(data['Baud Rate'])
+                initDevice.devices[VID]['Resource'].ser.baud_rate = int(data['Baud Rate'])
             if data["Data Bits"] != " ":
                 VID = dev.VID_PID
-                initDevice.devices[VID]['Resource'].data_bits = int(data['Data Bits'])
+                initDevice.devices[VID]['Resource'].ser.data_bits = int(data['Data Bits'])
             if data["Parity Bit"] != " ":
                 VID = dev.VID_PID
-                initDevice.devices[VID]['Resource'].parity_bit = data['Parity Bit']
-            initDevice.devices[VID]['Resource'].close()
-            initDevice.devices[VID]['Resource'].open()
+                initDevice.devices[VID]['Resource'].ser.parity_bit = data['Parity Bit']
         else:
             dev = self.ui.frame_13.findChild(QFrame, devName)
             if data['Device Name'] != "":

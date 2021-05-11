@@ -95,7 +95,7 @@ class modifySerialDialog(QtWidgets.QDialog):
         else:
             self.data.update({"Device Type": self.uiDialog.DeviceTypeCB.currentText()})
 
-        if self.uiDialog.BaudRateCB.currentIndex()  == 0:
+        if self.uiDialog.BaudRateCB.currentIndex() == 0:
             self.data.update({"Baud Rate": " "})
 
         else:

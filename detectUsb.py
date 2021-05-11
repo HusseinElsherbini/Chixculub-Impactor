@@ -3,6 +3,9 @@ from pyvisa import attributes
 import threading
 from pysetupdi import setupdi
 import serial.tools.list_ports as portsList
+import equipment
+import sys
+import os
 
 class initDevice:
     devices = {}
@@ -10,23 +13,26 @@ class initDevice:
 
     def __init__(self):
         self.resourceManager = pyvisa.ResourceManager()
-        pass
+
 
     def updateDevicesDB(self,device,devName="",visaHandle="", present=False):
 
         try:
             if present:
-                initDevice.devices[device]['Resource'].open()
+                if "COM" in initDevice.devices[device]['Model Name']:
+                    initDevice.devices[device]['Resource'].connect()
+                else:
+                    initDevice.devices[device]['Resource'].open()
                 return
             if "COM" in devName:
-                dev = self.resourceManager.open_resource(visaHandle)
+
                 initDevice.devices.update({device: {
                     'Model Name': 'Device' + ' (COM' + str(visaHandle).rsplit("::")[0][4:] + ')',
                     'Device Type': 'COM' + str(visaHandle).rsplit("::")[0][4:],
                     'Connection Type': 'Serial',
                     'Visa Handle': visaHandle,
                     'Script Status': 'Inactive',
-                    'Resource': dev
+                    'Resource': equipment.EquipmentRS232(*['COM'+ str(device).rsplit("::")[0][4:],'9600',0.1])
                     }})
                 return
             dev = self.resourceManager.open_resource(device)
@@ -40,8 +46,11 @@ class initDevice:
             }})
 
         except Exception as e:
-            print(str(e)  + ' {initDevice, updateDevicesDB, line 46}')
-            pass
+            #print(str(e)  + ' {{initDevice, updateDevicesDB, line 44}}')
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(e) + ' {{{}, {}, {}}}'.format(exc_type, exc_obj, exc_tb))
+
 
 
 
@@ -54,8 +63,8 @@ class initDevice:
 
 
                 if "ASRL" in str(device):
-                    dev = self.resourceManager.open_resource(device)
-
+                    #dev = self.resourceManager.open_resource(device)
+                    #dev =
                     devs = setupdi.devices(enumerator="USB")
                     x = [port[0] for port in list(portsList.comports())]
 
@@ -71,7 +80,7 @@ class initDevice:
                         'Connection Type': 'Serial',
                         'Visa Handle': device,
                         'Script Status': 'Inactive',
-                        'Resource': dev
+                        'Resource': equipment.EquipmentRS232(*['COM'+ str(device).rsplit("::")[0][4:],'9600',0.1])
                     }})
 
                 elif "USB" in str(device):
