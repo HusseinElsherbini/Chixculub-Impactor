@@ -8,48 +8,59 @@ class EquipmentRS232(serial.Serial):
     def __init__(self, *args):
         super().__init__()
         self.portNumber = args[0]
-        self.baudRate = args[1]
+        self.baudRate = int(args[1])
         self.timeout = args[2]
-        #self.channels = args[4]
-        #self.addresses = args[5]
-        #self.deviceType = args[6]
         self.userInput = ''
 
         self.connect()
 
     def connect(self):
 
+        self.ser = serial.Serial(port=self.portNumber,
+                                 baudrate=self.baudRate,
+                                 stopbits=serial.STOPBITS_ONE,
+                                 parity=serial.PARITY_NONE,
+                                 bytesize=serial.EIGHTBITS,
+                                 timeout=self.timeout)
+
         try:
             # sets up a serial object with given parameters and tries to open the communication port
             print("Attempting communication with power supply..")
-
-            self.ser = serial.Serial(port=self.portNumber,
-                                     baudrate=self.baudRate,
-                                     stopbits=serial.STOPBITS_ONE,
-                                     parity=serial.PARITY_NONE,
-                                     bytesize=serial.EIGHTBITS,
-                                     timeout=self.timeout)
-
-            self.ser.isOpen()
+            self.ser.open()
+            print(self.ser.isOpen())
             print('port opened successfully')
 
-        except IOError:
+        except Exception as e:
             # if port is already opened, close it and open it again
             self.ser.close()
             self.ser.open()
             print('port was already open, was closed and opened again')
 
+    def reconnect(self):
+
+        self.ser.port = self.portNumber
+
+        try:
+            self.ser.open()
+            print('port opened successfully')
+
+        except Exception:
+            self.ser.close()
+            self.ser.open()
+            print('port was already open, was closed and opened again')
+
     def send(self, userInput):
-        #userinput = userInput.strip()
+
         userInput += "\r\n"
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
         self.ser.write(userInput.encode())
-        #time.sleep(.2)
         return self.ser.readline().decode()
 
     def send_without_read(self, input):
+
         self.userInput += "\r\n"
         self.ser.reset_input_buffer()
-        self.ser.reset_output_buffer()
         self.ser.write(self.userInput.encode())
 
     def close(self):
