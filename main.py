@@ -77,13 +77,16 @@ class ComPortReconnect(QObject):
         self.dataBase = database
 
     @pyqtSlot(str, str, str)
-    def attemptReconnection(self,device, devName, comPort):
+    def attemptReconnection(self,device, devName, resources):
 
         try:
-
-            time.sleep(0.2)
             mutex.lock()
-            initDevice.updateDevicesDB()
+            if device not in initDevice.devices.keys():
+
+                for i in resources:
+                    if "ASRL" in i:
+                        self.devices.updateDevicesDB(device, devName, i)
+
             mutex.unlock()
 
 
