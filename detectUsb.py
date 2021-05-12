@@ -3,9 +3,12 @@ from pyvisa import attributes
 import threading
 from pysetupdi import setupdi
 import serial.tools.list_ports as portsList
+import serial
+import time
 import equipment
 import sys
 import os
+import re
 
 class initDevice:
     devices = {}
@@ -20,19 +23,24 @@ class initDevice:
         try:
             if present:
                 if "COM" in initDevice.devices[device]['Model Name']:
-                    initDevice.devices[device]['Resource'].connect()
+                    comPort = self.get_friendly_name(device)
+                    time.sleep(0.2)
+                    initDevice.devices[device]['Model Name'] = 'Device ' + '(' + comPort + ')'
+                    initDevice.devices[device]['Resource'].portNumber = comPort
+                    initDevice.devices[device]['Resource'].reconnect()
+
                 else:
                     initDevice.devices[device]['Resource'].open()
                 return
             if "COM" in devName:
-
+                dev = equipment.EquipmentRS232(*['COM'+ str(visaHandle).rsplit("::")[0][4:],'9600',0.1])
                 initDevice.devices.update({device: {
                     'Model Name': 'Device' + ' (COM' + str(visaHandle).rsplit("::")[0][4:] + ')',
                     'Device Type': 'COM' + str(visaHandle).rsplit("::")[0][4:],
                     'Connection Type': 'Serial',
                     'Visa Handle': visaHandle,
                     'Script Status': 'Inactive',
-                    'Resource': equipment.EquipmentRS232(*['COM'+ str(device).rsplit("::")[0][4:],'9600',0.1])
+                    'Resource': dev
                     }})
                 return
             dev = self.resourceManager.open_resource(device)
@@ -46,10 +54,8 @@ class initDevice:
             }})
 
         except Exception as e:
-            #print(str(e)  + ' {{initDevice, updateDevicesDB, line 44}}')
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(str(e) + ' {{{}, {}, {}}}'.format(exc_type, exc_obj, exc_tb))
+
+            print(str(e) + ' {{initDevice, updateDeviceDB, line 61}}')
 
 
 
@@ -63,8 +69,7 @@ class initDevice:
 
 
                 if "ASRL" in str(device):
-                    #dev = self.resourceManager.open_resource(device)
-                    #dev =
+
                     devs = setupdi.devices(enumerator="USB")
                     x = [port[0] for port in list(portsList.comports())]
 
@@ -74,13 +79,14 @@ class initDevice:
                             h= h[1][8:12] + h[1][17:]
                             break
 
+                    dev = equipment.EquipmentRS232(*['COM'+ str(device).rsplit("::")[0][4:],'9600',0.1])
                     initDevice.devices.update({h: {
                         'Model Name': 'Device' + ' (COM'+ str(device).rsplit("::")[0][4:] + ')',
                         'Device Type': 'COM'+ str(device).rsplit("::")[0][4:] if 'COM' + str(device).rsplit("::")[0][4:] in x else 'PORT_ERROR',
                         'Connection Type': 'Serial',
                         'Visa Handle': device,
                         'Script Status': 'Inactive',
-                        'Resource': equipment.EquipmentRS232(*['COM'+ str(device).rsplit("::")[0][4:],'9600',0.1])
+                        'Resource': dev
                     }})
 
                 elif "USB" in str(device):
@@ -132,6 +138,30 @@ class initDevice:
                 devInfo.update({h[1][8:12] + h[1][17:]: x.friendly_name})
             except AttributeError:
                 devInfo.update({h[1][8:12] + h[1][17:]: str(x)})
+                pass
+        return devInfo
+
+    def get_friendly_name(self, VID_PID):
+
+        devices = []
+        devInfo = ""
+        devs = setupdi.devices(enumerator="USB")
+        for dev in devs:
+
+            try:
+                if "Ports" in dev.device_class:
+                    devices.append(dev)
+
+            except (KeyError, AttributeError,):
+                continue
+
+        for x in devices:
+            try:
+                h = x.hardware_id
+                if h[1][8:12] + h[1][17:] == VID_PID:
+                    devInfo = re.sub('[()]', '', re.search('\((.*?)\)', x.friendly_name).group(0))
+            except AttributeError:
+                devInfo = str(x)
                 pass
         return devInfo
 

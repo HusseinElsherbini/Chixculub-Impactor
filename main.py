@@ -9,7 +9,7 @@ from detectUsb import initDevice
 import random
 import terminal
 import modifyDialog
-
+import time
 
 mutex = QMutex()
 
@@ -17,6 +17,7 @@ class Signal(QObject):
 
     customSignal = pyqtSignal(str)
     comSignal = pyqtSignal(str, str, str)
+    serialReconnectedSignal = pyqtSignal(str, str, str)
 
 class communication(QObject):
 
@@ -27,16 +28,15 @@ class communication(QObject):
         self.dataBase = database
 
     @pyqtSlot(str, str, str)
-    def processMsg(self, input, VID_PID, terminalName):
+    def processMsg(self, msg, VID_PID, terminalName):
 
         try:
             mutex.lock()
             if 'COM' in self.dataBase[VID_PID]['Model Name']:
-                msgRcvd = self.dataBase[VID_PID]['Resource'].send(input)
-                print(self.dataBase[VID_PID]['Resource'].ser.timeout)
+                msgRcvd = self.dataBase[VID_PID]['Resource'].send(msg)
                 self.messageRcvdSignal.emit(msgRcvd, terminalName)
             else:
-                msgRcvd = self.dataBase[VID_PID]['Resource'].query(input)
+                msgRcvd = self.dataBase[VID_PID]['Resource'].query(msg)
                 self.messageRcvdSignal.emit(msgRcvd, terminalName)
             mutex.unlock()
 
@@ -54,11 +54,11 @@ class runningScript(QObject):
         self.dataBase = database
 
     @pyqtSlot(str, str, str)
-    def processMsg(self, input, VID_PID, terminalName):
+    def processMsg(self, msg, VID_PID, terminalName):
 
         try:
             mutex.lock()
-            msgRcvd = self.dataBase[VID_PID]['Resource'].query(input)
+            msgRcvd = self.dataBase[VID_PID]['Resource'].query(msg)
             mutex.unlock()
 
             self.messageRcvdSignal.emit(msgRcvd, terminalName)
@@ -68,10 +68,37 @@ class runningScript(QObject):
 
             self.messageRcvdSignal.emit(str(e), terminalName)
 
+class ComPortReconnect(QObject):
+
+    comPortConnected = pyqtSignal(str, str)
+
+    def __init__(self, database):
+        super().__init__()
+        self.dataBase = database
+
+    @pyqtSlot(str, str, str)
+    def attemptReconnection(self,device, devName, resources):
+
+        try:
+            mutex.lock()
+            if device not in initDevice.devices.keys():
+
+                for i in resources:
+                    if "ASRL" in i:
+                        self.devices.updateDevicesDB(device, devName, i)
+
+            mutex.unlock()
+
+
+        except Exception as e:
+            mutex.unlock()
+
+
 
 class worker(QObject):
 
     newDeviceSignal = pyqtSignal(str, str)
+    newComDeviceSignal = pyqtSignal(str, str)
     DeviceDisconnectedSignal = pyqtSignal(str, bool)
     removeDeviceSignal = pyqtSignal(str)
     noDevicesSignal = pyqtSignal()
@@ -100,10 +127,13 @@ class worker(QObject):
 
                     elif (device not in self.connectedDevices) and (device in self.dataBase):
 
-                        self.newDeviceSignal.emit(device, d[device])
-                        self.DeviceDisconnectedSignal.emit(device, False)
-                        self.connectedDevices.append(device)
-                        self.present = False
+                        if 'COM' in initDevice.devices[device]['Model Name']:
+                            self.newComDeviceSignal.emit(device, d[device])
+                        else:
+                            self.newDeviceSignal.emit(device, d[device])
+                            self.DeviceDisconnectedSignal.emit(device, False)
+                            self.connectedDevices.append(device)
+                            self.present = False
 
                 except Exception as e:
                     print(str(e) + ' {worker, run, line 103}')
@@ -116,9 +146,7 @@ class worker(QObject):
 
 
                         self.removeDeviceSignal.emit(device)
-                            #self.lock.wait(timeout=None)
                         self.DeviceDisconnectedSignal.emit(device, True)
-                            #self.lock.wait(timeout=None)
                         self.connectedDevices.remove(device)
 
                 except Exception as e:
@@ -265,7 +293,6 @@ class ChixculubImpactor(QMainWindow):
 
         if self.ui.tabWidget.findChild(QtWidgets.QWidget, str(sender.objectName()).rsplit(None,1)[0] + " Terminal") == None:
             newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None,1)[0] + " Terminal", sender.VID_PID)
-            #newTerminal.terminalEdit.msgSignal.customSignal.connect(self.sendUserInput)
             newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
             icon = QtGui.QIcon()
             icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -299,7 +326,7 @@ class ChixculubImpactor(QMainWindow):
 
         self.app.closeAllWindows()
 
-    def add(self, device, devName):
+    def addUsbDevice(self, device, devName):
 
         if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is not None:
             self.ui.frame_13.findChild(QFrame, "noDeviceFrame").deleteLater()
@@ -326,6 +353,10 @@ class ChixculubImpactor(QMainWindow):
         except Exception as e:
             print(str(e) + ' {{MainWindow, add, line 315}}')
 
+
+    def addSerialDevice(self, device, devName):
+
+        self.reconnectSerial.emit()
 
     def disableTerminal(self, tab, disconnected):
 
@@ -358,9 +389,9 @@ class ChixculubImpactor(QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def passToCommThread(self, input, VID_PID, terminalName):
+    def passToCommThread(self, msg, VID_PID, terminalName):
 
-        self.comSignal.comSignal.emit(input, VID_PID, terminalName)
+        self.comSignal.comSignal.emit(msg, VID_PID, terminalName)
 
     def communicationThread(self):
         self.comThread = QThread()
@@ -369,6 +400,17 @@ class ChixculubImpactor(QMainWindow):
         self.comWorker.messageRcvdSignal.connect(self.appendMsg)
         self.comSignal.comSignal.connect(self.comWorker.processMsg)
         self.comThread.start()
+
+    def attemptSerialReconnectThread(self):
+
+        self.SerialReconnectThread = QThread()
+        self.reconnectSerial = ComPortReconnect(initDevice.devices)
+        self.SerialReconnectThread.moveToThread(self.reconnectSerial)
+        self.reconnectSerial.comPortConnected.connect(self.serialReconnected)
+        self.comSignal.serialReconnectedSignal.connect(self.reconnectSerial.comPortConnected)
+        self.comThread.start()
+
+    def serialReconnected(self):
 
     def appendMsg(self, msg, terminalName):
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
@@ -383,7 +425,6 @@ class ChixculubImpactor(QMainWindow):
             if data["Timeout"] != " ":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].ser.timeout = int(data['Timeout'])/1000.00
-
             if data["Baud Rate"] != " ":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].ser.baud_rate = int(data['Baud Rate'])
@@ -407,7 +448,8 @@ class ChixculubImpactor(QMainWindow):
         self.thread = QtCore.QThread()
         self.worker = worker(initDevice.connectedDevices, initDevice.devices.keys(), self.present)
         self.worker.moveToThread(self.thread)
-        self.worker.newDeviceSignal.connect(self.add)
+        self.worker.newDeviceSignal.connect(self.addUsbDevice)
+        self.worker.newComDeviceSignal.connect(self.reconnectSerial.attemptReconnection)
         self.worker.noDevicesSignal.connect(self.addNoDevicesPage)
         self.worker.DeviceDisconnectedSignal.connect(self.disableTerminal)
         self.worker.removeDeviceSignal.connect(self.removeDeviceFrame)
