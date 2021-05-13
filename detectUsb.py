@@ -13,17 +13,15 @@ import re
 class initDevice:
     devices = {}
     connectedDevices = []
+    resourceManager = pyvisa.ResourceManager()
 
-    def __init__(self):
-        self.resourceManager = pyvisa.ResourceManager()
-
-
-    def updateDevicesDB(self,device,devName="",visaHandle="", present=False):
+    @staticmethod
+    def updateDevicesDB(device,devName="",visaHandle="", present=False):
 
         try:
             if present:
                 if "COM" in initDevice.devices[device]['Model Name']:
-                    comPort = self.get_friendly_name(device)
+                    comPort = initDevice.get_friendly_name(device)
                     time.sleep(0.2)
                     initDevice.devices[device]['Model Name'] = 'Device ' + '(' + comPort + ')'
                     initDevice.devices[device]['Resource'].portNumber = comPort
@@ -43,7 +41,7 @@ class initDevice:
                     'Resource': dev
                     }})
                 return
-            dev = self.resourceManager.open_resource(device)
+            dev = initDevice.resourceManager.open_resource(device)
             initDevice.devices.update({str(dev.resource_name)[8:12] + str(dev.resource_name)[16:20]: {
             'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
             'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
@@ -55,7 +53,7 @@ class initDevice:
 
         except Exception as e:
 
-            print(str(e) + ' {{initDevice, updateDeviceDB, line 61}}')
+            print(str(e) + ' {{initDevice, updateDeviceDB, line 56}}')
 
 
 
@@ -141,7 +139,8 @@ class initDevice:
                 pass
         return devInfo
 
-    def get_friendly_name(self, VID_PID):
+    @staticmethod
+    def get_friendly_name(VID_PID):
 
         devices = []
         devInfo = ""
