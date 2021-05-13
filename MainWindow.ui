@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1113</width>
+    <width>1156</width>
     <height>773</height>
    </rect>
   </property>
@@ -1102,7 +1102,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>1031</width>
+                             <width>1074</width>
                              <height>660</height>
                             </rect>
                            </property>
@@ -1490,7 +1490,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>1013</width>
+                         <width>1056</width>
                          <height>642</height>
                         </rect>
                        </property>
@@ -1691,11 +1691,35 @@ border:transparent;
                            <item>
                             <widget class="QFrame" name="frame_22">
                              <property name="frameShape">
-                              <enum>QFrame::StyledPanel</enum>
+                              <enum>QFrame::NoFrame</enum>
                              </property>
                              <property name="frameShadow">
-                              <enum>QFrame::Raised</enum>
+                              <enum>QFrame::Plain</enum>
                              </property>
+                             <layout class="QVBoxLayout" name="verticalLayout_28">
+                              <property name="spacing">
+                               <number>0</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>0</number>
+                              </property>
+                              <item>
+                               <widget class="QLabel" name="scriptStatusLabel">
+                                <property name="text">
+                                 <string/>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
                             </widget>
                            </item>
                           </layout>

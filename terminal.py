@@ -8,7 +8,7 @@ import DeviceInScript
 class Signal(QObject):
 
     customSignal = pyqtSignal(str, str, str)
-    runScriptSignal = pyqtSignal(list)
+    runScriptSignal = pyqtSignal(list, str)
 
 class editor(QTextEdit):
 
@@ -83,15 +83,15 @@ class readBack(QTextEdit):
 
 class script(QTextEdit):
 
-
-
-    def __init__(self, frame):
+    finishedAnalysis = Signal()
+    def __init__(self, frame, VID_PID):
 
         super().__init__(frame)
         self.processedScript = []
+        self.VID_PID = VID_PID
 
-
-    def intChecker(self, string):
+    @staticmethod
+    def intChecker(string):
 
         try:
             x = int(string)
@@ -102,28 +102,38 @@ class script(QTextEdit):
             return False
 
     def processScript(self, deviceCount, deviceList):
-
-        self.finishedAnalysis = Signal()
+        self.processedScript = []
         self.deviceCount = deviceCount
         self.deviceList = deviceList
-        preprocessedScript = self.preProcessor()
-        processedScript = self.checkRunningStatus(self.syntaxAnalyzer(preprocessedScript))
+        try:
+            status = self.preProcessor()
+            if 'ERROR' in list(status[0].keys())[0]:
+                return status
+            else:
+                status = self.syntaxAnalyzer(status)
+                if 'ERROR' in list(status[0].keys())[0]:
+                    return status
+                else:
+                    status = self.checkRunningStatus()
+                    if 'ERROR' in list(status[0].keys())[0]:
+                        return status
+        except Exception as e:
+            print(str(e) + ' {Script, processScript')
 
-        if processedScript:
-            self.finishedAnalysis.runScriptSignal.emit()
+        self.finishedAnalysis.runScriptSignal.emit(self.processedScript,self.VID_PID)
+
 
     def preProcessor(self):
 
         x = self.toPlainText().rsplit('\n')
         preprocessedScript = []
 
-
         try:
             for cmd in x:
                 if cmd.isspace() or cmd == "":
                     continue
                 y = cmd.split(':', 1)
-
+                y.append("")
                 for i in range(len(y)):
 
                     y[i] = y[i].replace(" ", "")
@@ -131,58 +141,74 @@ class script(QTextEdit):
                 a = y[1].rsplit(';')
                 a[:] = [x for x in a if x != ""]
 
-                preprocessedScript.append({y[0] : a})
-
-            return preprocessedScript
+                self.processedScript.append({y[0] : a})
 
         except Exception as e:
-            print(str(e)  + ' {script, preProcessor, line 132}')
-            return 'ERROR'
+            print(str(e)  + ' {script, preProcessor}')
+
+        print(preprocessedScript)
+        if preprocessedScript != []:
+            return [{'True': ''}]
+        else:
+            return [{'ERROR', ''}]
 
     def syntaxAnalyzer(self, preprocessedScript):
 
-        if preprocessedScript == 'ERROR':
-            return 'ERROR'
-        else:
-            try:
-                for line in preprocessedScript:
-                    if list(line.keys())[0].lower() == 'loop':
-                        try:
-                            int(list(line.values())[0][0])
-                        except Exception as e:
-                            print(str(e)   + ' {script, syntaxAnalyzer, line 146}')
-                            return
+        loopCount = 0
+        loopConfig = []
 
-                    elif list(line.keys())[0].lower() == 'delay':
-                        int(list(line.values())[0][0])
+        try:
 
-                    elif self.intChecker(list(line.keys())[0]):
-                        if int(list(line.keys())[0]) > self.deviceCount:
-                            print("Device #{} doesn't exist!".format(list(line.keys())[0]))
-                            return "ERROR"
+            if list(preprocessedScript[0].keys())[0].lower() != 'loop':
+                return [{'ERROR 1': self.processedScript[0]}]
+            else:
+                loopCount += 1
+                loopConfig.append(1)
+            if list(preprocessedScript[-1].keys())[0].lower() != 'endloop':
+                return [{'ERROR 2' : self.preprocessedScript[0]}]
 
+            for line in self.processedScript[2:]:
+
+                if list(line.keys())[0].lower() == 'loop':
+                    if not self.intChecker(list(line.values())[0][0]):
+                        return [{"ERROR 1": line}]
                     else:
-                        return "line {} doesn't match script format".format(preprocessedScript.index(line))
+                        loopCount += 1
+                        loopConfig.append(1)
 
-            except Exception as e:
-                print(str(e) + ' {script, syntaxAnalyzer, 163}')
+                elif list(line.keys())[0] == "endloop":
+                    loopCount -= 1
+                    loopConfig.append(0)
 
+                elif list(line.keys())[0].lower() == 'delay':
+                    if not self.intChecker(list(line.values())[0][0]):
+                        return [{"ERROR 3": line}]
+
+                elif self.intChecker(list(line.keys())[0]):
+                    if int(list(line.keys())[0]) > self.deviceCount:
+                        print("Device #{} doesn't exist!".format(list(line.keys())[0]))
+                        return [{"ERROR 4": line}]
+                else:
+                    return [{"ERROR 5": line}]
+
+        except Exception as e:
+            print(str(e) + ' {script, syntaxAnalyzer}')
+
+        print(loopConfig)
         print(preprocessedScript)
-        return True
+        return [{'True': ''}]
 
-    def checkRunningStatus(self, syntaxAnalyzer):
+    def checkRunningStatus(self):
 
-        if syntaxAnalyzer:
+        for dev in self.deviceList:
+            for VID, attributes in detectUsb.initDevice.devices.items():
+                if detectUsb.initDevice.devices[VID]['Model Name'] == dev:
+                    if detectUsb.initDevice.devices[VID]['Script Status'] == 'Inactive':
+                        return "ERROR: {} is in an active script".format(dev)
+                    else:
+                        detectUsb.initDevice.devices[VID]['Script Status'] = 'Active'
 
-            for dev in self.deviceList:
-                for VID, attributes in detectUsb.initDevice.devices.items():
-                    if detectUsb.initDevice.devices[VID]['Model Name'] == dev:
-                        if detectUsb.initDevice.devices[VID]['Script Status'] == 'Inactive':
-                            return "ERROR: {} is in an active script".format(dev)
-                        else:
-                            detectUsb.initDevice.devices[VID]['Script Status'] = 'Active'
-
-        return True
+        return [{'True': ''}]
 
 
 class deviceList(QListWidget):
@@ -326,6 +352,14 @@ class terminal(QtWidgets.QWidget):
         self.frame_22.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_22.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_22.setObjectName("frame_22")
+        self.verticalLayout_28 = QtWidgets.QVBoxLayout(self.frame_22)
+        self.verticalLayout_28.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_28.setSpacing(0)
+        self.verticalLayout_28.setObjectName("verticalLayout_28")
+        self.scriptStatusLabel = QtWidgets.QLabel(self.frame_22)
+        self.scriptStatusLabel.setText("")
+        self.scriptStatusLabel.setObjectName("scriptStatusLabel")
+        self.verticalLayout_28.addWidget(self.scriptStatusLabel)
         self.horizontalLayout_14.addWidget(self.frame_22)
         self.verticalLayout_15.addWidget(self.frame_4)
         self.frame_23 = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
@@ -378,7 +412,7 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_20.setSpacing(0)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
-        self.scriptArea = script(self.frame_24)
+        self.scriptArea = script(self.frame_24, self.VID_PID)
         self.scriptArea.setFont(font)
         self.scriptArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scriptArea.setCursorWidth(10)
@@ -393,7 +427,7 @@ class terminal(QtWidgets.QWidget):
         self.scriptArea.setPlaceholderText("Script format\n"
 
                                            "Loop : # number of desired loops, use keyword 'Loop:' followed by a number\n"
-                                           "{         # open bracket always follows the line after keyword loop\n" 
+                                           "{         # must have open bracket, always follows the line after keyword loop\n" 
                                            "Device number preceeding name in list : command\n"
                                            "}         # closing bracket around code inside specified loop\n"
                                            "\nExample\n"
@@ -402,7 +436,7 @@ class terminal(QtWidgets.QWidget):
                                            "1 : *IDN?\n"
                                            "Delay : 2\n"
                                            "2 : *IDN?\n"
-                                           "}\n"
+                                           "}       # must have closing brackets corresponding to main loop or any nested loop\n"
                                            )
         self.gridLayout_5.addWidget(self.frame_24, 0, 0, 1, 1)
         self.frame_25 = QtWidgets.QFrame(self.page_2)
@@ -717,7 +751,7 @@ class terminal(QtWidgets.QWidget):
 
         items = []
         for x in range(self.listWidget.count()):
-            items.append(self.listWidget.item(x).text())
+            items.append(self.listWidget.item(x).text()[3:])
         for dev in detectUsb.initDevice.connectedDevices:
             if dev != self.VID_PID and detectUsb.initDevice.devices[dev]['Model Name'] not in items:
                 dialog.uiDialog.DeviceCB.addItem(detectUsb.initDevice.devices[dev]['Model Name'])

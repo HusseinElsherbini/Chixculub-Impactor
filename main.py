@@ -13,12 +13,21 @@ import time
 
 mutex = QMutex()
 
+##########################################################################################################################################################################################
+#  Class: Signal                                                                                                                                                                         #
+#  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events.                                                                #
+##########################################################################################################################################################################################
 class Signal(QObject):
 
     customSignal = pyqtSignal(str)
     comSignal = pyqtSignal(str, str, str)
     serialReconnectedSignal = pyqtSignal(str, str, str)
 
+##########################################################################################################################################################################################
+#  Class: communication                                                                                                                                                                  #
+#  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and  #
+#           moved to a thread which handles the processing of message from any device terminal. this is useful in order to avoid the blocking of the main GUI during readback timeout    #
+##########################################################################################################################################################################################
 class communication(QObject):
 
     messageRcvdSignal = pyqtSignal(str, str)
@@ -45,6 +54,11 @@ class communication(QObject):
             mutex.unlock()
             self.messageRcvdSignal.emit(str(e), terminalName)
 
+############################################################################################################################################################################################
+#  Class: runningScript                                                                                                                                                                    #
+#  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and    #
+#           moved to a thread which handles the processing of messages from any device active script. this is useful in order to avoid the blocking of the main GUI during readback timeout#
+############################################################################################################################################################################################
 class runningScript(QObject):
 
     messageRcvdSignal = pyqtSignal(str, str)
@@ -68,8 +82,11 @@ class runningScript(QObject):
 
             self.messageRcvdSignal.emit(str(e), terminalName)
 
-
-
+##########################################################################################################################################################################################
+#  Class: worker                                                                                                                                                                         #
+#  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and  #
+#           moved to a thread which handles the detection of devices connected or disconnected from Computer. this is useful in order to avoid the blocking of the main GUI              #
+##########################################################################################################################################################################################
 class worker(QObject):
 
     newDeviceSignal = pyqtSignal(str, str)
@@ -140,7 +157,11 @@ class worker(QObject):
                 self.noDevicesSignal.emit()
                 self.present = True
 
-
+##########################################################################################################################################################################################
+#  Class: ChixculubImpactor                                                                                                                                                              #
+#  Purpose: Creates the main window for the GUI handles the addition of device frames when a device is connected. handles the main event loop. instantiates and executes dialogs related #
+#           adding new devices, modifying devices and other features.                                                                                                                    #
+##########################################################################################################################################################################################
 class ChixculubImpactor(QMainWindow):
 
     def __init__(self):
@@ -175,6 +196,29 @@ class ChixculubImpactor(QMainWindow):
         # activates the app
         self.show()
 
+    def createWindow(self):
+
+        self.ui = MainWindow.Ui_MainWindow()
+        self.ui.setupUi(self)
+        #self.resize(self.app.desktop().geometry().width(), self.app.desktop().geometry().height())
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
+        self.ui.tabWidget.tabBar().setTabButton(0, QtWidgets.QTabBar.RightSide, None)
+        self.ui.tabWidget.setCurrentIndex(0)
+        self.ui.tabWidget.tabCloseRequested.connect(self.closeTerminal)
+
+    def center(self):
+
+        qr = self.frameGeometry()
+        cp = self.app.desktop().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def setShadow(self, qframe):
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        qframe.setGraphicsEffect(shadow)
 
     def enumerateDevices(self):
 
@@ -193,23 +237,6 @@ class ChixculubImpactor(QMainWindow):
                 self.ui.verticalLayout_9.addWidget(noDeviceFrame)
                 self.present = True
 
-    def createWindow(self):
-
-        self.ui = MainWindow.Ui_MainWindow()
-        self.ui.setupUi(self)
-        #self.resize(self.app.desktop().geometry().width(), self.app.desktop().geometry().height())
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
-        self.ui.tabWidget.tabBar().setTabButton(0, QtWidgets.QTabBar.RightSide, None)
-        self.ui.tabWidget.setCurrentIndex(0)
-        self.ui.tabWidget.tabCloseRequested.connect(self.closeTerminal)
-
-    def setShadow(self, qframe):
-
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(25)
-        qframe.setGraphicsEffect(shadow)
-
     def installEventFilters(self):
 
         self.ui.appName.installEventFilter(self)
@@ -225,6 +252,33 @@ class ChixculubImpactor(QMainWindow):
             self.oldPos = event.globalPos()
         return False
 
+    def closeWindow(self):
+
+        for device in initDevice.connectedDevices:
+
+            try:
+                initDevice.devices[device]['Resource'].close()
+
+            except Exception as e:
+                print(str(e) + ' {MainWindow, closeWindow, line 284}')
+
+        self.app.closeAllWindows()
+
+    def addTerminal(self):
+
+        sender = self.sender().parentWidget()
+
+        if self.ui.tabWidget.findChild(QtWidgets.QWidget,str(sender.objectName()).rsplit(None, 1)[0] + " Terminal") == None:
+            newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " Terminal", sender.VID_PID)
+            newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
+            newTerminal.scriptArea.finishedAnalysis.runScriptSignal.connect(self.createScript)
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.ui.tabWidget.addTab(newTerminal, icon, str(sender.objectName()).rsplit(None, 1)[0] + " Terminal")
+
+        else:
+            pass
+
     def closeTerminal(self, currentIndex):
 
         self.currentIndex = currentIndex
@@ -234,11 +288,47 @@ class ChixculubImpactor(QMainWindow):
         self.closeTerminalDialog.uiDialog.CancelBtn.clicked.connect(self.closeTerminalDialog.close)
         self.closeTerminalDialog.exec_()
 
+    def disableTerminal(self, tab, disconnected):
+
+        try:
+            term = self.ui.tabWidget.findChild(QtWidgets.QWidget,initDevice.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
+
+            if term is not None:
+
+                if disconnected:
+                    self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(True)
+                    term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Disconnected! </span>")
+
+                elif not disconnected:
+                    if not self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).isEnabled():
+                        self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(False)
+                        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Reconnected! </span>")
+        except Exception as e:
+            print(str(e)  + ' {{MainWindow, disableTerminal, line 335}}')
+
     def deleteTerminal(self):
 
         self.ui.tabWidget.widget(self.currentIndex).deleteLater()
         self.ui.tabWidget.removeTab(self.currentIndex)
         self.closeTerminalDialog.close()
+
+    def createScript(self, list, devID):
+
+        print(list)
+        scriptName = "Script" + devID + ".txt"
+        script = open(scriptName, 'w')
+        for cmd in list:
+            for key, value in cmd.items():
+                if key.lower() == "loop":
+                    script.write("for x in range({})\n:".format(value[0]))
+                    script.write("\t")
+                if key.lower() == "delay":
+                    script.write("time.sleep({})".format(value[0]))
+                if terminal.script.intChecker(key):
+                    script.write()
+
+
+        script.close()
 
     def activateButtons(self):
 
@@ -268,21 +358,6 @@ class ChixculubImpactor(QMainWindow):
         except Exception as e:
             print(str(e)  + ' {MainWindow, removeDeviceFrame, line 249}')
 
-
-    def addTerminal(self):
-
-        sender = self.sender().parentWidget()
-
-        if self.ui.tabWidget.findChild(QtWidgets.QWidget, str(sender.objectName()).rsplit(None,1)[0] + " Terminal") == None:
-            newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None,1)[0] + " Terminal", sender.VID_PID)
-            newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.ui.tabWidget.addTab(newTerminal,icon,str(sender.objectName()).rsplit(None,1)[0] + " Terminal")
-
-        else:
-            pass
-
     def sendUserInput(self,msg, VID_PID, terminalName):
 
         if msg is not None:
@@ -294,19 +369,6 @@ class ChixculubImpactor(QMainWindow):
                     initDevice.devices[VID_PID]['Resource'].write(msg)
             except Exception as e:
                 term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(e))
-
-    def closeWindow(self):
-
-        for device in initDevice.connectedDevices:
-
-            try:
-                 initDevice.devices[device]['Resource'].close()
-
-            except Exception as e:
-                print(str(e)  + ' {MainWindow, closeWindow, line 284}')
-
-
-        self.app.closeAllWindows()
 
     def addUsbDevice(self, device, devName):
 
@@ -335,50 +397,14 @@ class ChixculubImpactor(QMainWindow):
         except Exception as e:
             print(str(e) + ' {{MainWindow, add, line 315}}')
 
-
-    def disableTerminal(self, tab, disconnected):
-
-        try:
-            term = self.ui.tabWidget.findChild(QtWidgets.QWidget,initDevice.devices[tab]['Model Name'].rsplit(None, 1)[0] + " Terminal")
-
-            if term is not None:
-
-                if disconnected:
-                    self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(True)
-                    term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Disconnected! </span>")
-
-                elif not disconnected:
-                    if not self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).isEnabled():
-                        self.ui.tabWidget.widget(self.ui.tabWidget.indexOf(term)).setDisabled(False)
-                        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#C75450;\">Device Reconnected! </span>")
-        except Exception as e:
-            print(str(e)  + ' {{MainWindow, disableTerminal, line 335}}')
-
-
     def addNoDevicesPage(self):
 
         noDeviceFrame = subclasses.noDeviceFrame()
         self.ui.verticalLayout_9.addWidget(noDeviceFrame)
 
-    def center(self):
-
-        qr = self.frameGeometry()
-        cp = self.app.desktop().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
     def passToCommThread(self, msg, VID_PID, terminalName):
 
         self.comSignal.comSignal.emit(msg, VID_PID, terminalName)
-
-    def communicationThread(self):
-        self.comThread = QThread()
-        self.comWorker = communication(initDevice.devices)
-        self.comWorker.moveToThread(self.comThread)
-        self.comWorker.messageRcvdSignal.connect(self.appendMsg)
-        self.comSignal.comSignal.connect(self.comWorker.processMsg)
-        self.comThread.start()
-
 
     def serialReconnected(self, device):
         try:
@@ -435,6 +461,14 @@ class ChixculubImpactor(QMainWindow):
         self.thread.started.connect(self.worker.run)
         self.thread.start()
 
+    def communicationThread(self):
+        self.comThread = QThread()
+        self.comWorker = communication(initDevice.devices)
+        self.comWorker.moveToThread(self.comThread)
+        self.comWorker.messageRcvdSignal.connect(self.appendMsg)
+        self.comSignal.comSignal.connect(self.comWorker.processMsg)
+        self.comThread.start()
+
     def modifyDialog(self):
 
         if "COM" in self.sender().parent().objectName():
@@ -445,7 +479,6 @@ class ChixculubImpactor(QMainWindow):
             self.modify_dialog = modifyDialog.modifyUsbDialog(*[self.sender().parent().objectName()])
             self.modify_dialog.dialogFinishedSignal.dialogClosedSignal.connect(self.processDeviceModData)
             self.modify_dialog.show()
-
 
     def addDeviceDialog(self):
 
