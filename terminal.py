@@ -4,6 +4,7 @@ from PyQt5.QtCore import QEvent, QObject, pyqtSignal
 from PyQt5.Qt import QTextCursor
 import detectUsb
 import DeviceInScript
+import sys
 
 class Signal(QObject):
 
@@ -97,8 +98,6 @@ class script(QTextEdit):
             x = int(string)
             return True
         except Exception as e:
-
-            print(str(e) + ' {script, intChecker, 98}')
             return False
 
     def processScript(self, deviceCount, deviceList):
@@ -120,7 +119,7 @@ class script(QTextEdit):
         except Exception as e:
             print(str(e) + ' {Script, processScript')
 
-        self.finishedAnalysis.runScriptSignal.emit(self.processedScript,self.VID_PID)
+
 
 
     def preProcessor(self):
@@ -147,55 +146,69 @@ class script(QTextEdit):
             print(str(e)  + ' {script, preProcessor}')
 
         print(preprocessedScript)
-        if preprocessedScript != []:
+        if self.processedScript != []:
             return [{'True': ''}]
         else:
-            return [{'ERROR', ''}]
+            return [{'ERROR 0': ''}]
 
     def syntaxAnalyzer(self, preprocessedScript):
 
-        loopCount = 0
-        loopConfig = []
+        self.loopCount = 0
+        self.loopConfig = []
 
         try:
-
-            if list(preprocessedScript[0].keys())[0].lower() != 'loop':
+            if list(self.processedScript[0].keys())[0].lower() != 'loop':
                 return [{'ERROR 1': self.processedScript[0]}]
+
+            elif not self.intChecker(list(self.processedScript[0].values())[0][0]):
+                return [{"ERROR 3": self.processedScript[0]}]
+
             else:
-                loopCount += 1
-                loopConfig.append(1)
-            if list(preprocessedScript[-1].keys())[0].lower() != 'endloop':
+                self.loopCount += 1
+                self.loopConfig.append(1)
+            if list(self.processedScript[-1].keys())[0].lower() != 'endloop':
                 return [{'ERROR 2' : self.preprocessedScript[0]}]
 
-            for line in self.processedScript[2:]:
+        except IndexError:
+
+            return [{"ERROR 3": self.processedScript[0]}]
+
+        try:
+            for line in self.processedScript[1:]:
 
                 if list(line.keys())[0].lower() == 'loop':
+
                     if not self.intChecker(list(line.values())[0][0]):
-                        return [{"ERROR 1": line}]
+                        return [{"ERROR 3": line}]
                     else:
-                        loopCount += 1
-                        loopConfig.append(1)
+                        self.loopCount += 1
+                        self.loopConfig.append(1)
+
 
                 elif list(line.keys())[0] == "endloop":
-                    loopCount -= 1
-                    loopConfig.append(0)
+                    self.loopCount -= 1
+                    self.loopConfig.append(0)
 
                 elif list(line.keys())[0].lower() == 'delay':
                     if not self.intChecker(list(line.values())[0][0]):
-                        return [{"ERROR 3": line}]
+                        return [{"ERROR 4": line}]
 
                 elif self.intChecker(list(line.keys())[0]):
                     if int(list(line.keys())[0]) > self.deviceCount:
                         print("Device #{} doesn't exist!".format(list(line.keys())[0]))
-                        return [{"ERROR 4": line}]
+                        return [{"ERROR 5": line}]
+                    else:
+                        x = list(line.values())[0][0]
                 else:
-                    return [{"ERROR 5": line}]
+                    return [{"ERROR 6": line}]
 
         except Exception as e:
+            if e.args[0] == "list index out of range":
+                return[{"INDEX ERROR" : line}]
             print(str(e) + ' {script, syntaxAnalyzer}')
 
-        print(loopConfig)
-        print(preprocessedScript)
+        print(self.loopConfig)
+        #print(self.processedScript)
         return [{'True': ''}]
 
     def checkRunningStatus(self):
@@ -203,13 +216,42 @@ class script(QTextEdit):
         for dev in self.deviceList:
             for VID, attributes in detectUsb.initDevice.devices.items():
                 if detectUsb.initDevice.devices[VID]['Model Name'] == dev:
-                    if detectUsb.initDevice.devices[VID]['Script Status'] == 'Inactive':
-                        return "ERROR: {} is in an active script".format(dev)
+                    if detectUsb.initDevice.devices[VID]['Script Status'] == 'active':
+                        return [{"ERROR 7": dev}]
                     else:
                         detectUsb.initDevice.devices[VID]['Script Status'] = 'Active'
 
+        status = self.loopValidityCheck()
+        if "ERROR" in list(status[0].keys())[0]:
+            return status
+
         return [{'True': ''}]
 
+    def loopValidityCheck(self):
+
+        consecutiveOnes = 0
+        zeroes = 0
+
+        if self.loopCount != 0:
+            return[{"ERROR 8": ''}]
+        else:
+            for x in range(len(self.loopConfig)):
+                if self.loopConfig[x] == 1:
+                    consecutiveOnes += 1
+                    for z in range(len(self.loopConfig[x + 1:])):
+                        if self.loopConfig[x+1:][z] == 0:
+                            zeroes += 1
+                    if zeroes >= consecutiveOnes:
+                        zeroes = 0
+                        continue
+                    else:
+                        return [{"ERROR 9": ''}]
+
+
+                else:
+                    consecutiveOnes = 0
+
+        return [{"True": ''}]
 
 class deviceList(QListWidget):
 
@@ -359,6 +401,7 @@ class terminal(QtWidgets.QWidget):
         self.scriptStatusLabel = QtWidgets.QLabel(self.frame_22)
         self.scriptStatusLabel.setText("")
         self.scriptStatusLabel.setObjectName("scriptStatusLabel")
+        self.scriptStatusLabel.setStyleSheet("color: red")
         self.verticalLayout_28.addWidget(self.scriptStatusLabel)
         self.horizontalLayout_14.addWidget(self.frame_22)
         self.verticalLayout_15.addWidget(self.frame_4)
@@ -709,6 +752,7 @@ class terminal(QtWidgets.QWidget):
         self.comboBox.setEditable(True)
         self.comboBox.lineEdit().setAlignment(QtCore.Qt.AlignCenter)
         self.comboBox.lineEdit().setReadOnly(True)
+        self.comboBox.currentIndexChanged.connect(lambda: self.scriptStatusLabel.clear())
         self.pauseBtn.setToolTip("Pause Script")
         self.addDeviceBtn.setToolTip("Add device to script")
         self.popMenu = QtWidgets.QMenu(self)
@@ -716,6 +760,7 @@ class terminal(QtWidgets.QWidget):
         self.runScriptBtn.setToolTip("Run script")
         self.removeDeviceBtn.setToolTip("Remove device from script")
         self.readBack.setReadOnly(True)
+        self.populateErrorDict()
         self.connectBtns()
 
     def connectBtns(self):
@@ -756,6 +801,32 @@ class terminal(QtWidgets.QWidget):
             if dev != self.VID_PID and detectUsb.initDevice.devices[dev]['Model Name'] not in items:
                 dialog.uiDialog.DeviceCB.addItem(detectUsb.initDevice.devices[dev]['Model Name'])
 
+    def addErrorToDict(self, status, label):
+
+        self.ErrorDict[status] = label
+
+    def populateErrorDict(self):
+
+        self.ErrorDict = {}
+        self.ErrorDict['ERROR 0'] = 'ERROR: Empty Script!'
+        self.ErrorDict['ERROR 1'] = 'ERROR: Main Loop keyword not detected!'
+        self.ErrorDict['ERROR 2'] = 'ERROR: Main Loop not ended properly!'
+        self.ErrorDict['ERROR 3'] = 'ERROR: number of loops is not an integer!'
+        self.ErrorDict['ERROR 4'] = 'ERROR: Delay Value is not an integer!'
+        self.ErrorDict['ERROR 5'] = "ERROR: Device doesn't exist"
+        self.ErrorDict['ERROR 6'] = "ERROR: Script doesn't follow proper format"
+        self.ErrorDict['ERROR 7'] = 'ERROR: Device in active Script'
+        self.ErrorDict['ERROR 8'] = "ERROR: Number of loop/endloop keywords doesn't match"
+        self.ErrorDict['ERROR 9'] = "ERROR: Loop structure isn't in proper format"
+        self.ErrorDict['INDEX ERROR'] = 'ERROR: No Command/Parameter provided'
+
+    def fetchErrorLabel(self, status):
+
+        if int(list(status[0].keys())[0][-1]) > 7 or int(list(status[0].keys())[0][-1]) == 0:
+            return self.ErrorDict[list(status[0].keys())[0]]
+
+        return self.ErrorDict[list(status[0].keys())[0]] + ' Line (' + str(self.scriptArea.processedScript.index(list(status[0].values())[0]) + 1) + ')'
+
     def removeDevice(self):
 
         for dev in self.listWidget.selectedItems():
@@ -764,5 +835,11 @@ class terminal(QtWidgets.QWidget):
     def processScript(self):
         items = []
         for dev in range(self.listWidget.count()):
-            items.append(dev)
-        self.scriptArea.processScript(self.listWidget.count(),items)
+            items.append(self.listWidget.item(dev).text()[3:])
+        status = self.scriptArea.processScript(self.listWidget.count(),items)
+        if status == None:
+            self.scriptStatusLabel.clear()
+            self.scriptArea.finishedAnalysis.runScriptSignal.emit(self.scriptArea.processedScript,self.VID_PID)
+        else:
+            self.scriptStatusLabel.clear()
+            self.scriptStatusLabel.setText(self.fetchErrorLabel(status))

@@ -11,6 +11,7 @@ import terminal
 import modifyDialog
 import time
 
+
 mutex = QMutex()
 
 ##########################################################################################################################################################################################
@@ -314,27 +315,39 @@ class ChixculubImpactor(QMainWindow):
 
     def createScript(self, list, devID):
 
-        print(list)
+        self.list = list
+        codeBlock = """"""
+
+        #singleCodeObject = compile(codeBlock, '<string>', 'single')
+        #exec(singleCodeObject)
+
         scriptName = "Script" + devID + ".txt"
         script = open(scriptName, 'w')
+
         for cmd in list:
             for key, value in cmd.items():
                 if key.lower() == "loop":
-                    script.write("for x in range({})\n:".format(value[0]))
-                    script.write("\t")
-                if key.lower() == "delay":
+                    codeBlock += "for x in range({}):\n".format(value[0])
+                    codeBlock += "\t"
+                elif key.lower() == "delay":
                     script.write("time.sleep({})".format(value[0]))
-                if terminal.script.intChecker(key):
-                    script.write()
+                elif key.lower() == "endloop" and list.index(cmd) == len(list) - 1:
+                    codeBlock += """"""
+                elif terminal.script.intChecker(key):
+                    codeBlock += "self.comSignal.comSignal.emit(msg, devID, terminalName)"
 
 
-        script.close()
 
     def activateButtons(self):
 
         self.ui.closeBtn.clicked.connect(self.closeWindow)
         self.ui.pushButton_4.clicked.connect(self.addDeviceDialog)
         self.ui.homeBtn.clicked.connect(lambda: self.ui.tabWidget.setCurrentIndex(0))
+
+    def compileScript(self):
+
+        singleCodeObject = compile('print(self.list)', '<string>', 'single')
+        exec(singleCodeObject)
 
     def addDeviceFrame(self, args):
 
