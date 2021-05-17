@@ -313,29 +313,31 @@ class ChixculubImpactor(QMainWindow):
         self.ui.tabWidget.removeTab(self.currentIndex)
         self.closeTerminalDialog.close()
 
-    def createScript(self, list, devID):
+    def createScript(self, list, devID, devList, terminalName):
 
         self.list = list
-        codeBlock = """"""
-
-        #singleCodeObject = compile(codeBlock, '<string>', 'single')
-        #exec(singleCodeObject)
-
+        codeBlock = ""
         scriptName = "Script" + devID + ".txt"
         script = open(scriptName, 'w')
+        print(devList)
 
         for cmd in list:
             for key, value in cmd.items():
                 if key.lower() == "loop":
-                    codeBlock += "for x in range({}):\n".format(value[0])
-                    codeBlock += "\t"
+                    codeBlock += "for x in range({}):\n\t".format(value[0])
+                    pass
                 elif key.lower() == "delay":
                     script.write("time.sleep({})".format(value[0]))
                 elif key.lower() == "endloop" and list.index(cmd) == len(list) - 1:
-                    codeBlock += """"""
+                    pass
                 elif terminal.script.intChecker(key):
-                    codeBlock += "self.comSignal.comSignal.emit(msg, devID, terminalName)"
+                    msg = value[0]
+                    dev = str(devList[key][1])
+                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName)"
 
+
+        singleCodeObject = compile(codeBlock.strip(), '<string>', 'single')
+        exec(singleCodeObject)
 
 
     def activateButtons(self):

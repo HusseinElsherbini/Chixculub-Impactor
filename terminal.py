@@ -9,7 +9,7 @@ import sys
 class Signal(QObject):
 
     customSignal = pyqtSignal(str, str, str)
-    runScriptSignal = pyqtSignal(list, str)
+    runScriptSignal = pyqtSignal(list, str, dict, str)
 
 class editor(QTextEdit):
 
@@ -834,12 +834,19 @@ class terminal(QtWidgets.QWidget):
 
     def processScript(self):
         items = []
+        devList = {}
         for dev in range(self.listWidget.count()):
             items.append(self.listWidget.item(dev).text()[3:])
+            #devList.update({str(dev + 1) : self.listWidget.item(dev).text()[3:]})
         status = self.scriptArea.processScript(self.listWidget.count(),items)
+        for x in items:
+            for i in detectUsb.initDevice.devices.keys():
+                if detectUsb.initDevice.devices[i]['Model Name'] == x:
+                    devList.update({str(items.index(x) + 1) : [x,i]})
+
         if status == None:
             self.scriptStatusLabel.clear()
-            self.scriptArea.finishedAnalysis.runScriptSignal.emit(self.scriptArea.processedScript,self.VID_PID)
+            self.scriptArea.finishedAnalysis.runScriptSignal.emit(self.scriptArea.processedScript,self.VID_PID, devList, self.objectName())
         else:
             self.scriptStatusLabel.clear()
             self.scriptStatusLabel.setText(self.fetchErrorLabel(status))
