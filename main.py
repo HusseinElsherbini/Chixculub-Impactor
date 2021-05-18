@@ -9,6 +9,7 @@ from detectUsb import initDevice
 import random
 import terminal
 import modifyDialog
+import devInterface
 import time
 
 
@@ -270,12 +271,15 @@ class ChixculubImpactor(QMainWindow):
         sender = self.sender().parentWidget()
 
         if self.ui.tabWidget.findChild(QtWidgets.QWidget,str(sender.objectName()).rsplit(None, 1)[0] + " Terminal") == None:
+            self.addDevInterface(sender.VID_PID)
             newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " Terminal", sender.VID_PID)
             newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
             newTerminal.scriptArea.finishedAnalysis.runScriptSignal.connect(self.createScript)
             icon = QtGui.QIcon()
             icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.ui.tabWidget.addTab(newTerminal, icon, str(sender.objectName()).rsplit(None, 1)[0] + " Terminal")
+            #self.addDevInterface()
+
 
         else:
             pass
@@ -417,6 +421,7 @@ class ChixculubImpactor(QMainWindow):
         noDeviceFrame = subclasses.noDeviceFrame()
         self.ui.verticalLayout_9.addWidget(noDeviceFrame)
 
+
     def passToCommThread(self, msg, VID_PID, terminalName):
 
         self.comSignal.comSignal.emit(msg, VID_PID, terminalName)
@@ -433,7 +438,11 @@ class ChixculubImpactor(QMainWindow):
             print(str(e) + ' {{MainWindow, serialReconnected, line 424}}')
 
     def appendMsg(self, msg, terminalName):
+
+        if terminalName == None:
+            return msg
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
+
         term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(msg))
 
     def processDeviceModData(self,data, devName):
@@ -494,6 +503,13 @@ class ChixculubImpactor(QMainWindow):
             self.modify_dialog = modifyDialog.modifyUsbDialog(*[self.sender().parent().objectName()])
             self.modify_dialog.dialogFinishedSignal.dialogClosedSignal.connect(self.processDeviceModData)
             self.modify_dialog.show()
+
+    def addDevInterface(self, VID_PID):
+
+        initDevice.devices[VID_PID]["Device interface"] = devInterface.devInterface(VID_PID)
+        readBack = self.customSign
+        initDevice.devices[VID_PID]["Device interface"].CR_VOLTAGE_LCD.display()
+        initDevice.devices[VID_PID]['Device interface'].show()
 
     def addDeviceDialog(self):
 
