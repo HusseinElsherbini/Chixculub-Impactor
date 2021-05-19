@@ -1,6 +1,6 @@
 import DeviceInterface
 from detectUsb import initDevice
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from PyQt5.QtCore import QEvent, QPoint, QRegExp, QObject, pyqtSignal
 from PyQt5.QtGui import QRegExpValidator
@@ -27,7 +27,11 @@ class devInterface(QtWidgets.QWidget):
         self.setShadow(self.window.Current_4)
         self.setShadow(self.window.Vlabel)
         self.setShadow(self.window.Alabel)
-
+        self.setShadow(self.window.CR_VOLTAGE_LCD)
+        self.setShadow(self.window.CR_CURRENT_LCD)
+        self.setShadow(self.window.CR_VLABEL)
+        self.setShadow(self.window.CR_CLABEL)
+        self.alignLineEdits()
         self.connectBtns()
 
     #######################################################################################################################################################################################
@@ -54,7 +58,16 @@ class devInterface(QtWidgets.QWidget):
 
     #def fillPage(self):
 
+    def alignLineEdits(self):
 
+        for child in self.window.CR.findChildren(QtWidgets.QLineEdit):
+            child.setAlignment(QtCore.Qt.AlignCenter)
+
+        for child in self.window.CR.findChildren(QtWidgets.QComboBox):
+            child.setEditable(True)
+            lineEdit = child.lineEdit()
+            lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+            lineEdit.setReadOnly(True)
     def changePage(self):
 
         if self.sender() == self.window.CR_BTN:

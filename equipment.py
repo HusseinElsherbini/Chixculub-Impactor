@@ -57,9 +57,9 @@ class EquipmentRS232(serial.Serial):
         self.ser.write(userInput.encode())
         return self.ser.readline().decode()
 
-    def send_without_read(self, input):
+    def send_without_read(self, userInput):
 
-        self.userInput += "\r\n"
+        userInput += "\r\n"
         self.ser.reset_input_buffer()
         self.ser.write(self.userInput.encode())
 

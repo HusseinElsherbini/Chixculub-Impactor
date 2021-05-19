@@ -22,7 +22,8 @@ mutex = QMutex()
 class Signal(QObject):
 
     customSignal = pyqtSignal(str)
-    comSignal = pyqtSignal(str, str, str)
+    comSignal = pyqtSignal(str, str, str, object)
+    cmdSignal = pyqtSignal(str, str, str,str, object)
     serialReconnectedSignal = pyqtSignal(str, str, str)
 
 ##########################################################################################################################################################################################
@@ -32,35 +33,56 @@ class Signal(QObject):
 ##########################################################################################################################################################################################
 class communication(QObject):
 
-    messageRcvdSignal = pyqtSignal(str, str)
+    queryRcvdSignal = pyqtSignal(str, str, object)
+    messageSentSignal = pyqtSignal(str, str, object)
 
     def __init__(self, database):
         super().__init__()
         self.dataBase = database
 
-    @pyqtSlot(str, str, str)
-    def processMsg(self, msg, VID_PID, terminalName):
+    @pyqtSlot(str, str, str, object)
+    def processMsg(self, msg, VID_PID, terminalName, obj):
 
         try:
             mutex.lock()
             if 'COM' in self.dataBase[VID_PID]['Model Name']:
                 msgRcvd = self.dataBase[VID_PID]['Resource'].send(msg)
-                self.messageRcvdSignal.emit(msgRcvd, terminalName)
+                self.queryRcvdSignal.emit(msgRcvd, terminalName, obj)
             else:
                 msgRcvd = self.dataBase[VID_PID]['Resource'].query(msg)
-                self.messageRcvdSignal.emit(msgRcvd, terminalName)
+                self.queryRcvdSignal.emit(msgRcvd, terminalName, obj)
             mutex.unlock()
-
 
         except Exception as e:
             mutex.unlock()
-            self.messageRcvdSignal.emit(str(e), terminalName)
+            self.queryRcvdSignal.emit(str(e), terminalName, obj)
+
+    @pyqtSlot(str, str, str,str, object)
+    def processCommand(self, cmd, query, VID_PID, terminalName, obj):
+        try:
+            mutex.lock()
+            if 'COM' in self.dataBase[VID_PID]['Model Name']:
+                self.dataBase[VID_PID]['Resource'].send_without_read(cmd)
+                time.sleep(.1)
+                msgRcvd = self.dataBase[VID_PID]['Resource'].send(query)
+                self.queryRcvdSignal.emit(msgRcvd, terminalName, obj)
+            else:
+                self.dataBase[VID_PID]['Resource'].write(cmd)
+                time.sleep(.1)
+                msgRcvd = self.dataBase[VID_PID]['Resource'].query(query)
+                self.queryRcvdSignal.emit(msgRcvd, terminalName, obj)
+            mutex.unlock()
+
+        except Exception as e:
+            mutex.unlock()
+            self.queryRcvdSignal.emit(str(e), terminalName, obj)
 
 ############################################################################################################################################################################################
 #  Class: runningScript                                                                                                                                                                    #
 #  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and    #
 #           moved to a thread which handles the processing of messages from any device active script. this is useful in order to avoid the blocking of the main GUI during readback timeout#
 ############################################################################################################################################################################################
+"""
 class runningScript(QObject):
 
     messageRcvdSignal = pyqtSignal(str, str)
@@ -83,7 +105,7 @@ class runningScript(QObject):
             mutex.unlock()
 
             self.messageRcvdSignal.emit(str(e), terminalName)
-
+"""
 ##########################################################################################################################################################################################
 #  Class: worker                                                                                                                                                                         #
 #  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and  #
@@ -423,8 +445,8 @@ class ChixculubImpactor(QMainWindow):
 
 
     def passToCommThread(self, msg, VID_PID, terminalName):
-
-        self.comSignal.comSignal.emit(msg, VID_PID, terminalName)
+        obj = None
+        self.comSignal.comSignal.emit(msg, VID_PID, terminalName, obj)
 
     def serialReconnected(self, device):
         try:
@@ -437,10 +459,11 @@ class ChixculubImpactor(QMainWindow):
         except Exception as e:
             print(str(e) + ' {{MainWindow, serialReconnected, line 424}}')
 
-    def appendMsg(self, msg, terminalName):
+    def appendMsg(self, msg, terminalName, obj):
 
-        if terminalName == None:
-            return msg
+        if terminalName == '':
+            obj(msg)
+            return
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
 
         term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(msg))
@@ -489,8 +512,9 @@ class ChixculubImpactor(QMainWindow):
         self.comThread = QThread()
         self.comWorker = communication(initDevice.devices)
         self.comWorker.moveToThread(self.comThread)
-        self.comWorker.messageRcvdSignal.connect(self.appendMsg)
+        self.comWorker.queryRcvdSignal.connect(self.appendMsg)
         self.comSignal.comSignal.connect(self.comWorker.processMsg)
+        self.comSignal.cmdSignal.connect(self.comWorker.processCommand)
         self.comThread.start()
 
     def modifyDialog(self):
@@ -507,8 +531,19 @@ class ChixculubImpactor(QMainWindow):
     def addDevInterface(self, VID_PID):
 
         initDevice.devices[VID_PID]["Device interface"] = devInterface.devInterface(VID_PID)
-        readBack = self.customSign
-        initDevice.devices[VID_PID]["Device interface"].CR_VOLTAGE_LCD.display()
+        self.comSignal.comSignal.emit("RESistance:STATic:L1?", VID_PID,  None,initDevice.devices[VID_PID]["Device interface"].window.CR_L1.setText)
+        self.comSignal.comSignal.emit("RESistance:STATic:L2?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_L2.setText)
+        self.comSignal.comSignal.emit("RESistance:STATic:RISE?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_SR1.setText)
+        self.comSignal.comSignal.emit("RESistance:STATic:FALL?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_SR2.setText)
+        self.comSignal.comSignal.emit("RESistance:STATic:IRNG?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_IRANGE.setCurrentText)
+        self.comSignal.comSignal.emit("FETCh:VOLTage?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_VOLTAGE_LCD.display)
+        self.comSignal.comSignal.emit("FETCh:CURRent?", VID_PID, None, initDevice.devices[VID_PID]["Device interface"].window.CR_CURRENT_LCD.display)
+        initDevice.devices[VID_PID]["Device interface"].window.CR_L1.returnPressed.connect(lambda : self.comSignal.cmdSignal.emit("RES:STAT:L1 {}".format(initDevice.devices[VID_PID]["Device interface"].window.CR_L1.text()),"RESistance:STATic:L1?", VID_PID, None, initDevice.devices[VID_PID]["Device interface"].window.CR_L1.setText))
+        initDevice.devices[VID_PID]["Device interface"].window.CR_L2.returnPressed.connect(
+            lambda: self.comSignal.cmdSignal.emit(
+                "RES:STAT:L2 {}".format(initDevice.devices[VID_PID]["Device interface"].window.CR_L2.text()),
+                "RESistance:STATic:L2?", VID_PID, None,
+                initDevice.devices[VID_PID]["Device interface"].window.CR_L2.setText))
         initDevice.devices[VID_PID]['Device interface'].show()
 
     def addDeviceDialog(self):
