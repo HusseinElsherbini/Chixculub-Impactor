@@ -409,7 +409,7 @@ QFrame:hove#DeviceInterface{
                       <item row="0" column="0">
                        <widget class="QStackedWidget" name="modePageStack">
                         <property name="currentIndex">
-                         <number>0</number>
+                         <number>2</number>
                         </property>
                         <widget class="QWidget" name="CR">
                          <property name="styleSheet">
@@ -517,7 +517,7 @@ QFrame:hove#DeviceInterface{
                                     <number>0</number>
                                    </property>
                                    <property name="topMargin">
-                                    <number>0</number>
+                                    <number>9</number>
                                    </property>
                                    <property name="rightMargin">
                                     <number>0</number>
@@ -526,7 +526,7 @@ QFrame:hove#DeviceInterface{
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_13">
+                                    <widget class="QLabel" name="CR_DEVNAME_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -535,6 +535,12 @@ QFrame:hove#DeviceInterface{
                                      </property>
                                      <property name="text">
                                       <string/>
+                                     </property>
+                                     <property name="textFormat">
+                                      <enum>Qt::PlainText</enum>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                                      </property>
                                     </widget>
                                    </item>
@@ -3351,7 +3357,7 @@ QLineEdit QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <property name="topMargin">
-                                    <number>0</number>
+                                    <number>9</number>
                                    </property>
                                    <property name="rightMargin">
                                     <number>0</number>
@@ -3360,7 +3366,7 @@ QLineEdit QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_14">
+                                    <widget class="QLabel" name="CC_DEVNAME_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -3403,7 +3409,7 @@ QLineEdit QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_15">
+                                    <widget class="QLabel" name="CC_RANGE_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -3543,7 +3549,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_5">
+                                       <widget class="QLineEdit" name="CC_SR1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -3556,6 +3562,7 @@ QLineEdit QAbstractItemView {
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color:red;
 
 }
 
@@ -3721,13 +3728,14 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_6">
+                                       <widget class="QLineEdit" name="CC_L2">
                                         <property name="styleSheet">
                                          <string notr="true">QLineEdit{
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color:red;
 
 }
 
@@ -3905,7 +3913,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_7">
+                                       <widget class="QLineEdit" name="CC_L1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -3916,6 +3924,7 @@ QLineEdit QAbstractItemView {
                                          <string notr="true">QLineEdit{
 	border:transparent;
 	background: transparent;
+	color:red;
 	border-bottom: 1px solid black;
 	font: 14px;
 
@@ -4067,7 +4076,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_8">
+                                       <widget class="QLineEdit" name="CC_SR2">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -4080,6 +4089,7 @@ QLineEdit QAbstractItemView {
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color:red;
 
 }
 
@@ -4192,7 +4202,7 @@ QLineEdit QAbstractItemView {
                                      </property>
                                      <layout class="QVBoxLayout" name="verticalLayout_41">
                                       <item>
-                                       <widget class="QLabel" name="label_24">
+                                       <widget class="QLabel" name="CC_VRANGE_2">
                                         <property name="font">
                                          <font>
                                           <family>Courier</family>
@@ -4235,7 +4245,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QComboBox" name="comboBox_2">
+                                       <widget class="QComboBox" name="CC_VRANGE">
                                         <property name="font">
                                          <font>
                                           <family>Courier</family>
@@ -4247,6 +4257,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	border-bottom: 1px solid black;	
 	background:transparent;
+	color:red;
 }
 
 
@@ -4316,7 +4327,7 @@ QComboBox QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_19">
                                    <item>
-                                    <widget class="QLCDNumber" name="Voltage_2">
+                                    <widget class="QLCDNumber" name="CC_VOLTAGE_LCD">
                                      <property name="minimumSize">
                                       <size>
                                        <width>250</width>
@@ -4359,7 +4370,7 @@ QComboBox QAbstractItemView {
                                        <number>14</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="label_25">
+                                       <widget class="QLabel" name="CC_VLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>
@@ -4387,7 +4398,7 @@ QComboBox QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_20">
                                    <item>
-                                    <widget class="QLCDNumber" name="Current_2">
+                                    <widget class="QLCDNumber" name="CC_CURRENT_LCD">
                                      <property name="minimumSize">
                                       <size>
                                        <width>250</width>
@@ -4436,7 +4447,7 @@ QComboBox QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="label_26">
+                                       <widget class="QLabel" name="CC_CLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>

@@ -208,17 +208,19 @@ class Ui_Form(object):
         self.frame_38.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_38.setObjectName("frame_38")
         self.verticalLayout_25 = QtWidgets.QVBoxLayout(self.frame_38)
-        self.verticalLayout_25.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_25.setContentsMargins(0, 9, 0, 0)
         self.verticalLayout_25.setSpacing(0)
         self.verticalLayout_25.setObjectName("verticalLayout_25")
-        self.label_13 = QtWidgets.QLabel(self.frame_38)
+        self.CR_DEVNAME_LABEL = QtWidgets.QLabel(self.frame_38)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
-        self.label_13.setFont(font)
-        self.label_13.setText("")
-        self.label_13.setObjectName("label_13")
-        self.verticalLayout_25.addWidget(self.label_13)
+        self.CR_DEVNAME_LABEL.setFont(font)
+        self.CR_DEVNAME_LABEL.setText("")
+        self.CR_DEVNAME_LABEL.setTextFormat(QtCore.Qt.PlainText)
+        self.CR_DEVNAME_LABEL.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.CR_DEVNAME_LABEL.setObjectName("CR_DEVNAME_LABEL")
+        self.verticalLayout_25.addWidget(self.CR_DEVNAME_LABEL)
         self.gridLayout_13.addWidget(self.frame_38, 0, 1, 1, 1)
         self.frame_36 = QtWidgets.QFrame(self.frame_9)
         self.frame_36.setMinimumSize(QtCore.QSize(75, 0))
@@ -1532,17 +1534,17 @@ class Ui_Form(object):
         self.frame_40.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_40.setObjectName("frame_40")
         self.verticalLayout_26 = QtWidgets.QVBoxLayout(self.frame_40)
-        self.verticalLayout_26.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_26.setContentsMargins(0, 9, 0, 0)
         self.verticalLayout_26.setSpacing(0)
         self.verticalLayout_26.setObjectName("verticalLayout_26")
-        self.label_14 = QtWidgets.QLabel(self.frame_40)
+        self.CC_DEVNAME_LABEL = QtWidgets.QLabel(self.frame_40)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
-        self.label_14.setFont(font)
-        self.label_14.setText("")
-        self.label_14.setObjectName("label_14")
-        self.verticalLayout_26.addWidget(self.label_14)
+        self.CC_DEVNAME_LABEL.setFont(font)
+        self.CC_DEVNAME_LABEL.setText("")
+        self.CC_DEVNAME_LABEL.setObjectName("CC_DEVNAME_LABEL")
+        self.verticalLayout_26.addWidget(self.CC_DEVNAME_LABEL)
         self.gridLayout_15.addWidget(self.frame_40, 0, 1, 1, 1)
         self.frame_41 = QtWidgets.QFrame(self.frame_39)
         self.frame_41.setMinimumSize(QtCore.QSize(75, 0))
@@ -1553,14 +1555,14 @@ class Ui_Form(object):
         self.verticalLayout_27.setContentsMargins(0, -1, 0, 0)
         self.verticalLayout_27.setSpacing(0)
         self.verticalLayout_27.setObjectName("verticalLayout_27")
-        self.label_15 = QtWidgets.QLabel(self.frame_41)
+        self.CC_RANGE_LABEL = QtWidgets.QLabel(self.frame_41)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
-        self.label_15.setFont(font)
-        self.label_15.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.label_15.setObjectName("label_15")
-        self.verticalLayout_27.addWidget(self.label_15)
+        self.CC_RANGE_LABEL.setFont(font)
+        self.CC_RANGE_LABEL.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.CC_RANGE_LABEL.setObjectName("CC_RANGE_LABEL")
+        self.verticalLayout_27.addWidget(self.CC_RANGE_LABEL)
         self.gridLayout_15.addWidget(self.frame_41, 0, 0, 1, 1)
         self.gridLayout_14.addWidget(self.frame_39, 3, 0, 1, 2)
         self.frame_42 = QtWidgets.QFrame(self.screen_2)
@@ -1611,13 +1613,14 @@ class Ui_Form(object):
         self.verticalLayout_29.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_29.setSpacing(0)
         self.verticalLayout_29.setObjectName("verticalLayout_29")
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.frame_46)
-        self.lineEdit_5.setMinimumSize(QtCore.QSize(50, 0))
-        self.lineEdit_5.setStyleSheet("QLineEdit{\n"
+        self.CC_SR1 = QtWidgets.QLineEdit(self.frame_46)
+        self.CC_SR1.setMinimumSize(QtCore.QSize(50, 0))
+        self.CC_SR1.setStyleSheet("QLineEdit{\n"
 "    border:transparent;\n"
 "    background: transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
+"    color:red;\n"
 "\n"
 "}\n"
 "\n"
@@ -1636,8 +1639,8 @@ class Ui_Form(object):
 "    background-color: white;\n"
 "\n"
 "}")
-        self.lineEdit_5.setObjectName("lineEdit_5")
-        self.verticalLayout_29.addWidget(self.lineEdit_5)
+        self.CC_SR1.setObjectName("CC_SR1")
+        self.verticalLayout_29.addWidget(self.CC_SR1)
         self.horizontalLayout_13.addWidget(self.frame_46)
         self.frame_47 = QtWidgets.QFrame(self.frame_44)
         self.frame_47.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1698,12 +1701,13 @@ class Ui_Form(object):
         self.verticalLayout_33.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_33.setSpacing(0)
         self.verticalLayout_33.setObjectName("verticalLayout_33")
-        self.lineEdit_6 = QtWidgets.QLineEdit(self.frame_51)
-        self.lineEdit_6.setStyleSheet("QLineEdit{\n"
+        self.CC_L2 = QtWidgets.QLineEdit(self.frame_51)
+        self.CC_L2.setStyleSheet("QLineEdit{\n"
 "    border:transparent;\n"
 "    background: transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
+"    color:red;\n"
 "\n"
 "}\n"
 "\n"
@@ -1722,8 +1726,8 @@ class Ui_Form(object):
 "    background-color: white;\n"
 "\n"
 "}")
-        self.lineEdit_6.setObjectName("lineEdit_6")
-        self.verticalLayout_33.addWidget(self.lineEdit_6)
+        self.CC_L2.setObjectName("CC_L2")
+        self.verticalLayout_33.addWidget(self.CC_L2)
         self.horizontalLayout_14.addWidget(self.frame_51)
         self.frame_52 = QtWidgets.QFrame(self.frame_48)
         self.frame_52.setMinimumSize(QtCore.QSize(0, 0))
@@ -1786,11 +1790,12 @@ class Ui_Form(object):
         self.verticalLayout_37.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_37.setSpacing(0)
         self.verticalLayout_37.setObjectName("verticalLayout_37")
-        self.lineEdit_7 = QtWidgets.QLineEdit(self.frame_56)
-        self.lineEdit_7.setMinimumSize(QtCore.QSize(50, 0))
-        self.lineEdit_7.setStyleSheet("QLineEdit{\n"
+        self.CC_L1 = QtWidgets.QLineEdit(self.frame_56)
+        self.CC_L1.setMinimumSize(QtCore.QSize(50, 0))
+        self.CC_L1.setStyleSheet("QLineEdit{\n"
 "    border:transparent;\n"
 "    background: transparent;\n"
+"    color:red;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
 "\n"
@@ -1811,8 +1816,8 @@ class Ui_Form(object):
 "    background-color: white;\n"
 "\n"
 "}")
-        self.lineEdit_7.setObjectName("lineEdit_7")
-        self.verticalLayout_37.addWidget(self.lineEdit_7)
+        self.CC_L1.setObjectName("CC_L1")
+        self.verticalLayout_37.addWidget(self.CC_L1)
         self.horizontalLayout_15.addWidget(self.frame_56)
         self.frame_57 = QtWidgets.QFrame(self.frame_53)
         self.frame_57.setMaximumSize(QtCore.QSize(15, 15))
@@ -1862,13 +1867,14 @@ class Ui_Form(object):
         self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_17.setSpacing(0)
         self.horizontalLayout_17.setObjectName("horizontalLayout_17")
-        self.lineEdit_8 = QtWidgets.QLineEdit(self.frame_60)
-        self.lineEdit_8.setMinimumSize(QtCore.QSize(50, 0))
-        self.lineEdit_8.setStyleSheet("QLineEdit{\n"
+        self.CC_SR2 = QtWidgets.QLineEdit(self.frame_60)
+        self.CC_SR2.setMinimumSize(QtCore.QSize(50, 0))
+        self.CC_SR2.setStyleSheet("QLineEdit{\n"
 "    border:transparent;\n"
 "    background: transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
+"    color:red;\n"
 "\n"
 "}\n"
 "\n"
@@ -1887,8 +1893,8 @@ class Ui_Form(object):
 "    background-color: white;\n"
 "\n"
 "}")
-        self.lineEdit_8.setObjectName("lineEdit_8")
-        self.horizontalLayout_17.addWidget(self.lineEdit_8)
+        self.CC_SR2.setObjectName("CC_SR2")
+        self.horizontalLayout_17.addWidget(self.CC_SR2)
         self.horizontalLayout_16.addWidget(self.frame_60)
         self.frame_61 = QtWidgets.QFrame(self.frame_58)
         self.frame_61.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1923,14 +1929,14 @@ class Ui_Form(object):
         self.frame_63.setObjectName("frame_63")
         self.verticalLayout_41 = QtWidgets.QVBoxLayout(self.frame_63)
         self.verticalLayout_41.setObjectName("verticalLayout_41")
-        self.label_24 = QtWidgets.QLabel(self.frame_63)
+        self.CC_VRANGE_2 = QtWidgets.QLabel(self.frame_63)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
-        self.label_24.setFont(font)
-        self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_24.setObjectName("label_24")
-        self.verticalLayout_41.addWidget(self.label_24)
+        self.CC_VRANGE_2.setFont(font)
+        self.CC_VRANGE_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.CC_VRANGE_2.setObjectName("CC_VRANGE_2")
+        self.verticalLayout_41.addWidget(self.CC_VRANGE_2)
         self.horizontalLayout_18.addWidget(self.frame_63)
         self.frame_64 = QtWidgets.QFrame(self.frame_62)
         self.frame_64.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1940,15 +1946,16 @@ class Ui_Form(object):
         self.verticalLayout_42.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_42.setSpacing(0)
         self.verticalLayout_42.setObjectName("verticalLayout_42")
-        self.comboBox_2 = QtWidgets.QComboBox(self.frame_64)
+        self.CC_VRANGE = QtWidgets.QComboBox(self.frame_64)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
-        self.comboBox_2.setFont(font)
-        self.comboBox_2.setStyleSheet("QComboBox{\n"
+        self.CC_VRANGE.setFont(font)
+        self.CC_VRANGE.setStyleSheet("QComboBox{\n"
 "    border:transparent;\n"
 "    border-bottom: 1px solid black;    \n"
 "    background:transparent;\n"
+"    color:red;\n"
 "}\n"
 "\n"
 "\n"
@@ -1966,11 +1973,11 @@ class Ui_Form(object):
 "    background-color: white;\n"
 "\n"
 "}")
-        self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.verticalLayout_42.addWidget(self.comboBox_2)
+        self.CC_VRANGE.setObjectName("CC_VRANGE")
+        self.CC_VRANGE.addItem("")
+        self.CC_VRANGE.addItem("")
+        self.CC_VRANGE.addItem("")
+        self.verticalLayout_42.addWidget(self.CC_VRANGE)
         self.horizontalLayout_18.addWidget(self.frame_64)
         self.gridLayout_16.addWidget(self.frame_62, 0, 2, 2, 1)
         self.gridLayout_14.addWidget(self.frame_42, 0, 0, 2, 2)
@@ -1987,16 +1994,16 @@ class Ui_Form(object):
         self.frame_66.setObjectName("frame_66")
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout(self.frame_66)
         self.horizontalLayout_19.setObjectName("horizontalLayout_19")
-        self.Voltage_2 = QtWidgets.QLCDNumber(self.frame_66)
-        self.Voltage_2.setMinimumSize(QtCore.QSize(250, 0))
-        self.Voltage_2.setAutoFillBackground(False)
-        self.Voltage_2.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.Voltage_2.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.Voltage_2.setSmallDecimalPoint(True)
-        self.Voltage_2.setDigitCount(7)
-        self.Voltage_2.setProperty("value", 12.7843)
-        self.Voltage_2.setObjectName("Voltage_2")
-        self.horizontalLayout_19.addWidget(self.Voltage_2)
+        self.CC_VOLTAGE_LCD = QtWidgets.QLCDNumber(self.frame_66)
+        self.CC_VOLTAGE_LCD.setMinimumSize(QtCore.QSize(250, 0))
+        self.CC_VOLTAGE_LCD.setAutoFillBackground(False)
+        self.CC_VOLTAGE_LCD.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.CC_VOLTAGE_LCD.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.CC_VOLTAGE_LCD.setSmallDecimalPoint(True)
+        self.CC_VOLTAGE_LCD.setDigitCount(7)
+        self.CC_VOLTAGE_LCD.setProperty("value", 12.7843)
+        self.CC_VOLTAGE_LCD.setObjectName("CC_VOLTAGE_LCD")
+        self.horizontalLayout_19.addWidget(self.CC_VOLTAGE_LCD)
         self.frame_67 = QtWidgets.QFrame(self.frame_66)
         self.frame_67.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_67.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -2004,13 +2011,13 @@ class Ui_Form(object):
         self.verticalLayout_43 = QtWidgets.QVBoxLayout(self.frame_67)
         self.verticalLayout_43.setContentsMargins(0, 14, -1, -1)
         self.verticalLayout_43.setObjectName("verticalLayout_43")
-        self.label_25 = QtWidgets.QLabel(self.frame_67)
+        self.CC_VLABEL = QtWidgets.QLabel(self.frame_67)
         font = QtGui.QFont()
         font.setFamily("Courier New")
         font.setPointSize(8)
-        self.label_25.setFont(font)
-        self.label_25.setObjectName("label_25")
-        self.verticalLayout_43.addWidget(self.label_25)
+        self.CC_VLABEL.setFont(font)
+        self.CC_VLABEL.setObjectName("CC_VLABEL")
+        self.verticalLayout_43.addWidget(self.CC_VLABEL)
         self.horizontalLayout_19.addWidget(self.frame_67)
         self.gridLayout_17.addWidget(self.frame_66, 0, 0, 1, 1)
         self.frame_68 = QtWidgets.QFrame(self.frame_65)
@@ -2019,15 +2026,15 @@ class Ui_Form(object):
         self.frame_68.setObjectName("frame_68")
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.frame_68)
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.Current_2 = QtWidgets.QLCDNumber(self.frame_68)
-        self.Current_2.setMinimumSize(QtCore.QSize(250, 0))
-        self.Current_2.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.Current_2.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.Current_2.setSmallDecimalPoint(True)
-        self.Current_2.setDigitCount(7)
-        self.Current_2.setProperty("value", 5.67899)
-        self.Current_2.setObjectName("Current_2")
-        self.horizontalLayout_20.addWidget(self.Current_2)
+        self.CC_CURRENT_LCD = QtWidgets.QLCDNumber(self.frame_68)
+        self.CC_CURRENT_LCD.setMinimumSize(QtCore.QSize(250, 0))
+        self.CC_CURRENT_LCD.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.CC_CURRENT_LCD.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.CC_CURRENT_LCD.setSmallDecimalPoint(True)
+        self.CC_CURRENT_LCD.setDigitCount(7)
+        self.CC_CURRENT_LCD.setProperty("value", 5.67899)
+        self.CC_CURRENT_LCD.setObjectName("CC_CURRENT_LCD")
+        self.horizontalLayout_20.addWidget(self.CC_CURRENT_LCD)
         self.frame_69 = QtWidgets.QFrame(self.frame_68)
         self.frame_69.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_69.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -2036,14 +2043,14 @@ class Ui_Form(object):
         self.verticalLayout_44.setContentsMargins(0, 8, 0, 0)
         self.verticalLayout_44.setSpacing(0)
         self.verticalLayout_44.setObjectName("verticalLayout_44")
-        self.label_26 = QtWidgets.QLabel(self.frame_69)
+        self.CC_CLABEL = QtWidgets.QLabel(self.frame_69)
         font = QtGui.QFont()
         font.setFamily("Courier New")
         font.setPointSize(8)
-        self.label_26.setFont(font)
-        self.label_26.setScaledContents(False)
-        self.label_26.setObjectName("label_26")
-        self.verticalLayout_44.addWidget(self.label_26)
+        self.CC_CLABEL.setFont(font)
+        self.CC_CLABEL.setScaledContents(False)
+        self.CC_CLABEL.setObjectName("CC_CLABEL")
+        self.verticalLayout_44.addWidget(self.CC_CLABEL)
         self.horizontalLayout_20.addWidget(self.frame_69)
         self.gridLayout_17.addWidget(self.frame_68, 0, 1, 1, 1)
         self.gridLayout_14.addWidget(self.frame_65, 2, 0, 1, 2)
@@ -2859,7 +2866,7 @@ class Ui_Form(object):
         self.gridLayout_27.addWidget(self.MainFrame, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.modePageStack.setCurrentIndex(0)
+        self.modePageStack.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -2898,7 +2905,7 @@ class Ui_Form(object):
         self.label_55.setText(_translate("Form", "ms"))
         self.Vlabel.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">V</span></p></body></html>"))
         self.Alabel.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">A</span></p></body></html>"))
-        self.label_15.setText(_translate("Form", "CC_M"))
+        self.CC_RANGE_LABEL.setText(_translate("Form", "CC_M"))
         self.label_16.setText(_translate("Form", "SR/="))
         self.label_17.setText(_translate("Form", "A/us"))
         self.label_18.setText(_translate("Form", "L2 ="))
@@ -2907,12 +2914,12 @@ class Ui_Form(object):
         self.label_21.setText(_translate("Form", "A"))
         self.label_22.setText(_translate("Form", "SR\\="))
         self.label_23.setText(_translate("Form", "A/us"))
-        self.label_24.setText(_translate("Form", "V_Range ="))
-        self.comboBox_2.setItemText(0, _translate("Form", "High"))
-        self.comboBox_2.setItemText(1, _translate("Form", "Medium"))
-        self.comboBox_2.setItemText(2, _translate("Form", "Low"))
-        self.label_25.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">V</span></p></body></html>"))
-        self.label_26.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">A</span></p></body></html>"))
+        self.CC_VRANGE_2.setText(_translate("Form", "V_Range ="))
+        self.CC_VRANGE.setItemText(0, _translate("Form", "High"))
+        self.CC_VRANGE.setItemText(1, _translate("Form", "Medium"))
+        self.CC_VRANGE.setItemText(2, _translate("Form", "Low"))
+        self.CC_VLABEL.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">V</span></p></body></html>"))
+        self.CC_CLABEL.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">A</span></p></body></html>"))
         self.label_28.setText(_translate("Form", "CV_M"))
         self.label_29.setText(_translate("Form", "I_Limit = "))
         self.label_30.setText(_translate("Form", "A"))

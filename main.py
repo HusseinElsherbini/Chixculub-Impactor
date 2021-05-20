@@ -293,7 +293,8 @@ class ChixculubImpactor(QMainWindow):
         sender = self.sender().parentWidget()
 
         if self.ui.tabWidget.findChild(QtWidgets.QWidget,str(sender.objectName()).rsplit(None, 1)[0] + " Terminal") == None:
-            self.addDevInterface(sender.VID_PID)
+            if sender.VID_PID == '0A690879':
+                self.addDevInterface(sender.VID_PID)
             newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " Terminal", sender.VID_PID)
             newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
             newTerminal.scriptArea.finishedAnalysis.runScriptSignal.connect(self.createScript)
@@ -359,7 +360,8 @@ class ChixculubImpactor(QMainWindow):
                 elif terminal.script.intChecker(key):
                     msg = value[0]
                     dev = str(devList[key][1])
-                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName)"
+                    obj = ''
+                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName, obj)\n\t"
 
 
         singleCodeObject = compile(codeBlock.strip(), '<string>', 'single')
@@ -462,6 +464,7 @@ class ChixculubImpactor(QMainWindow):
     def appendMsg(self, msg, terminalName, obj):
 
         if terminalName == '':
+            msg = msg.rstrip()
             obj(msg)
             return
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
@@ -530,20 +533,7 @@ class ChixculubImpactor(QMainWindow):
 
     def addDevInterface(self, VID_PID):
 
-        initDevice.devices[VID_PID]["Device interface"] = devInterface.devInterface(VID_PID)
-        self.comSignal.comSignal.emit("RESistance:STATic:L1?", VID_PID,  None,initDevice.devices[VID_PID]["Device interface"].window.CR_L1.setText)
-        self.comSignal.comSignal.emit("RESistance:STATic:L2?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_L2.setText)
-        self.comSignal.comSignal.emit("RESistance:STATic:RISE?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_SR1.setText)
-        self.comSignal.comSignal.emit("RESistance:STATic:FALL?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_SR2.setText)
-        self.comSignal.comSignal.emit("RESistance:STATic:IRNG?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_IRANGE.setCurrentText)
-        self.comSignal.comSignal.emit("FETCh:VOLTage?", VID_PID, None,initDevice.devices[VID_PID]["Device interface"].window.CR_VOLTAGE_LCD.display)
-        self.comSignal.comSignal.emit("FETCh:CURRent?", VID_PID, None, initDevice.devices[VID_PID]["Device interface"].window.CR_CURRENT_LCD.display)
-        initDevice.devices[VID_PID]["Device interface"].window.CR_L1.returnPressed.connect(lambda : self.comSignal.cmdSignal.emit("RES:STAT:L1 {}".format(initDevice.devices[VID_PID]["Device interface"].window.CR_L1.text()),"RESistance:STATic:L1?", VID_PID, None, initDevice.devices[VID_PID]["Device interface"].window.CR_L1.setText))
-        initDevice.devices[VID_PID]["Device interface"].window.CR_L2.returnPressed.connect(
-            lambda: self.comSignal.cmdSignal.emit(
-                "RES:STAT:L2 {}".format(initDevice.devices[VID_PID]["Device interface"].window.CR_L2.text()),
-                "RESistance:STATic:L2?", VID_PID, None,
-                initDevice.devices[VID_PID]["Device interface"].window.CR_L2.setText))
+        initDevice.devices[VID_PID]["Device interface"] = devInterface.devInterface(VID_PID, self.comSignal.comSignal, self.comSignal.cmdSignal)
         initDevice.devices[VID_PID]['Device interface'].show()
 
     def addDeviceDialog(self):
