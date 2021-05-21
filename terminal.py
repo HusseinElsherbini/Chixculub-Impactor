@@ -760,6 +760,7 @@ class terminal(QtWidgets.QWidget):
         self.runScriptBtn.setToolTip("Run script")
         self.removeDeviceBtn.setToolTip("Remove device from script")
         self.readBack.setReadOnly(True)
+        self.readBack.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.populateErrorDict()
         self.connectBtns()
 
@@ -775,6 +776,20 @@ class terminal(QtWidgets.QWidget):
             self.stackedWidget_2.setCurrentIndex(1)
         else:
             self.stackedWidget_2.setCurrentIndex(0)
+
+    def contextMenuEvent(self,event):
+
+        menu = QtWidgets.QMenu(self)
+        clearAction = menu.addAction("Clear")
+        action = menu.exec_(self.mapToGlobal(event.pos()))
+        if action == clearAction:
+            self.readBack.clear()
+            self.readBack.append(
+                "<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#0033b3;\">Chixculub Impactor [Version 1.0.0] </span>")
+            self.readBack.append(
+                "<span style=\"font-family:\'Courier new\'; font-size:11pt; color:#0033b3;\">{} Connected Successfully! </span>".format(
+                    detectUsb.initDevice.devices[self.VID_PID]['Model Name']))
+
 
     def setShadow(self, object):
 

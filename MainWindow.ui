@@ -2472,6 +2472,9 @@ background-color:rgb(226, 226, 226)
                         </item>
                         <item>
                          <widget class="QTextEdit" name="textEdit_2">
+                          <property name="contextMenuPolicy">
+                           <enum>Qt::ActionsContextMenu</enum>
+                          </property>
                           <property name="styleSheet">
                            <string notr="true">
 QTextEdit{

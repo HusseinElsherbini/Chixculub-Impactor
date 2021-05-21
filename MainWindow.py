@@ -1072,6 +1072,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.addWidget(self.stackedWidget_2)
         self.verticalLayout_15.addWidget(self.frame_23)
         self.textEdit_2 = QtWidgets.QTextEdit(self.scrollAreaWidgetContents_2)
+        self.textEdit_2.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.textEdit_2.setStyleSheet("\n"
 "QTextEdit{\n"
 "border:1px solid #AFACAC;\n"

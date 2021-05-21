@@ -77,35 +77,7 @@ class communication(QObject):
             mutex.unlock()
             self.queryRcvdSignal.emit(str(e), terminalName, obj)
 
-############################################################################################################################################################################################
-#  Class: runningScript                                                                                                                                                                    #
-#  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and    #
-#           moved to a thread which handles the processing of messages from any device active script. this is useful in order to avoid the blocking of the main GUI during readback timeout#
-############################################################################################################################################################################################
-"""
-class runningScript(QObject):
 
-    messageRcvdSignal = pyqtSignal(str, str)
-
-    def __init__(self, database):
-        super().__init__()
-        self.dataBase = database
-
-    @pyqtSlot(str, str, str)
-    def processMsg(self, msg, VID_PID, terminalName):
-
-        try:
-            mutex.lock()
-            msgRcvd = self.dataBase[VID_PID]['Resource'].query(msg)
-            mutex.unlock()
-
-            self.messageRcvdSignal.emit(msgRcvd, terminalName)
-
-        except Exception as e:
-            mutex.unlock()
-
-            self.messageRcvdSignal.emit(str(e), terminalName)
-"""
 ##########################################################################################################################################################################################
 #  Class: worker                                                                                                                                                                         #
 #  Purpose: Inherits from QObject class which enables the creation of custom signals in order to create arbitrary events. an object of this class is instantiated in the mainwindow and  #
@@ -347,21 +319,28 @@ class ChixculubImpactor(QMainWindow):
         scriptName = "Script" + devID + ".txt"
         script = open(scriptName, 'w')
         print(devList)
-
+        loop = 0
+        self.number = 0
         for cmd in list:
             for key, value in cmd.items():
                 if key.lower() == "loop":
-                    codeBlock += "for x in range({}):\n\t".format(value[0])
+                    loop += 1
+                    codeBlock += "for x in range({}):\n".format(value[0])
+                    for x in range(loop):
+                        codeBlock += '\t'
                     pass
                 elif key.lower() == "delay":
                     script.write("time.sleep({})".format(value[0]))
                 elif key.lower() == "endloop" and list.index(cmd) == len(list) - 1:
+                    loop -= 1
                     pass
                 elif terminal.script.intChecker(key):
                     msg = value[0]
                     dev = str(devList[key][1])
                     obj = ''
-                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName, obj)\n\t"
+                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName, obj)\n"
+                    for x in range(loop):
+                        codeBlock += '\t'
 
 
         singleCodeObject = compile(codeBlock.strip(), '<string>', 'single')
@@ -468,8 +447,8 @@ class ChixculubImpactor(QMainWindow):
             obj(msg)
             return
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
-
-        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(msg))
+        self.number += 1
+        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{}. {} </span>".format(self.number, msg))
 
     def processDeviceModData(self,data, devName):
 
