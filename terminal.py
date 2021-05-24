@@ -135,7 +135,7 @@ class script(QTextEdit):
                 y.append("")
                 for i in range(len(y)):
 
-                    y[i] = y[i].replace(" ", "")
+                    y[i] = y[i].strip()
 
                 a = y[1].rsplit(';')
                 a[:] = [x for x in a if x != ""]

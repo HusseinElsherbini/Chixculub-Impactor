@@ -409,7 +409,7 @@ QFrame:hove#DeviceInterface{
                       <item row="0" column="0">
                        <widget class="QStackedWidget" name="modePageStack">
                         <property name="currentIndex">
-                         <number>2</number>
+                         <number>1</number>
                         </property>
                         <widget class="QWidget" name="CR">
                          <property name="styleSheet">
@@ -1770,7 +1770,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_36">
+                                    <widget class="QLabel" name="CCD_DEVNAME_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -1813,7 +1813,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_40">
+                                    <widget class="QLabel" name="CCD_RANGE_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -1922,7 +1922,7 @@ QComboBox QAbstractItemView {
                                      </property>
                                      <layout class="QVBoxLayout" name="verticalLayout_83">
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_16">
+                                       <widget class="QLineEdit" name="CCD_T1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -1935,6 +1935,7 @@ QComboBox QAbstractItemView {
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color: red;
 
 }
 
@@ -2072,7 +2073,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_12">
+                                       <widget class="QLineEdit" name="CCD_SR1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -2084,6 +2085,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -2250,12 +2252,13 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_13">
+                                       <widget class="QLineEdit" name="CCD_L2">
                                         <property name="styleSheet">
                                          <string notr="true">QLineEdit{
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -2434,7 +2437,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_14">
+                                       <widget class="QLineEdit" name="CCD_L1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -2446,6 +2449,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -2595,7 +2599,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_15">
+                                       <widget class="QLineEdit" name="CCD_SR2">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -2607,6 +2611,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -2760,7 +2765,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QComboBox" name="comboBox_5">
+                                       <widget class="QComboBox" name="CCD_VRANGE">
                                         <property name="font">
                                          <font>
                                           <family>Courier</family>
@@ -2778,6 +2783,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	border-bottom: 1px solid black;
 	background:transparent;
+	color: red;
 }
 
 
@@ -2902,7 +2908,7 @@ QComboBox QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_18">
+                                       <widget class="QLineEdit" name="CCD_RPT">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -2915,6 +2921,7 @@ QComboBox QAbstractItemView {
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color: red;
 
 }
 
@@ -3000,7 +3007,7 @@ QLineEdit QAbstractItemView {
                                      </property>
                                      <layout class="QVBoxLayout" name="verticalLayout_85">
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_17">
+                                       <widget class="QLineEdit" name="CCD_T2">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -3013,6 +3020,7 @@ QLineEdit QAbstractItemView {
 	background: transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color: red;
 
 }
 
@@ -3099,7 +3107,7 @@ QLineEdit QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_35">
                                    <item>
-                                    <widget class="QLCDNumber" name="Voltage_4">
+                                    <widget class="QLCDNumber" name="CCD_VOLTAGE_LCD">
                                      <property name="sizePolicy">
                                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                                        <horstretch>0</horstretch>
@@ -3148,7 +3156,7 @@ QLineEdit QAbstractItemView {
                                        <number>14</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="Vlabel">
+                                       <widget class="QLabel" name="CCD_VLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>
@@ -3176,7 +3184,7 @@ QLineEdit QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_36">
                                    <item>
-                                    <widget class="QLCDNumber" name="Current_4">
+                                    <widget class="QLCDNumber" name="CCD_CURRENT_LCD">
                                      <property name="minimumSize">
                                       <size>
                                        <width>250</width>
@@ -4588,7 +4596,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_27">
+                                    <widget class="QLabel" name="CV_DEVNAME_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -4631,7 +4639,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <item>
-                                    <widget class="QLabel" name="label_28">
+                                    <widget class="QLabel" name="CV_RANGE_LABEL">
                                      <property name="font">
                                       <font>
                                        <family>Courier</family>
@@ -4771,7 +4779,7 @@ QComboBox QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_9">
+                                       <widget class="QLineEdit" name="CV_ILIMIT">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -4782,6 +4790,7 @@ QComboBox QAbstractItemView {
                                          <string notr="true">QLineEdit{
 	border:transparent;
 	background: transparent;
+	color: red;
 	border-bottom: 1px solid black;
 	font: 14px;
 
@@ -4949,12 +4958,13 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_10">
+                                       <widget class="QLineEdit" name="CV_L2">
                                         <property name="styleSheet">
                                          <string notr="true">QLineEdit{
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -5133,7 +5143,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLineEdit" name="lineEdit_11">
+                                       <widget class="QLineEdit" name="CV_L1">
                                         <property name="minimumSize">
                                          <size>
                                           <width>50</width>
@@ -5145,6 +5155,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	background: transparent;
 	border-bottom: 1px solid black;
+	color: red;
 	font: 14px;
 
 }
@@ -5292,7 +5303,7 @@ QLineEdit QAbstractItemView {
                                      </property>
                                      <layout class="QVBoxLayout" name="verticalLayout_90">
                                       <item>
-                                       <widget class="QComboBox" name="comboBox_4">
+                                       <widget class="QComboBox" name="CV_RESPONSE">
                                         <property name="sizePolicy">
                                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                                           <horstretch>0</horstretch>
@@ -5315,6 +5326,7 @@ QLineEdit QAbstractItemView {
 	border:transparent;
 	border-bottom: 1px solid black;
 	font: 14px;
+	color: red;
 	background:transparent;
 }
 
@@ -5414,7 +5426,7 @@ QComboBox QAbstractItemView {
                                          </font>
                                         </property>
                                         <property name="text">
-                                         <string>V_Range =</string>
+                                         <string>I_Range =</string>
                                         </property>
                                         <property name="alignment">
                                          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5449,7 +5461,7 @@ QComboBox QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QComboBox" name="comboBox_3">
+                                       <widget class="QComboBox" name="CV_IRANGE">
                                         <property name="font">
                                          <font>
                                           <family>Courier</family>
@@ -5463,7 +5475,7 @@ QComboBox QAbstractItemView {
                                          <string notr="true">
 QComboBox{
 	border:transparent;
-
+	color: red;
 	border-bottom: 1px solid black;
 	background:transparent;
 }
@@ -5536,7 +5548,7 @@ QComboBox QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_27">
                                    <item>
-                                    <widget class="QLCDNumber" name="Voltage_3">
+                                    <widget class="QLCDNumber" name="CV_VOLTAGE_LCD">
                                      <property name="minimumSize">
                                       <size>
                                        <width>250</width>
@@ -5579,7 +5591,7 @@ QComboBox QAbstractItemView {
                                        <number>14</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="label_38">
+                                       <widget class="QLabel" name="CV_VLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>
@@ -5607,7 +5619,7 @@ QComboBox QAbstractItemView {
                                   </property>
                                   <layout class="QHBoxLayout" name="horizontalLayout_28">
                                    <item>
-                                    <widget class="QLCDNumber" name="Current_3">
+                                    <widget class="QLCDNumber" name="CV_CURRENT_LCD">
                                      <property name="minimumSize">
                                       <size>
                                        <width>250</width>
@@ -5656,7 +5668,7 @@ QComboBox QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="label_39">
+                                       <widget class="QLabel" name="CV_CLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>

@@ -29,6 +29,7 @@ class devInterface(QtWidgets.QWidget):
         self.alignLineEdits()
         self.connectBtns()
         self.updatePages()
+        self.window.modePageStack.setCurrentIndex(0)
 
     #######################################################################################################################################################################################
     #  Function: eventFilter                                                                                                                                                              #
@@ -54,6 +55,9 @@ class devInterface(QtWidgets.QWidget):
         self.window.CR_L1.returnPressed.connect(lambda: self.cmdSignal.emit("RES:STAT:L1 {}".format(self.window.CR_L1.text()),"RESistance:STATic:L1?", self.VID_PID, None,self.window.CR_L1.setText))
         self.window.CR_L2.returnPressed.connect(lambda: self.cmdSignal.emit("RES:STAT:L2 {}".format(self.window.CR_L2.text()), "RESistance:STATic:L2?",self.VID_PID, None, self.window.CR_L2.setText))
 
+    #def connectCRbtns(self):
+
+
 
     def alignLineEdits(self):
 
@@ -70,6 +74,18 @@ class devInterface(QtWidgets.QWidget):
                 lineEdit.setReadOnly(True)
 
 
+        for child in list(self.window.CV.findChildren(QtWidgets.QLineEdit)):
+
+            child.setAlignment(QtCore.Qt.AlignCenter)
+            child.setAlignment(QtCore.Qt.AlignCenter)
+
+        for child in list(self.window.CV.findChildren(QtWidgets.QComboBox)):
+
+            child.setEditable(True)
+            lineEdit = child.lineEdit()
+            lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+            lineEdit.setReadOnly(True)
+
     def changePage(self):
 
         if self.sender() == self.window.CR_BTN:
@@ -78,18 +94,22 @@ class devInterface(QtWidgets.QWidget):
 
         elif self.sender() == self.window.CCD_BTN:
             self.window.modePageStack.setCurrentIndex(1)
-            self.comSignal.emit("MODE?", self.VID_PID, None, self.window.CR_RANGE_LABEL.setText)
+            self.comSignal.emit("MODE CCDM", self.VID_PID, None, self.window.CR_RANGE_LABEL.setText)
 
         elif self.sender() == self.window.CC_BTN:
             self.window.modePageStack.setCurrentIndex(2)
-            self.cmdSignal.emit("MODE CCM","MODE?", self.VID_PID, None, self.window.CC_RANGE_LABEL.setText)
+            if self.window.CC_RANGE_LABEL.text() == "":
+                self.cmdSignal.emit("MODE CCM","MODE?", self.VID_PID, None, self.window.CC_RANGE_LABEL.setText)
 
         elif self.sender() == self.window.CV_BTN:
             self.window.modePageStack.setCurrentIndex(3)
+            self.cmdSignal.emit("MODE CVM", "MODE?", self.VID_PID, None, self.window.CC_RANGE_LABEL.setText)
 
     def updatePages(self):
         self.updatCRPage()
         self.updateCCpage()
+        self.updateCCDpage()
+        self.updateCVpage()
 
     def updatCRPage(self):
         self.comSignal.emit("RESistance:STATic:L1?", self.VID_PID, None, self.window.CR_L1.setText)
@@ -109,6 +129,28 @@ class devInterface(QtWidgets.QWidget):
         self.comSignal.emit("CURR:STATic:VRNG?", self.VID_PID, None,self.window.CC_VRANGE.setCurrentText)
         self.comSignal.emit("*IDN?", self.VID_PID, None,self.window.CC_DEVNAME_LABEL.setText)
         self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None,self.window.CC_VOLTAGE_LCD.display)
+        self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CC_CURRENT_LCD.display)
+
+    def updateCCDpage(self):
+        self.comSignal.emit("CURR:DYN:L1?", self.VID_PID,  None,self.window.CCD_L1.setText)
+        self.comSignal.emit("CURR:DYN:L2?", self.VID_PID, None,self.window.CCD_L2.setText)
+        self.comSignal.emit("CURR:DYN:T1?", self.VID_PID, None, self.window.CCD_T1.setText)
+        self.comSignal.emit("CURR:DYN:T2?", self.VID_PID, None, self.window.CCD_T2.setText)
+        self.comSignal.emit("CURR:DYN:RISE?", self.VID_PID, None,self.window.CCD_SR1.setText)
+        self.comSignal.emit("CURR:DYN:FALL?", self.VID_PID, None,self.window.CCD_SR2.setText)
+        self.comSignal.emit("CURR:DYN:VRNG?", self.VID_PID, None,self.window.CCD_VRANGE.setCurrentText)
+        self.comSignal.emit("*IDN?", self.VID_PID, None,self.window.CCD_DEVNAME_LABEL.setText)
+        self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None,self.window.CCD_VOLTAGE_LCD.display)
+        self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CCD_CURRENT_LCD.display)
+
+    def updateCVpage(self):
+        self.comSignal.emit("VOLT:STAT:L1?", self.VID_PID, None, self.window.CV_L1.setText)
+        self.comSignal.emit("VOLT:STAT:L2?", self.VID_PID, None, self.window.CV_L2.setText)
+        self.comSignal.emit("VOLT:STAT:IRNG?", self.VID_PID, None, self.window.CV_IRANGE.setCurrentText)
+        self.comSignal.emit("VOLT:STAT:RES?", self.VID_PID, None, self.window.CV_RESPONSE.setCurrentText)
+        self.comSignal.emit("VOLT:STAT:ILIM?", self.VID_PID, None, self.window.CV_ILIMIT.setText)
+        self.comSignal.emit("*IDN?", self.VID_PID, None, self.window.CV_DEVNAME_LABEL.setText)
+        self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None, self.window.CC_VOLTAGE_LCD.display)
         self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CC_CURRENT_LCD.display)
 
     def center(self):
@@ -150,3 +192,18 @@ class devInterface(QtWidgets.QWidget):
             elif child.inherits("QLCDNumber"):
                 self.setShadow(child)
 
+        children = list(self.window.CV.findChildren(QtWidgets.QLabel)) + list(self.window.CV.findChildren(QtWidgets.QLCDNumber))
+
+        for child in children:
+            if child.inherits("QLabel") and (child.objectName() == "CV_VLABEL" or child.objectName() == "CV_CLABEL"):
+                self.setShadow(child)
+            elif child.inherits("QLCDNumber"):
+                self.setShadow(child)
+
+        children = list(self.window.CCD.findChildren(QtWidgets.QLabel)) + list(self.window.CCD.findChildren(QtWidgets.QLCDNumber))
+
+        for child in children:
+            if child.inherits("QLabel") and (child.objectName() == "CCD_VLABEL" or child.objectName() == "CCD_CLABEL"):
+                self.setShadow(child)
+            elif child.inherits("QLCDNumber"):
+                self.setShadow(child)

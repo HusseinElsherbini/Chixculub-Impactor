@@ -197,7 +197,6 @@ class ChixculubImpactor(QMainWindow):
 
         self.ui = MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.resize(self.app.desktop().geometry().width(), self.app.desktop().geometry().height())
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # Remove window top bar
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # make window frameless
         self.ui.tabWidget.tabBar().setTabButton(0, QtWidgets.QTabBar.RightSide, None)
@@ -325,11 +324,11 @@ class ChixculubImpactor(QMainWindow):
         for cmd in list:
             for key, value in cmd.items():
                 if key.lower() == "loop":
-                    loop += 1
-                    codeBlock += "for i in range({}):\n".format(value[0])
                     for x in range(loop):
                         codeBlock += '\t'
-                    pass
+                    loop += 1
+                    codeBlock += "for i in range({}):\n".format(value[0])
+
                 elif key.lower() == "delay":
                     script.write("time.sleep({})".format(value[0]))
                 elif key.lower() == "endloop": #and list.index(cmd) == len(list) - 1:
@@ -340,9 +339,9 @@ class ChixculubImpactor(QMainWindow):
                     varDict.update({'var{}'.format(y): value[0]})
                     dev.update({str(key) : devList[key][1]})
                     obj = ''
-                    codeBlock += "self.comSignal.comSignal.emit(varDict['var{}'],  dev['{}'], terminalName, obj)\n".format(y,str(key))
                     for x in range(loop):
                         codeBlock += '\t'
+                    codeBlock += "self.comSignal.comSignal.emit(varDict['var{}'],  dev['{}'], terminalName, obj)\n".format(y,str(key))
 
 
         singleCodeObject = compile(codeBlock.strip(), '<string>', 'exec')
