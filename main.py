@@ -123,6 +123,7 @@ class worker(QObject):
                                         self.newComDeviceSignal.emit(device)
                                         self.connectedDevices.append(device)
                                         self.DeviceDisconnectedSignal.emit(device,False)
+                                        self.present = False
                                 mutex.unlock()
 
                         else:
@@ -163,10 +164,10 @@ class ChixculubImpactor(QMainWindow):
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
         super().__init__()
-        ErrorLog = open('Error Log.txt', 'w')
         self.devices = initDevice()
         self.comSignal = Signal()
         self.initUI()
+        self.number = 0
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -265,7 +266,7 @@ class ChixculubImpactor(QMainWindow):
         sender = self.sender().parentWidget()
 
         if self.ui.tabWidget.findChild(QtWidgets.QWidget,str(sender.objectName()).rsplit(None, 1)[0] + " Terminal") == None:
-            if sender.VID_PID == '0A690879':
+            if sender.VID_PID == '0A690879': #or sender.VID_PID == '2341003D':
                 self.addDevInterface(sender.VID_PID)
             newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " Terminal", sender.VID_PID)
             newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
@@ -315,37 +316,37 @@ class ChixculubImpactor(QMainWindow):
     def createScript(self, list, devID, devList, terminalName):
 
         self.list = list
+        dev = {}
         codeBlock = ""
-        scriptName = "Script" + devID + ".txt"
-        script = open(scriptName, 'w')
         print(devList)
         loop = 0
-        self.number = 0
+        y = 0
+        varDict = {}
         for cmd in list:
             for key, value in cmd.items():
                 if key.lower() == "loop":
                     loop += 1
-                    codeBlock += "for x in range({}):\n".format(value[0])
+                    codeBlock += "for i in range({}):\n".format(value[0])
                     for x in range(loop):
                         codeBlock += '\t'
                     pass
                 elif key.lower() == "delay":
                     script.write("time.sleep({})".format(value[0]))
-                elif key.lower() == "endloop" and list.index(cmd) == len(list) - 1:
+                elif key.lower() == "endloop": #and list.index(cmd) == len(list) - 1:
                     loop -= 1
-                    pass
+
                 elif terminal.script.intChecker(key):
-                    msg = value[0]
-                    dev = str(devList[key][1])
+                    y+=1
+                    varDict.update({'var{}'.format(y): value[0]})
+                    dev.update({str(key) : devList[key][1]})
                     obj = ''
-                    codeBlock += "self.comSignal.comSignal.emit(msg, dev, terminalName, obj)\n"
+                    codeBlock += "self.comSignal.comSignal.emit(varDict['var{}'],  dev['{}'], terminalName, obj)\n".format(y,str(key))
                     for x in range(loop):
                         codeBlock += '\t'
 
 
-        singleCodeObject = compile(codeBlock.strip(), '<string>', 'single')
+        singleCodeObject = compile(codeBlock.strip(), '<string>', 'exec')
         exec(singleCodeObject)
-
 
     def activateButtons(self):
 
@@ -424,12 +425,14 @@ class ChixculubImpactor(QMainWindow):
         noDeviceFrame = subclasses.noDeviceFrame()
         self.ui.verticalLayout_9.addWidget(noDeviceFrame)
 
-
     def passToCommThread(self, msg, VID_PID, terminalName):
         obj = None
         self.comSignal.comSignal.emit(msg, VID_PID, terminalName, obj)
 
     def serialReconnected(self, device):
+
+        if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is not None:
+            self.ui.frame_13.findChild(QFrame, "noDeviceFrame").deleteLater()
         try:
             arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
             newDevice = subclasses.deviceFrame(*arguments)
@@ -448,7 +451,7 @@ class ChixculubImpactor(QMainWindow):
             return
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
         self.number += 1
-        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{}. {} </span>".format(self.number, msg))
+        term.readBack.append("<span style=\"font-family:\'Courier new\'; font-size:11pt; color:black;\">{} </span>".format(msg))
 
     def processDeviceModData(self,data, devName):
 
@@ -537,7 +540,7 @@ class ChixculubImpactor(QMainWindow):
 
 def main():
     Terminal = ChixculubImpactor()
-    Terminal.ErrorLog.close()
+
 
 if __name__ == '__main__':
     main()

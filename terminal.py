@@ -470,16 +470,15 @@ class terminal(QtWidgets.QWidget):
         self.scriptArea.setPlaceholderText("Script format\n"
 
                                            "Loop : # number of desired loops, use keyword 'Loop:' followed by a number\n"
-                                           "{         # must have open bracket, always follows the line after keyword loop\n" 
                                            "Device number preceeding name in list : command\n"
-                                           "}         # closing bracket around code inside specified loop\n"
                                            "\nExample\n"
-                                           "\nLoop : 1\n"
-                                           "{\n"
+                                           "\nLoop : 2\n"
                                            "1 : *IDN?\n"
+                                           "Loop : 2\n"
                                            "Delay : 2\n"
                                            "2 : *IDN?\n"
-                                           "}       # must have closing brackets corresponding to main loop or any nested loop\n"
+                                           "endloop       # must end inner loop\n"
+                                           "endloop       # must end outer loop\n"
                                            )
         self.gridLayout_5.addWidget(self.frame_24, 0, 0, 1, 1)
         self.frame_25 = QtWidgets.QFrame(self.page_2)
