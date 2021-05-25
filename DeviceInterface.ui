@@ -409,7 +409,7 @@ QFrame:hove#DeviceInterface{
                       <item row="0" column="0">
                        <widget class="QStackedWidget" name="modePageStack">
                         <property name="currentIndex">
-                         <number>1</number>
+                         <number>0</number>
                         </property>
                         <widget class="QWidget" name="CR">
                          <property name="styleSheet">
@@ -1761,7 +1761,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <property name="topMargin">
-                                    <number>0</number>
+                                    <number>9</number>
                                    </property>
                                    <property name="rightMargin">
                                     <number>0</number>
@@ -3233,7 +3233,7 @@ QLineEdit QAbstractItemView {
                                        <number>0</number>
                                       </property>
                                       <item>
-                                       <widget class="QLabel" name="Alabel">
+                                       <widget class="QLabel" name="CCD_CLABEL">
                                         <property name="font">
                                          <font>
                                           <family>Courier New</family>
@@ -4587,7 +4587,7 @@ QComboBox QAbstractItemView {
                                     <number>0</number>
                                    </property>
                                    <property name="topMargin">
-                                    <number>0</number>
+                                    <number>9</number>
                                    </property>
                                    <property name="rightMargin">
                                     <number>0</number>

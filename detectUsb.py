@@ -180,4 +180,4 @@ class device:
 
 
 
-
+print(initDevice.resourceManager.list_resources(query='?*'))

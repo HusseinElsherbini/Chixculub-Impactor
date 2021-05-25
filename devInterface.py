@@ -52,12 +52,31 @@ class devInterface(QtWidgets.QWidget):
         self.window.CV_BTN.clicked.connect(self.changePage)
         self.window.CC_BTN.clicked.connect(self.changePage)
         self.window.CCD_BTN.clicked.connect(self.changePage)
-        self.window.CR_L1.returnPressed.connect(lambda: self.cmdSignal.emit("RES:STAT:L1 {}".format(self.window.CR_L1.text()),"RESistance:STATic:L1?", self.VID_PID, None,self.window.CR_L1.setText))
-        self.window.CR_L2.returnPressed.connect(lambda: self.cmdSignal.emit("RES:STAT:L2 {}".format(self.window.CR_L2.text()), "RESistance:STATic:L2?",self.VID_PID, None, self.window.CR_L2.setText))
+        self.connectCRbtns()
+        self.connectCCbtns()
+        self.connectCVbtns()
 
-    #def connectCRbtns(self):
 
+    def connectCRbtns(self):
+        cbDict = {"High":"High", "Medium" : "M" , "Low" : "0"}
 
+        self.window.CR_L1.returnPressed.connect(
+            lambda: self.cmdSignal.emit("RES:STAT:L1 {}".format(self.window.CR_L1.text()), "RESistance:STATic:L1?",
+                                        self.VID_PID, None, self.window.CR_L1.setText))
+        self.window.CR_L2.returnPressed.connect(
+            lambda: self.cmdSignal.emit("RES:STAT:L2 {}".format(self.window.CR_L2.text()), "RESistance:STATic:L2?",
+                                        self.VID_PID, None, self.window.CR_L2.setText))
+
+        self.window.CR_SR1.returnPressed.connect(
+            lambda: self.cmdSignal.emit("RES:STAT:RISE {}".format(self.window.CR_SR1.text()), "RES:STAT:RISE?",
+                                        self.VID_PID, None, self.window.CR_SR1.setText))
+        self.window.CR_SR2.returnPressed.connect(
+            lambda: self.cmdSignal.emit("RES:STAT:FALL {}".format(self.window.CR_SR2.text()), "RESistance:STATic:FALL?",
+                                        self.VID_PID, None, self.window.CR_SR2.setText))
+
+        self.window.CR_IRANGE.currentIndexChanged.connect(
+            lambda: self.cmdSignal.emit("RES:STAT:IRNG {}".format(cbDict[self.window.CR_IRANGE.currentText()]), "RES:STAT:IRNG?",
+                                        self.VID_PID, None, self.window.CR_IRANGE.setCurrentText))
 
     def alignLineEdits(self):
 
@@ -89,21 +108,24 @@ class devInterface(QtWidgets.QWidget):
     def changePage(self):
 
         if self.sender() == self.window.CR_BTN:
-            self.window.modePageStack.setCurrentIndex(0)
-            self.cmdSignal.emit("MODE CRM","MODE?", self.VID_PID, None, self.window.CR_RANGE_LABEL.setText)
+            if not self.window.modePageStack.currentIndex() == 0:
+                self.window.modePageStack.setCurrentIndex(0)
+                self.cmdSignal.emit("MODE CRM","MODE?", self.VID_PID, None, self.window.CR_RANGE_LABEL.setText)
 
         elif self.sender() == self.window.CCD_BTN:
-            self.window.modePageStack.setCurrentIndex(1)
-            self.comSignal.emit("MODE CCDM", self.VID_PID, None, self.window.CR_RANGE_LABEL.setText)
+            if not self.window.modePageStack.currentIndex() == 1:
+                self.window.modePageStack.setCurrentIndex(1)
+                self.cmdSignal.emit("MODE CCDM", "MODE?", self.VID_PID, None, self.window.CCD_RANGE_LABEL.setText)
 
         elif self.sender() == self.window.CC_BTN:
-            self.window.modePageStack.setCurrentIndex(2)
-            if self.window.CC_RANGE_LABEL.text() == "":
+            if not self.window.modePageStack.currentIndex() == 2:
+                self.window.modePageStack.setCurrentIndex(2)
                 self.cmdSignal.emit("MODE CCM","MODE?", self.VID_PID, None, self.window.CC_RANGE_LABEL.setText)
 
         elif self.sender() == self.window.CV_BTN:
-            self.window.modePageStack.setCurrentIndex(3)
-            self.cmdSignal.emit("MODE CVM", "MODE?", self.VID_PID, None, self.window.CC_RANGE_LABEL.setText)
+            if not self.window.modePageStack.currentIndex() == 3:
+                self.window.modePageStack.setCurrentIndex(3)
+                self.cmdSignal.emit("MODE CVM", "MODE?", self.VID_PID, None, self.window.CV_RANGE_LABEL.setText)
 
     def updatePages(self):
         self.updatCRPage()
@@ -150,8 +172,8 @@ class devInterface(QtWidgets.QWidget):
         self.comSignal.emit("VOLT:STAT:RES?", self.VID_PID, None, self.window.CV_RESPONSE.setCurrentText)
         self.comSignal.emit("VOLT:STAT:ILIM?", self.VID_PID, None, self.window.CV_ILIMIT.setText)
         self.comSignal.emit("*IDN?", self.VID_PID, None, self.window.CV_DEVNAME_LABEL.setText)
-        self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None, self.window.CC_VOLTAGE_LCD.display)
-        self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CC_CURRENT_LCD.display)
+        self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None, self.window.CV_VOLTAGE_LCD.display)
+        self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CV_CURRENT_LCD.display)
 
     def center(self):
 
@@ -207,3 +229,48 @@ class devInterface(QtWidgets.QWidget):
                 self.setShadow(child)
             elif child.inherits("QLCDNumber"):
                 self.setShadow(child)
+
+    def connectCCbtns(self):
+        cbDict = {"High":"High", "Medium" : "M" , "Low" : "0"}
+
+        self.window.CC_L1.returnPressed.connect(
+            lambda: self.cmdSignal.emit("CURR:STAT:L1 {}".format(self.window.CR_L1.text()), "CURR:STAT:L1?",
+                                        self.VID_PID, None, self.window.CC_L1.setText))
+        self.window.CC_L2.returnPressed.connect(
+            lambda: self.cmdSignal.emit("CURR:STAT:L2 {}".format(self.window.CC_L2.text()), "CURR:STAT:L2?",
+                                        self.VID_PID, None, self.window.CC_L2.setText))
+
+        self.window.CC_SR1.returnPressed.connect(
+            lambda: self.cmdSignal.emit("CURR:STAT:RISE {}".format(self.window.CC_SR1.text()), "CURR:STAT:RISE?",
+                                        self.VID_PID, None, self.window.CR_SR1.setText))
+        self.window.CC_SR2.returnPressed.connect(
+            lambda: self.cmdSignal.emit("CURR:STAT:FALL {}".format(self.window.CC_SR2.text()), "CURRent:STATic:FALL?",
+                                        self.VID_PID, None, self.window.CC_SR2.setText))
+
+        self.window.CC_VRANGE.currentIndexChanged.connect(
+            lambda: self.cmdSignal.emit("CURR:STAT:VRNG {}".format(cbDict[self.window.CC_VRANGE.currentText()]), "CURR:STAT:VRNG?",
+                                        self.VID_PID, None, self.window.CC_VRANGE.setCurrentText))
+
+    def connectCVbtns(self):
+        cbDict = {"High": "High", "Medium": "M", "Low": "0"}
+
+        self.window.CV_L1.returnPressed.connect(
+            lambda: self.cmdSignal.emit("VOLT:STAT:L1 {}".format(self.window.CV_L1.text()), "VOLT:STAT:L1?",
+                                        self.VID_PID, None, self.window.CV_L1.setText))
+        self.window.CV_L2.returnPressed.connect(
+            lambda: self.cmdSignal.emit("VOLT:STAT:L2 {}".format(self.window.CV_L2.text()), "VOLT:STAT:L2?",
+                                        self.VID_PID, None, self.window.CV_L2.setText))
+
+        self.window.CV_ILIMIT.returnPressed.connect(
+            lambda: self.cmdSignal.emit("VOLT:STAT:ILIM {}".format(self.window.CV_ILIMIT.text()), "VOLT:STAT:ILIM?",
+                                        self.VID_PID, None, self.window.CV_ILIMIT.setText))
+
+        self.window.CV_RESPONSE.currentIndexChanged.connect(
+            lambda: self.cmdSignal.emit("VOLT:STAT:RES {}".format(self.window.CV_RESPONSE.currentText()),
+                                        "VOLT:STAT:RES?",
+                                        self.VID_PID, None, self.window.CV_RESPONSE.setCurrentText))
+
+        self.window.CV_IRANGE.currentIndexChanged.connect(
+            lambda: self.cmdSignal.emit("VOLT:STAT:IRNG {}".format(cbDict[self.window.CV_IRANGE.currentText()]),
+                                        "VOLT:STAT:IRNG?",
+                                        self.VID_PID, None, self.window.CV_IRANGE.setCurrentText()))
