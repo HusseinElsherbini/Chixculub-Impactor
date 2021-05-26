@@ -178,6 +178,15 @@ class device:
         initDevice.devices.update({"first": "Two"})
         pass
 
+"""
+serverip = "169.254.208.98"
 
+rep = os.system('ping ' + serverip)
 
-print(initDevice.resourceManager.list_resources(query='?*'))
+if rep == 0:
+    print("server is up", serverip)
+inst = pyvisa.ResourceManager().open_resource('TCPIP::{}::INSTR'.format(serverip))
+print(inst.query("*IDN?"))
+print(pyvisa.ResourceManager().list_opened_resources())
+
+"""

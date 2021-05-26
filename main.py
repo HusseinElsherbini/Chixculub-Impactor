@@ -353,10 +353,6 @@ class ChixculubImpactor(QMainWindow):
         self.ui.pushButton_4.clicked.connect(self.addDeviceDialog)
         self.ui.homeBtn.clicked.connect(lambda: self.ui.tabWidget.setCurrentIndex(0))
 
-    def compileScript(self):
-
-        singleCodeObject = compile('print(self.list)', '<string>', 'single')
-        exec(singleCodeObject)
 
     def addDeviceFrame(self, args):
 
@@ -536,6 +532,8 @@ class ChixculubImpactor(QMainWindow):
             elif addDevice.device["Connection Type"] == "RS232":
                 self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"],
                                      addDevice.device["Connection Type"], ""])
+
+
 
 def main():
     Terminal = ChixculubImpactor()
