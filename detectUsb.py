@@ -1,19 +1,15 @@
-import pyvisa
-from pyvisa import attributes
+from pyvisa import attributes, ResourceManager
 import threading
 from pysetupdi import setupdi
 import serial.tools.list_ports as portsList
-import serial
 import time
 import equipment
-import sys
-import os
 import re
 
 class initDevice:
     devices = {}
     connectedDevices = []
-    resourceManager = pyvisa.ResourceManager()
+    resourceManager = ResourceManager()
 
     @staticmethod
     def updateDevicesDB(device,devName="",visaHandle="", present=False):
@@ -41,10 +37,32 @@ class initDevice:
                     'Resource': dev
                     }})
                 return
+            if "TCPIP" in device:
+                try:
+                    dev = initDevice.resourceManager.open_resource(device)
+                    initDevice.devices.update({devName[11:].strip(): {
+                        'Model Name': devName,
+                        'Device Type': "Ethernet",
+                        'Connection Type': '',
+                        'Visa Handle': device,
+                        'Script Status': 'Inactive',
+                        'Resource': dev
+                    }})
+                    return
+                except Exception as e:
+                    initDevice.devices.update({devName[11:].strip(): {
+                        'Model Name': devName,
+                        'Device Type': "Ethernet",
+                        'Connection Type': '',
+                        'Visa Handle': device,
+                        'Script Status': 'Inactive',
+                        'Resource': "NOT FOUND"
+                    }})
+                    return
             dev = initDevice.resourceManager.open_resource(device)
             initDevice.devices.update({str(dev.resource_name)[8:12] + str(dev.resource_name)[16:20]: {
-            'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
-            'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
+            'Model Name': dev.get_visa_attribute(attributes.constants.VI_ATTR_MODEL_NAME),
+            'Device type': dev.get_visa_attribute(attributes.constants.VI_ATTR_RSRC_CLASS),
             'Connection Type': str(dev.interface_type)[14:],
             'Visa Handle': device,
             'Script Status': 'Inactive',
@@ -60,7 +78,7 @@ class initDevice:
 
     def detectDevices(self):
 
-        #self.resourceManager = pyvisa.ResourceManager()
+
         for device in self.resourceManager.list_resources():
 
             try:
@@ -90,8 +108,8 @@ class initDevice:
                 elif "USB" in str(device):
                     dev = self.resourceManager.open_resource(device)
                     initDevice.devices.update({str(device)[8:12] + str(device)[16:20]: {
-                        'Model Name': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_MODEL_NAME),
-                        'Device type': dev.get_visa_attribute(pyvisa.attributes.constants.VI_ATTR_RSRC_CLASS),
+                        'Model Name': dev.get_visa_attribute(attributes.constants.VI_ATTR_MODEL_NAME),
+                        'Device type': dev.get_visa_attribute(attributes.constants.VI_ATTR_RSRC_CLASS),
                         'Connection Type': str(dev.interface_type)[14:],
                         'Visa Handle': device,
                         'Script Status': 'Inactive',
@@ -178,15 +196,4 @@ class device:
         initDevice.devices.update({"first": "Two"})
         pass
 
-"""
-serverip = "169.254.208.98"
 
-rep = os.system('ping ' + serverip)
-
-if rep == 0:
-    print("server is up", serverip)
-inst = pyvisa.ResourceManager().open_resource('TCPIP::{}::INSTR'.format(serverip))
-print(inst.query("*IDN?"))
-print(pyvisa.ResourceManager().list_opened_resources())
-
-"""

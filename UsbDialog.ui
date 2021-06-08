@@ -167,8 +167,8 @@ background-color:#ffecd9;</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>resources/042-minus.png</normaloff>resources/042-minus.png</iconset>
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/resources/042-minus.png</normaloff>:/icons/resources/042-minus.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -256,8 +256,8 @@ QPushButton:pressed {
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>resources/cancel (2).png</normaloff>resources/cancel (2).png</iconset>
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/resources/cancel (2).png</normaloff>:/icons/resources/cancel (2).png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -943,6 +943,8 @@ QPushButton:!enabled {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -3,10 +3,11 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, QEvent, QObject, pyqtSignal, QThread, pyqtSlot, QMutex
 from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect, QFrame
 import MainWindow
+import detectUsb
 import uiFunctions
 import subclasses
 from detectUsb import initDevice
-import random
+from random import randint
 import terminal
 import modifyDialog
 import devInterface
@@ -91,12 +92,12 @@ class worker(QObject):
     removeDeviceSignal = pyqtSignal(str)
     noDevicesSignal = pyqtSignal()
 
-    def __init__(self, connectedDevices, dataBase, present):
+    def __init__(self, connectedDevices, dataBase):
         super().__init__()
         self.dataBase = list(dataBase)
         self.detectusb = initDevice()
         self.connectedDevices = connectedDevices
-        self.present = present
+        #ChixculubImpactor.present = False
 
     def run(self):
 
@@ -111,7 +112,7 @@ class worker(QObject):
                         self.newDeviceSignal.emit(device, d[device])
                         self.dataBase.append(device)
                         self.connectedDevices.append(device)
-                        self.present = False
+                        ChixculubImpactor.present = False
 
                     elif (device not in self.connectedDevices) and (device in self.dataBase):
 
@@ -123,14 +124,14 @@ class worker(QObject):
                                         self.newComDeviceSignal.emit(device)
                                         self.connectedDevices.append(device)
                                         self.DeviceDisconnectedSignal.emit(device,False)
-                                        self.present = False
+                                        ChixculubImpactor.present = False
                                 mutex.unlock()
 
                         else:
                             self.newDeviceSignal.emit(device, d[device])
                             self.DeviceDisconnectedSignal.emit(device, False)
                             self.connectedDevices.append(device)
-                            self.present = False
+                            ChixculubImpactor.present = False
 
                 except Exception as e:
                     mutex.unlock()
@@ -149,10 +150,10 @@ class worker(QObject):
                 except Exception as e:
                         print(str(e) + ' {worker, run, line 118}')
 
-            if len(self.connectedDevices) == 0 and self.present is not True:
+            if len(self.connectedDevices) == 0 and ChixculubImpactor.present is not True and ChixculubImpactor.lanDevices == 0:
 
                 self.noDevicesSignal.emit()
-                self.present = True
+                ChixculubImpactor.present = True
 
 ##########################################################################################################################################################################################
 #  Class: ChixculubImpactor                                                                                                                                                              #
@@ -160,7 +161,8 @@ class worker(QObject):
 #           adding new devices, modifying devices and other features.                                                                                                                    #
 ##########################################################################################################################################################################################
 class ChixculubImpactor(QMainWindow):
-
+    lanDevices = 0
+    present = False
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
         super().__init__()
@@ -168,6 +170,7 @@ class ChixculubImpactor(QMainWindow):
         self.comSignal = Signal()
         self.initUI()
         self.number = 0
+        self.lanDevices = 0
         sys.exit(self.app.exec_())
 
     def initUI(self):
@@ -185,7 +188,7 @@ class ChixculubImpactor(QMainWindow):
         self.setShadow(self.ui.label_4)
         self.setShadow(self.ui.homeBtn)
         self.setShadow(self.ui.frame_17)
-        self.setShadow(self.ui.terminalEdit)
+        #self.setShadow(self.ui.terminalEdit)
         self.setShadow(self.ui.tabWidget)
         self.center()
         # keeps record of old position of window
@@ -231,7 +234,7 @@ class ChixculubImpactor(QMainWindow):
             if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") == None:
                 noDeviceFrame = subclasses.noDeviceFrame()
                 self.ui.verticalLayout_9.addWidget(noDeviceFrame)
-                self.present = True
+                ChixculubImpactor.present = True
 
     def installEventFilters(self):
 
@@ -265,15 +268,30 @@ class ChixculubImpactor(QMainWindow):
         sender = self.sender().parentWidget()
 
         if self.ui.tabWidget.findChild(QtWidgets.QWidget,str(sender.objectName()).rsplit(None, 1)[0] + " Terminal") == None:
-            if sender.VID_PID == '0A690879': #or sender.VID_PID == '2341003D':
-                self.addDevInterface(sender.VID_PID)
+
+            if "LAN" in sender.objectName():
+
+                if initDevice.devices[sender.VID_PID]["Resource"] == "NOT FOUND":
+                    tip = "<font color='red' size='4'>Incorrect IP Address or Device not present in system!"
+                    pos = self.sender().pos()
+                    pos.setX(int(pos.x()/2))
+                    QtWidgets.QToolTip.showText(sender.mapToGlobal(pos), tip)
+                    return
+                else:
+                    newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " " + str(sender.VID_PID[0:4]) +  " Terminal",sender.VID_PID)
+                    newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
+                    newTerminal.scriptArea.finishedAnalysis.runScriptSignal.connect(self.createScript)
+                    icon = QtGui.QIcon()
+                    icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    self.ui.tabWidget.addTab(newTerminal, icon,
+                                             str(sender.objectName()).rsplit(None, 1)[0] + " Terminal")
+                    return
             newTerminal = terminal.terminal(str(sender.objectName()).rsplit(None, 1)[0] + " Terminal", sender.VID_PID)
             newTerminal.terminalEdit.msgSignal.customSignal.connect(self.passToCommThread)
             newTerminal.scriptArea.finishedAnalysis.runScriptSignal.connect(self.createScript)
             icon = QtGui.QIcon()
             icon.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.ui.tabWidget.addTab(newTerminal, icon, str(sender.objectName()).rsplit(None, 1)[0] + " Terminal")
-            #self.addDevInterface()
 
 
         else:
@@ -352,16 +370,32 @@ class ChixculubImpactor(QMainWindow):
         self.ui.closeBtn.clicked.connect(self.closeWindow)
         self.ui.pushButton_4.clicked.connect(self.addDeviceDialog)
         self.ui.homeBtn.clicked.connect(lambda: self.ui.tabWidget.setCurrentIndex(0))
+        self.ui.AboutBtn.clicked.connect(self.showAboutMePage)
 
+    def showAboutMePage(self):
+
+        aboutMe = subclasses.AboutMeDialog()
+        aboutMe.show()
 
     def addDeviceFrame(self, args):
+
+        if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is not None:
+            self.ui.frame_13.findChild(QFrame, "noDeviceFrame").deleteLater()
 
         arguments = [args[0], args[1], args[2], args[3], args[4], args[5]]
         newDevice = subclasses.deviceFrame(*arguments)
         self.ui.verticalLayout_9.addWidget(newDevice)
         newDevice.connectBtn.clicked.connect(self.addTerminal)
+        newDevice.frameDeletedSignal.customSignal.connect(self.decrementLan)
         newDevice.editBtn.clicked.connect(self.modifyDialog)
         return newDevice
+
+    def decrementLan(self, type):
+        if type == "LAN":
+            ChixculubImpactor.lanDevices -= 1
+
+        if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is None:
+            ChixculubImpactor.present = False
 
     def removeDeviceFrame(self, deviceName):
 
@@ -406,7 +440,7 @@ class ChixculubImpactor(QMainWindow):
             self.devices.updateDevicesDB(device, present=True)
 
         try:
-            arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
+            arguments = [initDevice.devices[device]['Model Name'], "Device" + str(randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
             newDevice = subclasses.deviceFrame(*arguments)
             newDevice.connectBtn.clicked.connect(self.addTerminal)
             newDevice.editBtn.clicked.connect(self.modifyDialog)
@@ -429,7 +463,7 @@ class ChixculubImpactor(QMainWindow):
         if self.ui.frame_13.findChild(QFrame, "noDeviceFrame") is not None:
             self.ui.frame_13.findChild(QFrame, "noDeviceFrame").deleteLater()
         try:
-            arguments = [initDevice.devices[device]['Model Name'], "Device" + str(random.randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
+            arguments = [initDevice.devices[device]['Model Name'], "Device" + str(randint(1,3)) + '.png', "",initDevice.devices[device]['Connection Type'], "",device]
             newDevice = subclasses.deviceFrame(*arguments)
             newDevice.connectBtn.clicked.connect(self.addTerminal)
             newDevice.editBtn.clicked.connect(self.modifyDialog)
@@ -440,9 +474,11 @@ class ChixculubImpactor(QMainWindow):
 
     def appendMsg(self, msg, terminalName, obj):
 
-        if terminalName == '':
+        if terminalName == '' and not obj == None:
             msg = msg.rstrip()
             obj(msg)
+            return
+        elif terminalName == '' and obj == None:
             return
         term = self.ui.tabWidget.findChild(QtWidgets.QWidget, terminalName)
         self.number += 1
@@ -466,6 +502,22 @@ class ChixculubImpactor(QMainWindow):
             if data["Parity Bit"] != " ":
                 VID = dev.VID_PID
                 initDevice.devices[VID]['Resource'].ser.parity_bit = data['Parity Bit']
+
+        elif "LAN" in devName:
+
+            dev = self.ui.frame_13.findChild(QFrame, devName)
+            VID = dev.VID_PID
+            initDevice.devices
+            if data['Device Name'] != " ":
+                dev.deviceName.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">{}</span></p></body></html>".format(data['Device Name']))
+            initDevice.devices[VID]["Visa Handle"] = "TCPIP::{}".format(data["IP Address"])
+            try:
+                device = initDevice.resourceManager.open_resource(initDevice.devices[VID]["Visa Handle"])
+                initDevice.devices[VID]["Resource"] = device
+                dev.setToolTip("<html><head/><body><p><span style=\" font-weight:600;\">Device:</span> {}</p><p><span style=\" font-weight:600;\">Connection Type:</span> "
+                               "{}</p><p><span style=\" font-weight:600;\">IP ADDRESS:</span> {}</p></body></html>".format(initDevice.devices[VID]["Model Name"], "LAN", data["IP Address"]))
+            except Exception:
+                pass
         else:
             dev = self.ui.frame_13.findChild(QFrame, devName)
             if data['Device Name'] != "":
@@ -478,7 +530,7 @@ class ChixculubImpactor(QMainWindow):
     def deviceChangeThread(self):
 
         self.thread = QtCore.QThread()
-        self.worker = worker(initDevice.connectedDevices, initDevice.devices.keys(), self.present)
+        self.worker = worker(initDevice.connectedDevices, initDevice.devices.keys())
         self.worker.moveToThread(self.thread)
         self.worker.newDeviceSignal.connect(self.addUsbDevice)
         self.worker.newComDeviceSignal.connect(self.serialReconnected)
@@ -503,6 +555,10 @@ class ChixculubImpactor(QMainWindow):
             self.modify_dialog = modifyDialog.modifySerialDialog(*[self.sender().parent().objectName()])
             self.modify_dialog.dialogFinishedSignal.dialogClosedSignal.connect(self.processDeviceModData)
             self.modify_dialog.show()
+        elif "LAN" in self.sender().parent().objectName():
+            self.modify_dialog = modifyDialog.modifyLanDialog(*[self.sender().parent().objectName()])
+            self.modify_dialog.dialogFinishedSignal.dialogClosedSignal.connect(self.processDeviceModData)
+            self.modify_dialog.show()
         else:
             self.modify_dialog = modifyDialog.modifyUsbDialog(*[self.sender().parent().objectName()])
             self.modify_dialog.dialogFinishedSignal.dialogClosedSignal.connect(self.processDeviceModData)
@@ -513,25 +569,35 @@ class ChixculubImpactor(QMainWindow):
         initDevice.devices[VID_PID]["Device interface"] = devInterface.devInterface(VID_PID, self.comSignal.comSignal, self.comSignal.cmdSignal)
         initDevice.devices[VID_PID]['Device interface'].show()
 
+
     def addDeviceDialog(self):
 
         addDevice = subclasses.addDeviceDialog()
         addDevice.exec_()
-        if addDevice.step != 1:
+
+        if addDevice.device:
             icon = ""
             if addDevice.device["Device Type"] == "Oscilloscope":
-                icon = "oscilloscope.png"
+                icon = "Device2.png"
             elif addDevice.device["Device Type"] == "Power Supply":
                 icon = "power-supply.png"
             elif addDevice.device["Device Type"] == "Digital Multimeter":
                 icon = "multimeter.png"
+            else:
+                icon = "power-supply (1).png"
 
-            if addDevice.device["Connection Type"] == "LAN":
-                self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"],
-                                     addDevice.device["Connection Type"], addDevice.device["IP ADDRESS"]])
-            elif addDevice.device["Connection Type"] == "RS232":
-                self.addDeviceFrame([addDevice.device["DEVICE NAME"], icon, addDevice.device["Device Type"],
-                                     addDevice.device["Connection Type"], ""])
+            try:
+                adr = addDevice.device['IP Address'].split('.')
+                adr = adr[0] + adr[1] + adr[2] + adr[3]
+                adr = adr[0:8]
+            except Exception:
+                adr = str(randint(10000000, 99999999))
+            initDevice.updateDevicesDB("TCPIP::{}".format(addDevice.device["IP Address"]), devName="LAN Device " + adr)
+
+            self.addDeviceFrame([addDevice.device["Device Name"] + " (LAN)" if not addDevice.device["Device Name"] == "" else "LAN Device", icon, addDevice.device["Device Type"],
+                                     "ETHERNET" if not initDevice.devices[adr]["Resource"] == "NOT FOUND" else "NOT FOUND",addDevice.device["IP Address"], adr])
+            ChixculubImpactor.lanDevices += 1
+
 
 
 

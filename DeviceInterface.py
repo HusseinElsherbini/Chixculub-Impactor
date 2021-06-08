@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1174, 483)
+        Form.resize(1174, 578)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -70,7 +70,7 @@ class Ui_Form(object):
         self.minBtn.setMaximumSize(QtCore.QSize(30, 30))
         self.minBtn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.minBtn.setIcon(icon)
         self.minBtn.setIconSize(QtCore.QSize(30, 30))
         self.minBtn.setAutoDefault(False)
@@ -104,7 +104,7 @@ class Ui_Form(object):
 "}")
         self.closeBtn.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.closeBtn.setIcon(icon1)
         self.closeBtn.setIconSize(QtCore.QSize(30, 30))
         self.closeBtn.setAutoDefault(False)
@@ -119,7 +119,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1174, 428))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1174, 523))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_10 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_10.setObjectName("gridLayout_10")
@@ -2672,6 +2672,47 @@ class Ui_Form(object):
         self.CC_BTN.setObjectName("CC_BTN")
         self.verticalLayout_2.addWidget(self.CC_BTN)
         self.gridLayout_9.addWidget(self.frame_7, 1, 0, 1, 2)
+        self.frame_8 = QtWidgets.QFrame(self.modeToolbar)
+        self.frame_8.setStyleSheet("background: transparent;")
+        self.frame_8.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_8.setObjectName("frame_8")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_8)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.CR_BTN = QtWidgets.QPushButton(self.frame_8)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.CR_BTN.sizePolicy().hasHeightForWidth())
+        self.CR_BTN.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Courier")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.CR_BTN.setFont(font)
+        self.CR_BTN.setStyleSheet("QPushButton {\n"
+"\n"
+" color:black;\n"
+" background:transparent;\n"
+" border-radius:15px;\n"
+" border: 3px solid transparent;\n"
+" \n"
+"    border-color:#78e4ff;\n"
+" padding:18px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+" border-color:rgb(0, 255, 128);\n"
+" color: rgb(0, 255, 128);\n"
+"}\n"
+"")
+        self.CR_BTN.setObjectName("CR_BTN")
+        self.verticalLayout.addWidget(self.CR_BTN)
+        self.gridLayout_9.addWidget(self.frame_8, 0, 0, 1, 2)
         self.frame_6 = QtWidgets.QFrame(self.modeToolbar)
         self.frame_6.setStyleSheet("background: transparent;")
         self.frame_6.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -2746,47 +2787,6 @@ class Ui_Form(object):
         self.CCD_BTN.setObjectName("CCD_BTN")
         self.verticalLayout_3.addWidget(self.CCD_BTN)
         self.gridLayout_9.addWidget(self.frame_5, 2, 0, 1, 2)
-        self.frame_8 = QtWidgets.QFrame(self.modeToolbar)
-        self.frame_8.setStyleSheet("background: transparent;")
-        self.frame_8.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_8.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_8.setObjectName("frame_8")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_8)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.CR_BTN = QtWidgets.QPushButton(self.frame_8)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.CR_BTN.sizePolicy().hasHeightForWidth())
-        self.CR_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Courier")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.CR_BTN.setFont(font)
-        self.CR_BTN.setStyleSheet("QPushButton {\n"
-"\n"
-" color:black;\n"
-" background:transparent;\n"
-" border-radius:15px;\n"
-" border: 3px solid transparent;\n"
-" \n"
-"    border-color:#78e4ff;\n"
-" padding:18px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-" border-color:rgb(0, 255, 128);\n"
-" color: rgb(0, 255, 128);\n"
-"}\n"
-"")
-        self.CR_BTN.setObjectName("CR_BTN")
-        self.verticalLayout.addWidget(self.CR_BTN)
-        self.gridLayout_9.addWidget(self.frame_8, 0, 0, 1, 2)
         self.frame_2 = QtWidgets.QFrame(self.modeToolbar)
         self.frame_2.setStyleSheet("background: transparent;")
         self.frame_2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -2869,6 +2869,56 @@ class Ui_Form(object):
         self.RANGE_BTN.setObjectName("RANGE_BTN")
         self.verticalLayout_24.addWidget(self.RANGE_BTN)
         self.gridLayout_9.addWidget(self.frame_37, 5, 0, 1, 1)
+        self.frame_141 = QtWidgets.QFrame(self.modeToolbar)
+        self.frame_141.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_141.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_141.setObjectName("frame_141")
+        self.verticalLayout_92 = QtWidgets.QVBoxLayout(self.frame_141)
+        self.verticalLayout_92.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_92.setSpacing(0)
+        self.verticalLayout_92.setObjectName("verticalLayout_92")
+        self.frame_142 = QtWidgets.QFrame(self.frame_141)
+        self.frame_142.setStyleSheet("background: transparent;")
+        self.frame_142.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_142.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_142.setObjectName("frame_142")
+        self.verticalLayout_91 = QtWidgets.QVBoxLayout(self.frame_142)
+        self.verticalLayout_91.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_91.setSpacing(0)
+        self.verticalLayout_91.setObjectName("verticalLayout_91")
+        self.ShortBtn = QtWidgets.QPushButton(self.frame_142)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ShortBtn.sizePolicy().hasHeightForWidth())
+        self.ShortBtn.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Courier")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.ShortBtn.setFont(font)
+        self.ShortBtn.setStyleSheet("QPushButton {\n"
+"\n"
+" color:black;\n"
+" background:transparent;\n"
+" border-radius:15px;\n"
+" border: 3px solid transparent;\n"
+" \n"
+"    border-color:#78e4ff;\n"
+" padding:18px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+" border-color:rgb(0, 255, 128);\n"
+" color: rgb(0, 255, 128);\n"
+"}\n"
+"")
+        self.ShortBtn.setObjectName("ShortBtn")
+        self.verticalLayout_91.addWidget(self.ShortBtn)
+        self.verticalLayout_92.addWidget(self.frame_142)
+        self.gridLayout_9.addWidget(self.frame_141, 6, 0, 1, 1)
         self.gridLayout_4.addWidget(self.modeToolbar, 0, 1, 1, 1)
         self.gridLayout_3.addWidget(self.DeviceInterface, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.mainInterface, 0, 0, 1, 1)
@@ -2878,7 +2928,7 @@ class Ui_Form(object):
         self.gridLayout_27.addWidget(self.MainFrame, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.modePageStack.setCurrentIndex(1)
+        self.modePageStack.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -2951,8 +3001,10 @@ class Ui_Form(object):
         self.CV_VLABEL.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">V</span></p></body></html>"))
         self.CV_CLABEL.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:60pt;\">A</span></p></body></html>"))
         self.CC_BTN.setText(_translate("Form", "CC"))
+        self.CR_BTN.setText(_translate("Form", "CR"))
         self.CV_BTN.setText(_translate("Form", "CV"))
         self.CCD_BTN.setText(_translate("Form", "CCD"))
-        self.CR_BTN.setText(_translate("Form", "CR"))
         self.LOAD_BTN.setText(_translate("Form", "Load"))
         self.RANGE_BTN.setText(_translate("Form", "Range"))
+        self.ShortBtn.setText(_translate("Form", "Short"))
+import resources

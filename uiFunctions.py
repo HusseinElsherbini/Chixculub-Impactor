@@ -1,8 +1,7 @@
 from main import ChixculubImpactor
-from PyQt5.QtWidgets import QFrame, QGraphicsDropShadowEffect
-from PyQt5 import QtCore
+from PyQt5.QtWidgets import QFrame
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QPoint, QEvent
+from PyQt5.QtCore import QPropertyAnimation, QEasingCurve
 
 WINDOW_STATE = 0
 
@@ -22,14 +21,14 @@ class UIFunctions(ChixculubImpactor):
             self.showMaximized()
             WINDOW_STATE = 1
             self.ui.maxBtn.setToolTip("Restore")
-            self.ui.maxBtn.setIcon(QIcon("resources/051-minimize.png"))
+            self.ui.maxBtn.setIcon(QIcon(":/icons/resources/051-minimize.png"))
             #self.ui.drag.hide()
         else:
             WINDOW_STATE = 0
             self.showNormal()
             self.resize(self.width() + 1, self.height() + 1)
             self.ui.maxBtn.setToolTip("Maximize")
-            self.ui.maxBtn.setIcon(QIcon("resources/expand.png"))
+            self.ui.maxBtn.setIcon(QIcon(":/icons/resources/expand.png"))
             #self.ui.drag.show()
 
     def toodle(self, maxWidth, clicked):

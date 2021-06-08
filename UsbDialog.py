@@ -64,7 +64,7 @@ class Ui_UsbModDialog(object):
         self.minBtn.setMaximumSize(QtCore.QSize(30, 30))
         self.minBtn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.minBtn.setIcon(icon)
         self.minBtn.setIconSize(QtCore.QSize(30, 30))
         self.minBtn.setAutoDefault(False)
@@ -98,7 +98,7 @@ class Ui_UsbModDialog(object):
 "}")
         self.closeBtn.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.closeBtn.setIcon(icon1)
         self.closeBtn.setIconSize(QtCore.QSize(30, 30))
         self.closeBtn.setAutoDefault(False)
@@ -162,7 +162,7 @@ class Ui_UsbModDialog(object):
 "\n"
 "\n"
 "QLineEdit:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -218,7 +218,7 @@ class Ui_UsbModDialog(object):
 "\n"
 "\n"
 "QLineEdit:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -282,7 +282,7 @@ class Ui_UsbModDialog(object):
 "\n"
 "\n"
 "QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -300,16 +300,16 @@ class Ui_UsbModDialog(object):
         self.DeviceTypeCB.setObjectName("DeviceTypeCB")
         self.DeviceTypeCB.addItem("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon2, "")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon3, "")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon4, "")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/Device3.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/resources/Device3.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon5, "")
         self.horizontalLayout_9.addWidget(self.DeviceTypeCB)
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -394,3 +394,4 @@ class Ui_UsbModDialog(object):
         self.DeviceTypeCB.setItemText(3, _translate("UsbModDialog", "Electronic Load"))
         self.DeviceTypeCB.setItemText(4, _translate("UsbModDialog", "Oscilloscope"))
         self.ConfirmBtn.setText(_translate("UsbModDialog", "Confirm"))
+import resources

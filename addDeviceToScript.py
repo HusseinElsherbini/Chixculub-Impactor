@@ -64,7 +64,7 @@ class Ui_DeviceInScript(object):
         self.minBtn.setMaximumSize(QtCore.QSize(30, 30))
         self.minBtn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.minBtn.setIcon(icon)
         self.minBtn.setIconSize(QtCore.QSize(30, 30))
         self.minBtn.setAutoDefault(False)
@@ -98,7 +98,7 @@ class Ui_DeviceInScript(object):
 "}")
         self.closeBtn.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.closeBtn.setIcon(icon1)
         self.closeBtn.setIconSize(QtCore.QSize(30, 30))
         self.closeBtn.setAutoDefault(False)
@@ -168,7 +168,7 @@ class Ui_DeviceInScript(object):
 "\n"
 "\n"
 "QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -262,3 +262,4 @@ class Ui_DeviceInScript(object):
         DeviceInScript.setWindowTitle(_translate("DeviceInScript", "Dialog"))
         self.DeviceCB.setItemText(0, _translate("DeviceInScript", "Select Device "))
         self.ConfirmBtn.setText(_translate("DeviceInScript", "Confirm"))
+import resources

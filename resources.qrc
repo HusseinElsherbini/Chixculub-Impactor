@@ -1,0 +1,78 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>resources/email.png</file>
+    <file>resources/linkedin(1).png</file>
+    <file>resources/github.png</file>
+    <file>resources/account.png</file>
+    <file>resources/author.png</file>
+    <file>resources/info.png</file>
+    <file>resources/information(1).png</file>
+    <file>resources/information.png</file>
+    <file>resources/01-Terminal.png</file>
+    <file>resources/005-pause-button.png</file>
+    <file>resources/010-play-button-1.png</file>
+    <file>resources/031-power supply.png</file>
+    <file>resources/042-minus.png</file>
+    <file>resources/051-minimize.png</file>
+    <file>resources/165-menu.png</file>
+    <file>resources/add.png</file>
+    <file>resources/arrow.png</file>
+    <file>resources/asteroid.png</file>
+    <file>resources/battery.png</file>
+    <file>resources/beach-house.png</file>
+    <file>resources/binary-code.png</file>
+    <file>resources/cancel (1).png</file>
+    <file>resources/cancel (2).png</file>
+    <file>resources/cancel.png</file>
+    <file>resources/cil-size-grip.png</file>
+    <file>resources/clear.png</file>
+    <file>resources/close.png</file>
+    <file>resources/coding.png</file>
+    <file>resources/coding1.png</file>
+    <file>resources/compress.png</file>
+    <file>resources/curve-arrow.png</file>
+    <file>resources/del.png</file>
+    <file>resources/delete (1).png</file>
+    <file>resources/delete (2).png</file>
+    <file>resources/delete (3).png</file>
+    <file>resources/delete.png</file>
+    <file>resources/Device1.png</file>
+    <file>resources/Device2.png</file>
+    <file>resources/Device3.png</file>
+    <file>resources/dinosaur (1).png</file>
+    <file>resources/dinosaur.png</file>
+    <file>resources/DMM.png</file>
+    <file>resources/edit (1).png</file>
+    <file>resources/edit.png</file>
+    <file>resources/expand.png</file>
+    <file>resources/icon.png</file>
+    <file>resources/icon2.png</file>
+    <file>resources/icon3.png</file>
+    <file>resources/icon4.png</file>
+    <file>resources/icon5.png</file>
+    <file>resources/lan (1).png</file>
+    <file>resources/lan.png</file>
+    <file>resources/multimeter.png</file>
+    <file>resources/pause.png</file>
+    <file>resources/play.png</file>
+    <file>resources/plug.png</file>
+    <file>resources/plus (1).png</file>
+    <file>resources/plus (2).png</file>
+    <file>resources/plus (3).png</file>
+    <file>resources/plus (4).png</file>
+    <file>resources/plus (5).png</file>
+    <file>resources/plus.png</file>
+    <file>resources/power-supply (1).png</file>
+    <file>resources/power-supply (2).png</file>
+    <file>resources/PowerSupply.png</file>
+    <file>resources/power-supply.png</file>
+    <file>resources/python.png</file>
+    <file>resources/script.png</file>
+    <file>resources/setting.png</file>
+    <file>resources/stop-button.png</file>
+    <file>resources/terminal.png</file>
+    <file>resources/terminal1.png</file>
+    <file>resources/tyrannosaurus-rex.png</file>
+    <file>resources/usb.png</file>
+  </qresource>
+</RCC>

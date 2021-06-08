@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(418, 408)
+        Dialog.resize(418, 511)
         Dialog.setWindowOpacity(1.0)
         Dialog.setStyleSheet("\n"
 "background-color:#ffecd9;")
@@ -64,7 +64,7 @@ class Ui_Dialog(object):
         self.minBtn.setMaximumSize(QtCore.QSize(30, 30))
         self.minBtn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/resources/042-minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.minBtn.setIcon(icon)
         self.minBtn.setIconSize(QtCore.QSize(30, 30))
         self.minBtn.setAutoDefault(False)
@@ -98,7 +98,7 @@ class Ui_Dialog(object):
 "}")
         self.closeBtn.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/resources/cancel (2).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.closeBtn.setIcon(icon1)
         self.closeBtn.setIconSize(QtCore.QSize(30, 30))
         self.closeBtn.setAutoDefault(False)
@@ -126,6 +126,32 @@ class Ui_Dialog(object):
         self.statusLabel.setIndent(0)
         self.statusLabel.setObjectName("statusLabel")
         self.verticalLayout_3.addWidget(self.statusLabel)
+        self.frame_6 = QtWidgets.QFrame(self.DeviceAndConTypePage)
+        self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_6.setObjectName("frame_6")
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.frame_6)
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_16.setSpacing(0)
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        self.frame_10 = QtWidgets.QFrame(self.frame_6)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_15.setSpacing(0)
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.label = QtWidgets.QLabel(self.frame_10)
+        self.label.setMinimumSize(QtCore.QSize(55, 55))
+        self.label.setMaximumSize(QtCore.QSize(55, 55))
+        self.label.setText("")
+        self.label.setPixmap(QtGui.QPixmap(":/icons/resources/lan (1).png"))
+        self.label.setScaledContents(True)
+        self.label.setObjectName("label")
+        self.horizontalLayout_15.addWidget(self.label)
+        self.horizontalLayout_16.addWidget(self.frame_10)
+        self.verticalLayout_3.addWidget(self.frame_6)
         self.DeviceTypeFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.DeviceTypeFrame.setMinimumSize(QtCore.QSize(0, 30))
         self.DeviceTypeFrame.setMaximumSize(QtCore.QSize(16777215, 30))
@@ -162,7 +188,7 @@ class Ui_Dialog(object):
 "\n"
 "\n"
 "QLineEdit:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -225,7 +251,7 @@ class Ui_Dialog(object):
 "\n"
 "\n"
 "QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
@@ -243,93 +269,134 @@ class Ui_Dialog(object):
         self.DeviceTypeCB.setObjectName("DeviceTypeCB")
         self.DeviceTypeCB.addItem("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/resources/battery.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon2, "")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/resources/multimeter.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon3, "")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/resources/power-supply (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon4, "")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("resources/oscilloscope (1).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/resources/Device2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DeviceTypeCB.addItem(icon5, "")
         self.horizontalLayout_9.addWidget(self.DeviceTypeCB)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.frame_4)
         self.verticalLayout_3.addWidget(self.DeviceNameFrame)
-        self.ConnectionTypeFrame = QtWidgets.QFrame(self.DeviceAndConTypePage)
-        self.ConnectionTypeFrame.setMinimumSize(QtCore.QSize(0, 30))
-        self.ConnectionTypeFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.ConnectionTypeFrame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.ConnectionTypeFrame.setObjectName("ConnectionTypeFrame")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.ConnectionTypeFrame)
-        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_5.setSpacing(0)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.ConTypeFrame = QtWidgets.QFrame(self.ConnectionTypeFrame)
-        self.ConTypeFrame.setAutoFillBackground(False)
-        self.ConTypeFrame.setStyleSheet("QFrame{\n"
+        self.frame = QtWidgets.QFrame(self.DeviceAndConTypePage)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_12.setSpacing(0)
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.frame_8 = QtWidgets.QFrame(self.frame)
+        self.frame_8.setStyleSheet("QFrame{\n"
 "\n"
 "    background:transparent;\n"
 "}")
-        self.ConTypeFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.ConTypeFrame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.ConTypeFrame.setObjectName("ConTypeFrame")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.ConTypeFrame)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setSpacing(0)
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.frame_8.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_8.setObjectName("frame_8")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.frame_8)
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_11.setSpacing(0)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem4)
-        self.ConTypeCB = QtWidgets.QComboBox(self.ConTypeFrame)
-        self.ConTypeCB.setEnabled(True)
-        self.ConTypeCB.setMinimumSize(QtCore.QSize(300, 30))
-        font = QtGui.QFont()
-        font.setPointSize(-1)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.ConTypeCB.setFont(font)
-        self.ConTypeCB.setStyleSheet("QComboBox{\n"
+        self.horizontalLayout_11.addItem(spacerItem4)
+        self.IP_ADDRESS_LE = QtWidgets.QLineEdit(self.frame_8)
+        self.IP_ADDRESS_LE.setMinimumSize(QtCore.QSize(300, 30))
+        self.IP_ADDRESS_LE.setMaximumSize(QtCore.QSize(300, 30))
+        self.IP_ADDRESS_LE.setStyleSheet("QLineEdit{\n"
 "    border:transparent;\n"
 "    border-bottom: 1px solid black;\n"
 "    font: 14px;\n"
-"    background:transparent;\n"
+"\n"
 "}\n"
 "\n"
 "\n"
-"QComboBox:down-arrow {\n"
-"    image: url(resources/arrow.png);\n"
+"QLineEdit:down-arrow {\n"
+"    image: url(:/icons/resources/arrow.png);\n"
 "    width: 14px;\n"
 "    height: 14px;\n"
 "}\n"
 "\n"
-"QComboBox QAbstractItemView {\n"
+"QLineEdit QAbstractItemView {\n"
 "\n"
 "    border: 2px solid darkgray;\n"
 "    selection-background-color: rgb(174, 255, 193);\n"
 "    selection-color: black;\n"
 "    background-color: white;\n"
 "\n"
-"}\n"
-"")
-        self.ConTypeCB.setObjectName("ConTypeCB")
-        self.ConTypeCB.addItem("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/binary-code.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ConTypeCB.addItem(icon6, "")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("resources/lan.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ConTypeCB.addItem(icon7, "")
-        self.horizontalLayout_5.addWidget(self.ConTypeCB)
+"}")
+        self.IP_ADDRESS_LE.setText("")
+        self.IP_ADDRESS_LE.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+        self.IP_ADDRESS_LE.setObjectName("IP_ADDRESS_LE")
+        self.horizontalLayout_11.addWidget(self.IP_ADDRESS_LE)
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem5)
-        self.verticalLayout_5.addWidget(self.ConTypeFrame)
-        self.verticalLayout_3.addWidget(self.ConnectionTypeFrame)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_3.addItem(spacerItem6)
+        self.horizontalLayout_11.addItem(spacerItem5)
+        self.horizontalLayout_12.addWidget(self.frame_8)
+        self.verticalLayout_3.addWidget(self.frame)
+        self.frame_5 = QtWidgets.QFrame(self.DeviceAndConTypePage)
+        self.frame_5.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_5.setObjectName("frame_5")
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.frame_5)
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_14.setSpacing(0)
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.frame_9 = QtWidgets.QFrame(self.frame_5)
+        self.frame_9.setStyleSheet("QFrame{\n"
+"\n"
+"    background:transparent;\n"
+"}")
+        self.frame_9.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_9.setObjectName("frame_9")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.frame_9)
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_13.setSpacing(0)
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem6)
+        self.PORTNUMBER_LE = QtWidgets.QLineEdit(self.frame_9)
+        self.PORTNUMBER_LE.setMinimumSize(QtCore.QSize(300, 30))
+        self.PORTNUMBER_LE.setMaximumSize(QtCore.QSize(300, 30))
+        self.PORTNUMBER_LE.setStyleSheet("QLineEdit{\n"
+"    border:transparent;\n"
+"    border-bottom: 1px solid black;\n"
+"    font: 14px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QLineEdit:down-arrow {\n"
+"    image: url(:/icons/resources/arrow.png);\n"
+"    width: 14px;\n"
+"    height: 14px;\n"
+"}\n"
+"\n"
+"QLineEdit QAbstractItemView {\n"
+"\n"
+"    border: 2px solid darkgray;\n"
+"    selection-background-color: rgb(174, 255, 193);\n"
+"    selection-color: black;\n"
+"    background-color: white;\n"
+"\n"
+"}")
+        self.PORTNUMBER_LE.setText("")
+        self.PORTNUMBER_LE.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+        self.PORTNUMBER_LE.setObjectName("PORTNUMBER_LE")
+        self.horizontalLayout_13.addWidget(self.PORTNUMBER_LE)
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem7)
+        self.horizontalLayout_14.addWidget(self.frame_9)
+        self.verticalLayout_3.addWidget(self.frame_5)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem8)
         self.frame_2 = QtWidgets.QFrame(self.DeviceAndConTypePage)
         self.frame_2.setMinimumSize(QtCore.QSize(0, 50))
         self.frame_2.setStyleSheet("")
@@ -404,7 +471,6 @@ class Ui_Dialog(object):
         self.DeviceTypeCB.setItemText(2, _translate("Dialog", "Digital Multimeter"))
         self.DeviceTypeCB.setItemText(3, _translate("Dialog", "Electronic Load"))
         self.DeviceTypeCB.setItemText(4, _translate("Dialog", "Oscilloscope"))
-        self.ConTypeCB.setItemText(0, _translate("Dialog", "Connection Type"))
-        self.ConTypeCB.setItemText(1, _translate("Dialog", "RS232"))
-        self.ConTypeCB.setItemText(2, _translate("Dialog", "ETHERNET"))
+        self.IP_ADDRESS_LE.setPlaceholderText(_translate("Dialog", "Enter IP Address (Required)"))
+        self.PORTNUMBER_LE.setPlaceholderText(_translate("Dialog", "Enter Port Number (optional)"))
         self.ConfirmBtn.setText(_translate("Dialog", "Confirm"))

@@ -1,15 +1,37 @@
 import DeviceInterface
-from detectUsb import initDevice
-from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-from PyQt5.QtCore import QEvent, QPoint, QRegExp, QObject, pyqtSignal
-from PyQt5.QtGui import QRegExpValidator
+from PyQt5.QtCore import QEvent, QPoint, QObject, pyqtSignal, QThread, QMutex
+from time import sleep
+import detectUsb
 
-class Signal(QObject):
+mutex = QMutex()
+
+class updateVC(QObject):
+
+    RcvdSignal = pyqtSignal(dict, bool)
 
 
-    comSignal = pyqtSignal(str, str, str)
+    def __init__(self, VID_PID):
+        super().__init__()
+        self.msgRcvd = {}
+        self.VID_PID = VID_PID
 
+    def processMsg(self):
+
+        while(detectUsb.initDevice.devices[self.VID_PID]["Device interface"].isVisible()):
+            try:
+                mutex.lock()
+                self.msgRcvd.update({"Voltage": detectUsb.initDevice.devices[self.VID_PID]['Resource'].send("FETCh:VOLT?")})
+                self.msgRcvd.update({"Current": detectUsb.initDevice.devices[self.VID_PID]['Resource'].send("FETCh:CURR?")})
+                self.RcvdSignal.emit(self.msgRcvd,False)
+                mutex.unlock()
+
+            except Exception as e:
+                mutex.unlock()
+                self.RcvdSignal.emit({},  True)
+
+            sleep(0.5)
 
 class devInterface(QtWidgets.QWidget):
 
@@ -18,6 +40,7 @@ class devInterface(QtWidgets.QWidget):
         self.VID_PID = VID_PID
         self.comSignal = comSignal
         self.cmdSignal = cmdSignal
+        self.Short = False
         self.readBack = ""
         self.center()
         self.window = DeviceInterface.Ui_Form()  # create an instance of the Form UI class
@@ -28,8 +51,9 @@ class devInterface(QtWidgets.QWidget):
         self.setShadows()
         self.alignLineEdits()
         self.connectBtns()
-        self.updatePages()
+        #self.updatePages()
         self.window.modePageStack.setCurrentIndex(0)
+        self.communicationThread()
 
     #######################################################################################################################################################################################
     #  Function: eventFilter                                                                                                                                                              #
@@ -52,10 +76,47 @@ class devInterface(QtWidgets.QWidget):
         self.window.CV_BTN.clicked.connect(self.changePage)
         self.window.CC_BTN.clicked.connect(self.changePage)
         self.window.CCD_BTN.clicked.connect(self.changePage)
+        self.window.ShortBtn.clicked.connect(self.ShortBtn)
         self.connectCRbtns()
         self.connectCCbtns()
         self.connectCVbtns()
 
+    def ShortBtn(self):
+        if self.Short:
+            self.comSignal.emit("LOAD:SHOR OFF", self.VID_PID, None,None)
+            self.window.ShortBtn.setStyleSheet("""
+                QPushButton {
+                    color:black;
+                    background:transparent;
+                    border-radius:15px;
+                    border: 3px solid transparent;
+                    border-color:#78e4ff;
+                    padding:18px;
+                }
+                QPushButton:hover {
+                    border-color:rgb(0, 255, 128);
+                    color: rgb(0, 255, 128);
+                }
+
+                """)
+            self.Short = False
+        else:
+            self.comSignal.emit("LOAD:SHOR ON", self.VID_PID, None,None)
+            self.window.ShortBtn.setStyleSheet("""
+                QPushButton {
+                    color:black;
+                    background:transparent;
+                    border-radius:15px;
+                    border: 3px solid transparent;
+                    border-color:red;
+                    padding:18px;
+                }
+                QPushButton:hover {
+                    border-color:rgb(0, 255, 128);
+                    color: rgb(0, 255, 128);
+                }
+                """)
+            self.Short = True
 
     def connectCRbtns(self):
         cbDict = {"High":"High", "Medium" : "M" , "Low" : "0"}
@@ -175,6 +236,27 @@ class devInterface(QtWidgets.QWidget):
         self.comSignal.emit("FETCh:VOLTage?", self.VID_PID, None, self.window.CV_VOLTAGE_LCD.display)
         self.comSignal.emit("FETCh:CURRent?", self.VID_PID, None, self.window.CV_CURRENT_LCD.display)
 
+    def communicationThread(self):
+        self.thread = QThread()
+        self.updateVC = updateVC(self.VID_PID)
+        self.updateVC.moveToThread(self.thread)
+        self.updateVC.RcvdSignal.connect(self.updateLCD)
+        self.thread.started.connect(self.updateVC.processMsg)
+        self.thread.start()
+
+    def updateLCD(self,msg, error):
+        if error == True:
+            pass
+        elif error == False:
+            children = list(self.window.modePageStack.currentWidget().findChildren(QtWidgets.QLCDNumber))
+            for child in children:
+                if "VOLTAGE" in child.objectName():
+                    child.display(msg["Voltage"])
+
+                elif "CURRENT" in child.objectName():
+                    child.display(msg["Current"])
+
+
     def center(self):
 
         self.move(QtWidgets.QApplication.desktop().screen().rect().center()- self.rect().center())
@@ -196,6 +278,7 @@ class devInterface(QtWidgets.QWidget):
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(25)
         obj.setGraphicsEffect(shadow)
+
 
     def setShadows(self):
         children = list(self.window.CR.findChildren(QtWidgets.QLabel)) + list(self.window.CR.findChildren(QtWidgets.QLCDNumber))

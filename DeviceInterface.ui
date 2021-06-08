@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1174</width>
-    <height>483</height>
+    <height>578</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -169,8 +169,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>resources/042-minus.png</normaloff>resources/042-minus.png</iconset>
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/resources/042-minus.png</normaloff>:/icons/resources/042-minus.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -258,8 +258,8 @@ QPushButton:pressed {
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>resources/cancel (2).png</normaloff>resources/cancel (2).png</iconset>
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/resources/cancel (2).png</normaloff>:/icons/resources/cancel (2).png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -298,7 +298,7 @@ QPushButton:pressed {
            <x>0</x>
            <y>0</y>
            <width>1174</width>
-           <height>428</height>
+           <height>523</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_10">
@@ -5801,6 +5801,76 @@ QPushButton:hover {
                         </layout>
                        </widget>
                       </item>
+                      <item row="0" column="0" colspan="2">
+                       <widget class="QFrame" name="frame_8">
+                        <property name="styleSheet">
+                         <string notr="true">background: transparent;</string>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::NoFrame</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Plain</enum>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout">
+                         <property name="spacing">
+                          <number>0</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QPushButton" name="CR_BTN">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>Courier</family>
+                             <pointsize>10</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton {
+
+ color:black;
+ background:transparent;
+ border-radius:15px;
+ border: 3px solid transparent;
+ 
+	border-color:#78e4ff;
+ padding:18px;
+}
+
+QPushButton:hover {
+ border-color:rgb(0, 255, 128);
+ color: rgb(0, 255, 128);
+}
+</string>
+                           </property>
+                           <property name="text">
+                            <string>CR</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
                       <item row="3" column="0" colspan="2">
                        <widget class="QFrame" name="frame_6">
                         <property name="styleSheet">
@@ -5927,76 +5997,6 @@ QPushButton:hover {
                            </property>
                            <property name="text">
                             <string>CCD</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                      <item row="0" column="0" colspan="2">
-                       <widget class="QFrame" name="frame_8">
-                        <property name="styleSheet">
-                         <string notr="true">background: transparent;</string>
-                        </property>
-                        <property name="frameShape">
-                         <enum>QFrame::NoFrame</enum>
-                        </property>
-                        <property name="frameShadow">
-                         <enum>QFrame::Plain</enum>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout">
-                         <property name="spacing">
-                          <number>0</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QPushButton" name="CR_BTN">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Courier</family>
-                             <pointsize>10</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QPushButton {
-
- color:black;
- background:transparent;
- border-radius:15px;
- border: 3px solid transparent;
- 
-	border-color:#78e4ff;
- padding:18px;
-}
-
-QPushButton:hover {
- border-color:rgb(0, 255, 128);
- color: rgb(0, 255, 128);
-}
-</string>
-                           </property>
-                           <property name="text">
-                            <string>CR</string>
                            </property>
                           </widget>
                          </item>
@@ -6143,6 +6143,103 @@ QPushButton:hover {
                         </layout>
                        </widget>
                       </item>
+                      <item row="6" column="0">
+                       <widget class="QFrame" name="frame_141">
+                        <property name="frameShape">
+                         <enum>QFrame::NoFrame</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Plain</enum>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_92">
+                         <property name="spacing">
+                          <number>0</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QFrame" name="frame_142">
+                           <property name="styleSheet">
+                            <string notr="true">background: transparent;</string>
+                           </property>
+                           <property name="frameShape">
+                            <enum>QFrame::StyledPanel</enum>
+                           </property>
+                           <property name="frameShadow">
+                            <enum>QFrame::Raised</enum>
+                           </property>
+                           <layout class="QVBoxLayout" name="verticalLayout_91">
+                            <property name="spacing">
+                             <number>0</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QPushButton" name="ShortBtn">
+                              <property name="sizePolicy">
+                               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                               </sizepolicy>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Courier</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QPushButton {
+
+ color:black;
+ background:transparent;
+ border-radius:15px;
+ border: 3px solid transparent;
+ 
+	border-color:#78e4ff;
+ padding:18px;
+}
+
+QPushButton:hover {
+ border-color:rgb(0, 255, 128);
+ color: rgb(0, 255, 128);
+}
+</string>
+                              </property>
+                              <property name="text">
+                               <string>Short</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
                      </layout>
                     </widget>
                    </item>
@@ -6164,6 +6261,8 @@ QPushButton:hover {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

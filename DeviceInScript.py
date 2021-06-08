@@ -2,7 +2,6 @@ import addDeviceToScript
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from PyQt5.QtCore import QEvent, QPoint, QObject, pyqtSignal
-import detectUsb
 
 
 class mySignal(QObject):

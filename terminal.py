@@ -4,7 +4,7 @@ from PyQt5.QtCore import QEvent, QObject, pyqtSignal
 from PyQt5.Qt import QTextCursor
 import detectUsb
 import DeviceInScript
-import sys
+
 
 class Signal(QObject):
 
@@ -359,7 +359,7 @@ class terminal(QtWidgets.QWidget):
                                     "}\n"
                                     "\n"
                                     "QComboBox:down-arrow {\n"
-                                    "    image: url(resources/arrow.png);\n"
+                                    "    image: url(:/icons/resources/arrow.png);\n"
                                     "    width: 14px;\n"
                                     "    height: 14px;\n"
                                     "}\n"
@@ -372,10 +372,10 @@ class terminal(QtWidgets.QWidget):
         self.comboBox.setFrame(True)
         self.comboBox.setObjectName("comboBox")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/01-Terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(":/icons/resources/01-Terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.comboBox.addItem(icon6, "")
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("resources/coding1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/icons/resources/coding1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.comboBox.addItem(icon7, "")
         self.verticalLayout_16.addWidget(self.comboBox)
         self.horizontalLayout_14.addWidget(self.frame_20)
@@ -519,7 +519,7 @@ class terminal(QtWidgets.QWidget):
                                         "}")
         self.runScriptBtn.setText("")
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("resources/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(":/icons/resources/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.runScriptBtn.setIcon(icon8)
         self.runScriptBtn.setIconSize(QtCore.QSize(24, 24))
         self.runScriptBtn.setFlat(True)
@@ -548,7 +548,7 @@ class terminal(QtWidgets.QWidget):
                                         "}")
         self.pauseBtn.setText("")
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("resources/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap(":/icons/resources/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pauseBtn.setIcon(icon9)
         self.pauseBtn.setIconSize(QtCore.QSize(24, 24))
         self.pauseBtn.setFlat(True)
@@ -577,7 +577,7 @@ class terminal(QtWidgets.QWidget):
                                       "}")
         self.stopBtn.setText("")
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap("resources/stop-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(":/icons/resources/stop-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopBtn.setIcon(icon10)
         self.stopBtn.setIconSize(QtCore.QSize(24, 24))
         self.stopBtn.setFlat(True)
@@ -627,7 +627,7 @@ class terminal(QtWidgets.QWidget):
                                         "}")
         self.addDeviceBtn.setText("")
         icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap("resources/plus (5).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon11.addPixmap(QtGui.QPixmap(":/icons/resources/plus (5).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.addDeviceBtn.setIcon(icon11)
         self.addDeviceBtn.setIconSize(QtCore.QSize(24, 24))
         self.addDeviceBtn.setFlat(True)
@@ -659,7 +659,7 @@ class terminal(QtWidgets.QWidget):
                                         "}")
         self.removeDeviceBtn.setText("")
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap("resources/delete (3).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon12.addPixmap(QtGui.QPixmap(":/icons/resources/delete (3).png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.removeDeviceBtn.setIcon(icon12)
         self.removeDeviceBtn.setIconSize(QtCore.QSize(24, 24))
         self.removeDeviceBtn.setFlat(True)
@@ -699,7 +699,7 @@ class terminal(QtWidgets.QWidget):
         self.timeSensitiveCheckBox = QtWidgets.QCheckBox(self.frame_31)
         self.timeSensitiveCheckBox.setAutoFillBackground(False)
         icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap("resources/dinosaur.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon13.addPixmap(QtGui.QPixmap(":/icons/resources/dinosaur.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.timeSensitiveCheckBox.setIcon(icon13)
         self.timeSensitiveCheckBox.setTristate(False)
         self.timeSensitiveCheckBox.setText("Time sensitive")
@@ -717,7 +717,7 @@ class terminal(QtWidgets.QWidget):
         self.verticalLayout_27.setObjectName("verticalLayout_27")
         self.PythonCB = QtWidgets.QCheckBox(self.frame_32)
         icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap("resources/python.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon14.addPixmap(QtGui.QPixmap(":/icons/resources/python.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PythonCB.setIcon(icon14)
         self.PythonCB.setObjectName("PythonCB")
         self.PythonCB.setText("Python")
@@ -744,7 +744,7 @@ class terminal(QtWidgets.QWidget):
         self.gridLayout_3.addWidget(self.frame_3, 0, 0, 1, 1)
         self.page_2.setStyleSheet("background:transparent;")
         icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap("resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon13.addPixmap(QtGui.QPixmap(":/icons/resources/terminal.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.comboBox.setItemText(0, "Terminal")
         self.comboBox.setItemText(1,  "Script")
         self.terminalEdit.setMouseTracking(True)
